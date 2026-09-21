@@ -122,32 +122,32 @@ export const faq: FaqItem[] = [
   {
     question: 'O Meu Crédito Rural é um banco?',
     answer:
-      'Não. Não somos banco, cooperativa nem instituição financeira. Não emprestamos dinheiro e não cobramos dívidas. Somos uma camada de orientação: ajudamos você a entender a sua situação e quais caminhos existem.',
+      'Não. Não emprestamos dinheiro nem cobramos dívidas. Ajudamos você a entender a sua situação e quais caminhos existem.',
   },
   {
     question: 'Vocês renegociam minha dívida?',
     answer:
-      'Não. Quem renegocia é a instituição com quem você tem a dívida. O que fazemos é organizar as informações, mostrar o peso da dívida na sua receita e apontar quais alternativas podem ser avaliadas — para que você chegue nessa conversa sabendo o que perguntar.',
+      'Não. Quem renegocia é a instituição com quem você tem a dívida. Nós organizamos os números para você chegar nessa conversa sabendo o que perguntar.',
   },
   {
     question: 'O diagnóstico garante que tenho direito a renegociação?',
     answer:
-      'Não garante. O diagnóstico é indicativo e trabalha com base nas informações fornecidas por você. Ele mostra o que a sua situação tem em comum com os critérios de cada alternativa. A análise e a decisão final são sempre da instituição financeira.',
+      'Não garante. Ele é indicativo e trabalha com as informações que você forneceu. A análise e a decisão final são sempre da instituição financeira.',
   },
   {
     question: 'O que é CPR?',
     answer:
-      'CPR é a sigla de Cédula de Produto Rural: um compromisso financeiro ligado à sua produção. Você recebe recursos agora e se compromete a entregar produto ou pagar um valor na colheita. Sempre que um termo assim aparecer aqui, ele vem explicado ao lado.',
+      'Cédula de Produto Rural: você recebe recursos agora e se compromete a entregar produto ou pagar um valor na colheita.',
   },
   {
     question: 'Preciso entender de finanças para usar?',
     answer:
-      'Não. As perguntas são uma de cada vez, em linguagem do dia a dia, e cada termo técnico vem com a explicação junto. Se você sabe quanto produziu e quanto deve, já dá para começar.',
+      'Não. Se você sabe quanto espera colher e quanto deve, já dá para começar. Cada termo técnico vem explicado na mesma frase.',
   },
   {
     question: 'Quais informações preciso ter em mãos?',
     answer:
-      'Para o diagnóstico inicial, basta uma estimativa: quanto você espera colher, o preço que estima receber e quanto deve hoje. Contrato e extrato ajudam a refinar depois, mas não são necessários para começar.',
+      'Uma estimativa de quanto você espera colher, o preço por saca e quanto deve hoje. Contrato e extrato ajudam depois, mas não são necessários para começar.',
   },
 ];
 
