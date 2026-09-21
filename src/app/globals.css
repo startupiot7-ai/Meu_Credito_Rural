@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-sand-50 font-sans text-body text-ink-800 antialiased;
+    /* A very soft field-horizon wash: warm light at the top of the page. */
+    background-image: radial-gradient(
+      120% 60% at 50% -10%,
+      rgba(233, 174, 46, 0.07) 0%,
+      rgba(253, 251, 246, 0) 60%
+    );
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-semibold text-ink-900;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /*
+   * One focus treatment across the whole product: the lighthouse beam.
+   * `:focus-visible` only, so pointer users never see a ring they did not ask for.
+   */
+  :focus-visible {
+    @apply outline-none ring-2 ring-beam-500 ring-offset-2 ring-offset-sand-50;
+    border-radius: 0.375rem;
+  }
+
+  /* Native controls inherit the warm palette rather than the OS blue. */
+  ::selection {
+    @apply bg-beam-200 text-ink-900;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+@layer components {
+  /*
+   * Skip link — first tab stop on every page, visually hidden until focused.
+   */
+  .skip-link {
+    @apply absolute left-4 top-4 z-50 -translate-y-24 rounded-md bg-canopy-700 px-4 py-2
+      text-body-sm font-medium text-sand-50 transition-transform focus:translate-y-0;
+  }
+
+  /* Standard page gutter + max measure used by every landing section. */
+  .container-page {
+    @apply mx-auto w-full max-w-content px-gutter-mobile md:px-gutter-desktop;
+  }
+
+  .section-y {
+    @apply py-section-y lg:py-section-y-lg;
+  }
+}
+
+@layer utilities {
+  /* Screen-reader-only text, for labels that must exist but not be seen. */
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+/*
+ * Accessibility: honour the OS-level motion preference. Everything still works,
+ * it simply stops moving.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
