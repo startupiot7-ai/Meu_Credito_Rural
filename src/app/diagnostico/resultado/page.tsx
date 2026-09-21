@@ -69,7 +69,8 @@ export default function ResultPage() {
             iconLeft={<ChevronLeftIcon />}
             className="shrink-0"
           >
-            Voltar às perguntas
+            <span className="md:hidden">Voltar</span>
+            <span className="hidden md:inline">Voltar às perguntas</span>
           </ButtonLink>
         </div>
       </header>
@@ -221,7 +222,7 @@ export default function ResultPage() {
                   <p className="mt-2 text-body leading-relaxed text-ink-700">
                     {analysis.nextStep.description}
                   </p>
-                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <div className="mt-6 flex flex-col gap-3 md:flex-row">
                     <ButtonLink href="/diagnostico">Revisar minhas respostas</ButtonLink>
                     <ButtonLink href="/#comparacao" variant="secondary">
                       Ver as condições lado a lado

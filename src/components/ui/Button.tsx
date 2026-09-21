@@ -15,7 +15,8 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 const base =
-  'relative inline-flex items-center justify-center gap-2 rounded-lg font-sans font-semibold ' +
+  'relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg ' +
+  'font-sans font-semibold ' +
   'transition-[background-color,border-color,color,box-shadow,transform] duration-base ' +
   'ease-standard select-none active:translate-y-px ' +
   'disabled:cursor-not-allowed disabled:active:translate-y-0 ' +

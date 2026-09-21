@@ -54,7 +54,7 @@ export function HowItWorks() {
         {steps.map((step, index) => {
           // Progressive illumination: opacity of the marker's glow rises with
           // the index, so the list reads as a beam travelling down the path.
-          const light = 0.12 + index * 0.22;
+          const light = 0.1 + index * 0.13;
 
           return (
             <li key={step.title} className="relative flex gap-4 pb-8 last:pb-0 sm:gap-6">

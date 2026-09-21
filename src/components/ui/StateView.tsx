@@ -64,7 +64,7 @@ export function StateView({
       </div>
 
       {action || secondaryAction ? (
-        <div className="mt-1 flex flex-col items-center gap-2 sm:flex-row">
+        <div className="mt-1 flex flex-col items-center gap-2 md:flex-row">
           {action}
           {secondaryAction}
         </div>

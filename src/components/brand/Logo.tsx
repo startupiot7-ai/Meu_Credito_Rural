@@ -56,7 +56,7 @@ export function Logo({
       <LighthouseMark className="h-8 w-8 shrink-0" />
       <span
         className={cn(
-          'font-display text-title-sm font-bold leading-none tracking-tight',
+          'whitespace-nowrap font-display text-title-sm font-bold leading-none tracking-tight',
           tone === 'dark' ? 'text-canopy-800' : 'text-sand-50',
         )}
       >

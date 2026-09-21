@@ -114,7 +114,7 @@ export function DebtShareChart({
        * Direct labels. Each carries a colour swatch *and* its own text, so the
        * two segments are told apart by reading, not by hue.
        */}
-      <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <dl className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <div className="flex items-start gap-2.5">
           <span aria-hidden className={cn('mt-1.5 h-3 w-3 shrink-0 rounded-sm', tone.bar)} />
           <div>

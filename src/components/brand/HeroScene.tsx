@@ -30,17 +30,17 @@ export function HeroScene({ className }: { className?: string }) {
         </linearGradient>
 
         {/* The beam — brightest at the lamp, dissolving as it reaches the field. */}
-        <linearGradient id="hero-beam" x1="1" y1="0" x2="0" y2="0.35">
-          <stop offset="0%" stopColor="#E9AE2E" stopOpacity="0.55" />
-          <stop offset="55%" stopColor="#F1C55A" stopOpacity="0.22" />
+        <linearGradient id="hero-beam" x1="1" y1="0" x2="0" y2="0">
+          <stop offset="0%" stopColor="#F1C55A" stopOpacity="0.78" />
+          <stop offset="35%" stopColor="#F1C55A" stopOpacity="0.34" />
           <stop offset="100%" stopColor="#F7DC94" stopOpacity="0" />
         </linearGradient>
 
         {/* Fog over the unexamined side of the scene. */}
         <linearGradient id="hero-fog" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#FDFBF6" stopOpacity="0.92" />
-          <stop offset="60%" stopColor="#FDFBF6" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#FDFBF6" stopOpacity="0" />
+          <stop offset="0%" stopColor="#F7F2E8" stopOpacity="0.96" />
+          <stop offset="45%" stopColor="#F7F2E8" stopOpacity="0.72" />
+          <stop offset="100%" stopColor="#F7F2E8" stopOpacity="0" />
         </linearGradient>
 
         <linearGradient id="hero-near-field" x1="0" y1="0" x2="0" y2="1">
@@ -51,9 +51,14 @@ export function HeroScene({ className }: { className?: string }) {
 
       <rect width="400" height="300" fill="url(#hero-sky)" />
 
-      {/* Distant hills — the horizon, i.e. what can be planned for. */}
-      <path d="M0 150c48-16 84-6 128 4s86 6 130-10 92-14 142 2v40H0Z" fill="#B9D1BA" opacity="0.75" />
-      <path d="M0 168c60-14 96-2 148 8s96 2 142-12 76-8 110 4v36H0Z" fill="#8FB492" opacity="0.8" />
+      {/*
+       * Distant hills — the horizon, i.e. what can be planned for.
+       * Each band is drawn well past where the next one starts: the layers are
+       * meant to overlap, otherwise the page colour shows through as a seam
+       * wherever two curves cross.
+       */}
+      <path d="M0 150c48-16 84-6 128 4s86 6 130-10 92-14 142 2v60H0Z" fill="#B9D1BA" opacity="0.75" />
+      <path d="M0 168c60-14 96-2 148 8s96 2 142-12 76-8 110 4v70H0Z" fill="#8FB492" opacity="0.8" />
 
       {/* Mid-ground coffee rows, curving with the terrain. */}
       <path d="M0 196c70-18 130-14 200 2s130 18 200 2v100H0Z" fill="#63926A" />
@@ -100,6 +105,23 @@ export function HeroScene({ className }: { className?: string }) {
         <circle cx="349" cy="225" r="2" />
       </g>
 
+      {/*
+       * Fog over the side of the scene the producer has not looked at yet, then
+       * the beam across it. Both sit *behind* the lighthouse, so the tower
+       * stands in front of its own light instead of being washed out by it.
+       */}
+      <rect x="0" y="104" width="230" height="196" fill="url(#hero-fog)" />
+
+      {/*
+       * The beam: two wedges from the same origin at the lamp — a wider, softer
+       * spread around a narrower core — so the light reads as coming *from*
+       * somewhere rather than as a band laid across the picture.
+       */}
+      <g className="animate-beam-sweep">
+        <path d="M290 96 20 132l270 62Z" fill="url(#hero-beam)" opacity="0.5" />
+        <path d="M290 98 40 148l250 26Z" fill="url(#hero-beam)" opacity="0.85" />
+      </g>
+
       {/* The lighthouse, standing on the ridge — not on a rock in the sea. */}
       <g transform="translate(290 96)">
         <path d="M-9 76 -4 8h18l5 68Z" fill="#FDFBF6" />
@@ -113,11 +135,6 @@ export function HeroScene({ className }: { className?: string }) {
         <path d="M4 -14l0 7" stroke="#26492F" strokeWidth="2.5" strokeLinecap="round" />
       </g>
 
-      {/* The beam itself, sweeping left across the scene. */}
-      <path d="M292 92 44 150l248 34Z" fill="url(#hero-beam)" className="animate-beam-sweep" />
-
-      {/* Fog on the side the producer has not looked at yet. */}
-      <rect x="0" y="120" width="210" height="180" fill="url(#hero-fog)" />
     </svg>
   );
 }

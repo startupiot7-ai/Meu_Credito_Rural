@@ -96,7 +96,7 @@ export function Simulator() {
         </div>
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="mt-8 flex flex-col gap-3 md:flex-row md:items-center">
         <ButtonLink href="/diagnostico" size="lg">
           Analisar minha situação
         </ButtonLink>

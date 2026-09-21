@@ -26,10 +26,11 @@ export function QuestionStep({
   return (
     <div className={cn('animate-fade-up', className)}>
       {/*
-       * `key`ed by the parent so this heading remounts on every step, which is
-       * what makes a screen reader announce the new question.
+       * Focused by the flow on every step change so the new question is
+       * announced. `focus:outline-none` is deliberate: the focus exists for
+       * assistive technology, and nobody tabs to a heading.
        */}
-      <h1 tabIndex={-1} className="text-title lg:text-title-lg">
+      <h1 tabIndex={-1} className="text-title focus:outline-none lg:text-title-lg">
         {title}
       </h1>
       {help ? <p className="mt-2.5 text-body leading-relaxed text-ink-600">{help}</p> : null}

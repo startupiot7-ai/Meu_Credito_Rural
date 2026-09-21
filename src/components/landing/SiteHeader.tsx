@@ -61,8 +61,13 @@ export function SiteHeader() {
           </ul>
         </nav>
 
+        {/*
+         * Shorter label on phones: at 360–430px the full sentence crowds the
+         * wordmark. The destination and the meaning are unchanged.
+         */}
         <ButtonLink href="/diagnostico" size="sm" className="shrink-0">
-          Analisar minha situação
+          <span className="md:hidden">Começar</span>
+          <span className="hidden md:inline">Analisar minha situação</span>
         </ButtonLink>
       </div>
     </header>

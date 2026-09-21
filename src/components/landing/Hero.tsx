@@ -33,17 +33,17 @@ export function Hero() {
               alternativas podem fazer sentido para o seu caso.
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 md:flex-row">
               <ButtonLink
                 href="/diagnostico"
                 size="lg"
                 iconRight={<ArrowRightIcon />}
-                className="sm:w-auto"
+                className="md:w-auto"
                 fullWidth
               >
                 Analisar minha situação
               </ButtonLink>
-              <ButtonLink href="#como-funciona" size="lg" variant="secondary" fullWidth className="sm:w-auto">
+              <ButtonLink href="#como-funciona" size="lg" variant="secondary" fullWidth className="md:w-auto">
                 Entender como funciona
               </ButtonLink>
             </div>
