@@ -202,10 +202,9 @@ export default function ResultPage() {
                           value={scenario.annualPayment}
                           max={maxPayment}
                           valueLabel={`${formatCurrency(scenario.annualPayment)} por ano`}
-                          tone={scenario.highlighted ? 'beam' : 'canopy'}
                           highlighted={scenario.highlighted}
                         />
-                        <p className="mt-1.5 text-body-sm text-ink-600">{scenario.summary}</p>
+                        <p className="mt-1.5 text-body-sm text-ink-600">{scenario.plain}</p>
                       </div>
                     ))}
                   </div>

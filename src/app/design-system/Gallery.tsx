@@ -336,7 +336,6 @@ export function Gallery() {
               value={78_000}
               max={120_000}
               valueLabel="R$ 78.000 por ano"
-              tone="beam"
               highlighted
             />
           </div>

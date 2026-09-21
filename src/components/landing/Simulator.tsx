@@ -1,32 +1,28 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  ButtonLink,
-  Card,
-  CurrencyInput,
-  DebtShareChart,
-  QuantityInput,
-  Term,
-} from '@/components/ui';
-import { formatCurrency } from '@/lib/format';
+import { ButtonLink, Card, CurrencyInput, DebtShareChart, QuantityInput } from '@/components/ui';
+import { formatCurrency, formatNumber } from '@/lib/format';
 import { simulatorDefaults } from '@/lib/mock-data';
 import { Section } from './Section';
 
 /**
  * Simulador de impacto da dívida.
  *
- * The one place on the landing page where the producer touches their own
- * numbers, which is what turns an abstract promise into something they can
- * check. It runs entirely in the browser — three inputs, one multiplication,
- * one division — so it works offline and costs almost nothing to load.
+ * Simplification pass. What came out:
+ *  - the per-field hints ("Quantas sacas você espera colher nesta safra") —
+ *    the label plus the unit already says it;
+ *  - the separate "Receita bruta projetada" card, with its own big number and
+ *    three-line explanation. Two big numbers competed for the same glance, and
+ *    only one of them is the point. The revenue is now the plain multiplication
+ *    written out — "500 sacas × R$ 1.500 = R$ 750.000" — which is both shorter
+ *    and more convincing than the paragraph explaining it was;
+ *  - the "saldo devedor" and "comprometimento" tooltips. Terms the producer
+ *    has to go looking for are worse than plain words in the sentence.
  *
- * PROTOTYPE: the arithmetic is intentionally the simple one (sacas × preço =
- * receita bruta; dívida ÷ receita = comprometimento). The real engine will take
- * cost of production, cycle and culture into account.
- *
- * Rule enforced here: the percentage is never shown on its own. The sentence
- * that explains what it means is part of the chart component itself.
+ * PROTOTYPE: the arithmetic is the simple one (sacas × preço = receita;
+ * dívida ÷ receita = comprometimento). The real engine will take cost of
+ * production, cycle and culture into account.
  */
 export function Simulator() {
   const [bags, setBags] = useState<number | null>(simulatorDefaults.expectedBags);
@@ -38,71 +34,44 @@ export function Simulator() {
   return (
     <Section
       id="simulador"
-      eyebrow="Simulador de impacto da dívida"
+      eyebrow="Simulador"
       title="Quanto da sua safra já está comprometido?"
-      description="Ajuste os três números abaixo com a sua realidade. O cálculo acontece no seu aparelho — nada é enviado e nada fica guardado."
+      description="Troque pelos seus números. A conta acontece no seu aparelho — nada é enviado."
     >
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-6">
+      <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
         <Card>
-          <h3 className="text-title-sm">Seus números</h3>
-          <p className="mt-1.5 text-body-sm text-ink-600">
-            Estimativas servem. O objetivo é enxergar a ordem de grandeza.
-          </p>
-
-          <div className="mt-6 flex flex-col gap-5">
+          <div className="flex flex-col gap-5">
             <QuantityInput
               label="Produção esperada"
-              hint="Quantas sacas você espera colher nesta safra."
               suffix="sacas"
               value={bags}
               onValueChange={setBags}
             />
-            <CurrencyInput
-              label="Preço estimado por saca"
-              hint="O valor que você espera receber por saca."
-              value={price}
-              onValueChange={setPrice}
-            />
-            <CurrencyInput
-              label="Dívida informada"
-              hint="Quanto você deve hoje, somando as operações que conhece."
-              labelAdornment={<Term term="saldoDevedor" />}
-              value={debt}
-              onValueChange={setDebt}
-            />
+            <CurrencyInput label="Preço por saca" value={price} onValueChange={setPrice} />
+            <CurrencyInput label="Quanto você deve hoje" value={debt} onValueChange={setDebt} />
           </div>
         </Card>
 
-        <div className="flex flex-col gap-5">
-          <Card>
-            <h3 className="text-title-sm">
-              <Term term="receitaBruta">Receita bruta projetada</Term>
-            </h3>
-            <p className="mt-3 font-display text-display font-bold tabular-nums text-canopy-700">
-              {revenue > 0 ? formatCurrency(revenue) : '—'}
+        <Card variant="beam" className="flex flex-col justify-center">
+          {/* The multiplication, written out. Shorter than explaining it. */}
+          {revenue > 0 ? (
+            <p className="mb-5 text-body text-ink-600">
+              {formatNumber(bags ?? 0)} sacas × {formatCurrency(price ?? 0)} ={' '}
+              <strong className="font-semibold tabular-nums text-ink-900">
+                {formatCurrency(revenue)}
+              </strong>{' '}
+              esperados na safra.
             </p>
-            <p className="mt-2 text-body-sm leading-relaxed text-ink-600">
-              É o resultado de multiplicar a produção esperada pelo preço estimado. Ainda não
-              desconta os custos da safra.
-            </p>
-          </Card>
+          ) : null}
 
-          <Card variant="beam">
-            <h3 className="text-title-sm">
-              <Term term="comprometimento">Comprometimento da receita</Term>
-            </h3>
-            <DebtShareChart className="mt-4" revenue={revenue} debt={debt ?? 0} />
-          </Card>
-        </div>
+          <DebtShareChart revenue={revenue} debt={debt ?? 0} />
+        </Card>
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 md:flex-row md:items-center">
+      <div className="mt-8">
         <ButtonLink href="/diagnostico" size="lg">
           Analisar minha situação
         </ButtonLink>
-        <p className="text-body-sm text-ink-500">
-          O simulador mostra o peso da dívida. O diagnóstico mostra os caminhos.
-        </p>
       </div>
     </Section>
   );

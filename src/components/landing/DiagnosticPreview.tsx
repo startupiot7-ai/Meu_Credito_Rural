@@ -1,42 +1,35 @@
-import {
-  AlertTriangleIcon,
-  ButtonLink,
-  Card,
-  CheckCircleIcon,
-  StepProgress,
-} from '@/components/ui';
+import { AlertTriangleIcon, ButtonLink, Card, CheckCircleIcon, StepProgress } from '@/components/ui';
 import { TOTAL_STEPS, stepLabels } from '@/lib/diagnostic';
 import { sampleFindings } from '@/lib/mock-data';
 import { Section } from './Section';
 
 /**
- * Diagnóstico (preview) — shows the real thing, not a promise of it.
+ * Diagnóstico (preview) — the question, then the answer.
  *
- * Two frames side by side: a question exactly as it is asked, and the reasoning
- * exactly as it comes back. The point of the preview is to remove the fear of
- * starting: the producer sees that it is one plain question at a time and that
- * the answer is a list they can check themselves, not a score handed down.
+ * Simplification pass: the section led with a four-line paragraph explaining
+ * that there is no long form and no mysterious score. The two frames below it
+ * already demonstrate exactly that, so the paragraph went. The findings card
+ * also carried a nested "O que isso significa" box, duplicating the real
+ * results screen inside a preview of it — cut, along with one finding, so the
+ * list can be read rather than scanned.
  */
 export function DiagnosticPreview() {
+  const preview = sampleFindings.slice(0, 3);
+
   return (
     <Section
       id="diagnostico"
       eyebrow="Diagnóstico"
-      title="Uma pergunta por vez. E uma resposta que você consegue conferir."
-      description="Nada de formulário longo nem de nota misteriosa no final. Você responde no seu ritmo e vê exatamente o que foi considerado."
-      tone="sand"
+      title="Uma pergunta por vez. Uma resposta que você confere."
     >
       <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
-        {/* Frame 1 — the question, as the producer will actually see it. */}
+        {/* The question, exactly as the producer will see it. */}
         <Card className="flex flex-col">
-          {/* Same labels the real flow uses, so the preview never drifts from it. */}
           <StepProgress current={2} total={TOTAL_STEPS} labels={[...stepLabels]} />
 
           <div className="mt-6 flex-1">
-            <h3 className="text-title-sm">Quantas sacas você espera colher nesta safra?</h3>
-            <p className="mt-2 text-body-sm text-ink-600">
-              Uma estimativa já serve. Dá para ajustar depois.
-            </p>
+            <h3 className="text-title-sm">Quantas sacas você espera colher?</h3>
+            <p className="mt-2 text-body text-ink-600">Uma estimativa já serve.</p>
 
             <div className="mt-5 flex items-stretch overflow-hidden rounded-lg border border-sand-300 bg-sand-50">
               <span className="flex min-h-touch items-center px-4 py-3 text-body tabular-nums text-ink-900">
@@ -47,21 +40,14 @@ export function DiagnosticPreview() {
               </span>
             </div>
           </div>
-
-          <p className="mt-6 text-caption text-ink-500">
-            Exemplo da tela de perguntas. Suas respostas ficam salvas neste dispositivo.
-          </p>
         </Card>
 
-        {/* Frame 2 — the reasoning. Explicitly not a score. */}
+        {/* The reasoning. Explicitly not a score. */}
         <Card className="flex flex-col">
           <h3 className="text-title-sm">O que encontramos</h3>
-          <p className="mt-1.5 text-body-sm text-ink-600">
-            Com base nas informações fornecidas por você.
-          </p>
 
-          <ul className="mt-5 flex flex-1 flex-col gap-3.5">
-            {sampleFindings.map((finding) => (
+          <ul className="mt-5 flex flex-1 flex-col gap-4">
+            {preview.map((finding) => (
               <li key={finding.text} className="flex items-start gap-2.5">
                 <span
                   className={
@@ -71,23 +57,16 @@ export function DiagnosticPreview() {
                   }
                 >
                   {finding.kind === 'confirmed' ? <CheckCircleIcon /> : <AlertTriangleIcon />}
+                </span>
+                <span className="text-body leading-relaxed text-ink-800">
                   <span className="sr-only">
                     {finding.kind === 'confirmed' ? 'Confirmado: ' : 'Pendente: '}
                   </span>
+                  {finding.text}
                 </span>
-                <span className="text-body leading-relaxed text-ink-800">{finding.text}</span>
               </li>
             ))}
           </ul>
-
-          <div className="mt-6 rounded-xl border border-sand-200 bg-sand-100/70 p-4">
-            <p className="text-body-sm font-semibold text-ink-900">O que isso significa</p>
-            <p className="mt-1.5 text-body-sm leading-relaxed text-ink-600">
-              Sua situação tem pontos em comum com os critérios de alternativas que envolvem
-              alongamento de prazo. Isso não garante aprovação — é o ponto de partida da
-              conversa com a instituição.
-            </p>
-          </div>
         </Card>
       </div>
 
