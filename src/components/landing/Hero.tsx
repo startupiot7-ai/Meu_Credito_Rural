@@ -1,25 +1,20 @@
 import { HeroScene } from '@/components/brand/HeroScene';
-import { ButtonLink, ArrowRightIcon, ShieldIcon } from '@/components/ui';
+import { ButtonLink, ArrowRightIcon } from '@/components/ui';
 
 /**
  * Hero — the five-second test.
  *
- * Everything above the fold answers one question: "posso entender minha dívida
- * aqui?". The headline promises visibility, not a result; the support line says
- * what the product actually does; the note under the CTA sets the expectation
- * before the click, so nobody starts the diagnostic hoping for a guarantee.
+ * Simplification pass: the "Orientação independente sobre crédito rural" badge
+ * came out. It was an abstraction sitting above the one sentence that already
+ * says the same thing concretely, and it pushed the headline down the screen.
+ * What is left is the promise, what we do, and the way in.
  */
 export function Hero() {
   return (
     <section aria-labelledby="hero-titulo" className="relative overflow-hidden">
-      <div className="container-page pb-12 pt-10 lg:pb-20 lg:pt-16">
+      <div className="container-page pb-12 pt-12 lg:pb-20 lg:pt-20">
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           <div className="max-w-prose">
-            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-canopy-600/20 bg-canopy-50 px-3.5 py-1.5 text-caption font-medium text-canopy-700">
-              <ShieldIcon className="text-body" />
-              Orientação independente sobre crédito rural
-            </p>
-
             <h1
               id="hero-titulo"
               className="text-display leading-[1.08] sm:text-display-lg lg:text-display-xl"
@@ -54,11 +49,10 @@ export function Hero() {
           </div>
 
           {/*
-           * The scene sits second in the DOM so a screen reader and a slow
-           * connection both reach the headline first. It is decorative: the
-           * message is already in the text beside it.
+           * Second in the DOM so a screen reader and a slow connection both
+           * reach the headline first. Decorative — the message is in the text.
            */}
-          <div className="relative -mx-gutter-mobile overflow-hidden rounded-none border-y border-sand-200 md:mx-0 md:rounded-3xl md:border">
+          <div className="relative -mx-gutter-mobile overflow-hidden border-y border-sand-200 md:mx-0 md:rounded-3xl md:border">
             <HeroScene className="aspect-[4/3] w-full md:aspect-[5/4]" />
           </div>
         </div>

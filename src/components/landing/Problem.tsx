@@ -1,31 +1,19 @@
-import { Card } from '@/components/ui';
 import { Section } from './Section';
 
 /**
- * O problema — starts where the producer is, not with legislation.
+ * O problema — three sentences producers have said out loud.
  *
- * Three sentences they have said out loud themselves. Naming the difficulty
- * accurately is what earns the right to offer help; it is not an attempt to
- * make anyone feel worse about their situation, and none of the three is
- * phrased as a consequence or a threat.
+ * Simplification pass: each quote used to carry an explanatory paragraph
+ * underneath, and the section closed with another one. Both were the abstract
+ * restatement of something the quote already said concretely — which is
+ * exactly the move this pass exists to undo. The quotes stand alone now, and
+ * the cards became plain text so nothing competes with them.
  */
 
-const pains = [
-  {
-    quote: '"Eu sei que devo, mas não sei exatamente quanto nem para quando."',
-    explanation:
-      'Contratos de safras diferentes, em instituições diferentes, cada um com uma regra. O valor total quase nunca está em um lugar só.',
-  },
-  {
-    quote: '"Me falaram que existe uma alternativa, mas não sei se serve para mim."',
-    explanation:
-      'As linhas e os programas têm critérios específicos. Sem saber quais são, fica difícil avaliar se o seu caso se encaixa.',
-  },
-  {
-    quote: '"Quando eu pergunto, a resposta vem em uma linguagem que eu não uso."',
-    explanation:
-      'Sigla, cláusula, taxa. A informação existe, mas chega em um formato que não ajuda a decidir nada.',
-  },
+const quotes = [
+  '"Eu sei que devo, mas não sei exatamente quanto nem para quando."',
+  '"Me falaram que existe uma alternativa, mas não sei se serve para mim."',
+  '"Quando eu pergunto, a resposta vem numa linguagem que eu não uso."',
 ];
 
 export function Problem() {
@@ -33,27 +21,19 @@ export function Problem() {
     <Section
       id="o-problema"
       eyebrow="O problema"
-      title="A dificuldade raramente é a dívida em si. É a neblina em volta dela."
-      description="Antes de decidir qualquer coisa, o produtor precisa enxergar onde está. E é exatamente aí que a informação costuma faltar."
+      title="A dificuldade raramente é a dívida. É a neblina em volta dela."
       tone="sand"
     >
-      <ul className="grid gap-4 md:grid-cols-3">
-        {pains.map((pain) => (
-          <li key={pain.quote}>
-            <Card className="h-full">
-              <p className="font-display text-body-lg font-semibold leading-snug text-canopy-800">
-                {pain.quote}
-              </p>
-              <p className="mt-3 text-body-sm leading-relaxed text-ink-600">{pain.explanation}</p>
-            </Card>
+      <ul className="flex flex-col gap-6 md:flex-row md:gap-8">
+        {quotes.map((quote) => (
+          <li
+            key={quote}
+            className="border-l-2 border-beam-300 pl-5 font-display text-body-lg font-semibold leading-snug text-canopy-800 md:flex-1 md:text-title-sm"
+          >
+            {quote}
           </li>
         ))}
       </ul>
-
-      <p className="mt-8 max-w-prose text-body-lg leading-relaxed text-ink-700">
-        Nenhuma dessas perguntas exige um contador para ser respondida. Exige que a informação
-        seja organizada e traduzida — e é isso que fazemos aqui.
-      </p>
     </Section>
   );
 }

@@ -3,62 +3,35 @@ import { Section } from './Section';
 /**
  * Como funciona — five steps, lit one after the other.
  *
- * The beam runs down the list: each step carries a little more light than the
- * one before it, which is the lighthouse metaphor doing actual work — the path
- * becomes visible a stretch at a time, not all at once. The journey itself is
- * Entender → Diagnosticar → Medir → Comparar → Agir.
+ * Simplification pass: every step used to carry three layers — a stage label
+ * (ENTENDER, DIAGNOSTICAR…), a title, and a three-line description. The stage
+ * label repeated what the title already said, and the description repeated it
+ * again at length. One title plus one short line each is what survived, so the
+ * whole path can be taken in at a glance instead of read.
+ *
+ * The beam still travels down the list: each marker carries slightly more
+ * light than the one above it.
  */
 
 const steps = [
-  {
-    title: 'Conte sua situação',
-    description:
-      'Perguntas simples, uma de cada vez: o que você planta, quanto espera colher e quanto deve hoje.',
-    stage: 'Entender',
-  },
-  {
-    title: 'Entenda seu diagnóstico',
-    description:
-      'Mostramos o que encontramos nas suas respostas e o que isso significa, em português claro.',
-    stage: 'Diagnosticar',
-  },
-  {
-    title: 'Veja o peso da dívida',
-    description:
-      'Quanto da receita projetada da safra já está comprometida — e o que essa porcentagem quer dizer na prática.',
-    stage: 'Medir',
-  },
-  {
-    title: 'Compare alternativas',
-    description:
-      'Prazo, parcela por ano e carência lado a lado, para você ver o que muda em cada caminho possível.',
-    stage: 'Comparar',
-  },
-  {
-    title: 'Saiba qual pode ser o próximo passo',
-    description:
-      'Uma ação clara para seguir, com os documentos certos em mãos. A decisão continua sendo sua.',
-    stage: 'Agir',
-  },
+  { title: 'Conte sua situação', line: 'O que você planta, quanto espera colher, quanto deve.' },
+  { title: 'Entenda seu diagnóstico', line: 'O que encontramos nas suas respostas, em português claro.' },
+  { title: 'Veja o peso da dívida', line: 'Quanto da safra já está comprometido.' },
+  { title: 'Compare alternativas', line: 'O que muda em cada caminho possível.' },
+  { title: 'Saiba qual pode ser o próximo passo', line: 'Uma ação clara. A decisão continua sendo sua.' },
 ];
 
 export function HowItWorks() {
   return (
-    <Section
-      id="como-funciona"
-      eyebrow="Como funciona"
-      title="Cinco etapas, do escuro até o próximo passo"
-      description="Você não precisa ter tudo organizado para começar. Cada etapa acrescenta um pouco de clareza à anterior."
-    >
-      <ol className="relative flex flex-col gap-0">
+    <Section id="como-funciona" eyebrow="Como funciona" title="Do escuro até o próximo passo">
+      <ol className="flex flex-col">
         {steps.map((step, index) => {
-          // Progressive illumination: opacity of the marker's glow rises with
-          // the index, so the list reads as a beam travelling down the path.
+          // Progressive illumination: the glow rises with the index, so the
+          // list reads as a beam travelling down the path.
           const light = 0.1 + index * 0.13;
 
           return (
-            <li key={step.title} className="relative flex gap-4 pb-8 last:pb-0 sm:gap-6">
-              {/* The path itself, connecting the points. */}
+            <li key={step.title} className="relative flex gap-4 pb-7 last:pb-0 sm:gap-5">
               {index < steps.length - 1 ? (
                 <span
                   aria-hidden
@@ -74,17 +47,12 @@ export function HowItWorks() {
                 {index + 1}
               </span>
 
-              <div className="min-w-0 flex-1 pt-1.5">
-                <p className="text-caption font-semibold uppercase tracking-[0.12em] text-canopy-600">
-                  {step.stage}
-                </p>
-                <h3 className="mt-1 text-title-sm">
+              <div className="min-w-0 flex-1 pt-2">
+                <h3 className="text-body-lg font-semibold text-ink-900">
                   <span className="sr-only">Etapa {index + 1}: </span>
                   {step.title}
                 </h3>
-                <p className="mt-1.5 max-w-prose text-body leading-relaxed text-ink-600">
-                  {step.description}
-                </p>
+                <p className="mt-1 max-w-prose text-body text-ink-600">{step.line}</p>
               </div>
             </li>
           );
