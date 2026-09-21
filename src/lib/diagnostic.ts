@@ -111,21 +111,9 @@ const cropLabels: Record<CropType, string> = {
 };
 
 export const cropOptions: { value: CropType; label: string; description: string }[] = [
-  {
-    value: 'arabica',
-    label: 'Café arábica',
-    description: 'A maior parte da sua produção é arábica.',
-  },
-  {
-    value: 'conilon',
-    label: 'Café conilon (robusta)',
-    description: 'A maior parte da sua produção é conilon.',
-  },
-  {
-    value: 'cafe-e-outras',
-    label: 'Café e outra cultura',
-    description: 'Você produz café junto com outra cultura na mesma propriedade.',
-  },
+  { value: 'arabica', label: 'Café arábica', description: '' },
+  { value: 'conilon', label: 'Café conilon (robusta)', description: '' },
+  { value: 'cafe-e-outras', label: 'Café e outra cultura', description: '' },
   {
     value: 'outra',
     label: 'Outra cultura',
@@ -137,47 +125,31 @@ export const debtKindOptions: { value: DebtKind; label: string; description: str
   {
     value: 'custeio',
     label: 'Custeio da safra',
-    description: 'Recursos tomados para bancar a safra: insumos, mão de obra, tratos.',
+    description: 'Para bancar a safra: insumos, mão de obra, tratos.',
   },
   {
     value: 'investimento',
     label: 'Investimento',
-    description: 'Recursos para máquinas, benfeitorias, irrigação ou formação de lavoura.',
+    description: 'Máquinas, benfeitorias, irrigação, formação de lavoura.',
   },
   {
     value: 'cpr',
     label: 'CPR',
-    description:
-      'Cédula de Produto Rural: você recebeu recursos e se comprometeu com produto ou pagamento na colheita.',
+    // The one option whose label is an acronym: the gloss stays, inline.
+    description: 'Cédula de Produto Rural — você recebeu recursos e paga na colheita.',
   },
-  {
-    value: 'varias',
-    label: 'Mais de um tipo',
-    description: 'Você tem operações diferentes, possivelmente em instituições diferentes.',
-  },
+  { value: 'varias', label: 'Mais de um tipo', description: '' },
   {
     value: 'nao-sei',
     label: 'Não sei dizer',
-    description: 'Tudo bem. Isso pode ser confirmado depois, com o contrato em mãos.',
+    description: 'Tudo bem. Dá para confirmar depois.',
   },
 ];
 
 export const lossOptions: { value: LossAnswer; label: string; description: string }[] = [
-  {
-    value: 'sim',
-    label: 'Sim, tive perdas',
-    description: 'Seca, geada, chuva fora de hora, praga ou qualquer evento que reduziu a colheita.',
-  },
-  {
-    value: 'nao',
-    label: 'Não tive perdas relevantes',
-    description: 'A produção veio dentro do que você esperava.',
-  },
-  {
-    value: 'nao-sei',
-    label: 'Não sei dizer',
-    description: 'Sem problema. Seguimos com o que você souber informar.',
-  },
+  { value: 'sim', label: 'Sim, tive perdas', description: '' },
+  { value: 'nao', label: 'Não tive perdas relevantes', description: '' },
+  { value: 'nao-sei', label: 'Não sei dizer', description: '' },
 ];
 
 /**
