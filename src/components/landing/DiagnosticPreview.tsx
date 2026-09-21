@@ -5,6 +5,7 @@ import {
   CheckCircleIcon,
   StepProgress,
 } from '@/components/ui';
+import { TOTAL_STEPS, stepLabels } from '@/lib/diagnostic';
 import { sampleFindings } from '@/lib/mock-data';
 import { Section } from './Section';
 
@@ -28,11 +29,8 @@ export function DiagnosticPreview() {
       <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
         {/* Frame 1 — the question, as the producer will actually see it. */}
         <Card className="flex flex-col">
-          <StepProgress
-            current={2}
-            total={6}
-            labels={['Sua lavoura', 'Sua produção', 'Sua dívida', 'Documentos', 'Histórico', 'Revisão']}
-          />
+          {/* Same labels the real flow uses, so the preview never drifts from it. */}
+          <StepProgress current={2} total={TOTAL_STEPS} labels={[...stepLabels]} />
 
           <div className="mt-6 flex-1">
             <h3 className="text-title-sm">Quantas sacas você espera colher nesta safra?</h3>
