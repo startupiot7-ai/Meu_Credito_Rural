@@ -68,26 +68,26 @@ export function useSavedAnswers() {
     }
   }, []);
 
+  /*
+   * Both writers compute the next value up front rather than persisting from
+   * inside a state updater: updaters must stay pure, and React double-invokes
+   * them in development, which would write to storage twice.
+   */
   const setAnswers = useCallback(
     (update: Partial<Answers>) => {
-      setAnswersState((current) => {
-        const next = { ...current, ...update };
-        persist(next, step);
-        return next;
-      });
+      const next = { ...answers, ...update };
+      setAnswersState(next);
+      persist(next, step);
     },
-    [persist, step],
+    [answers, persist, step],
   );
 
   const setStep = useCallback(
     (next: number) => {
       setStepState(next);
-      setAnswersState((current) => {
-        persist(current, next);
-        return current;
-      });
+      persist(answers, next);
     },
-    [persist],
+    [answers, persist],
   );
 
   const clear = useCallback(() => {
