@@ -31,12 +31,7 @@ export function FinalCta() {
           </h2>
 
           <div className="mt-8 flex justify-center">
-            <ButtonLink
-              href="/diagnostico"
-              size="lg"
-              iconRight={<ArrowRightIcon />}
-              className="bg-beam-400 text-ink-900 hover:bg-beam-300 active:bg-beam-500"
-            >
+            <ButtonLink href="/diagnostico" size="lg" variant="beam" iconRight={<ArrowRightIcon />}>
               Começar meu diagnóstico
             </ButtonLink>
           </div>

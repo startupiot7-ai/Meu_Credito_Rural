@@ -34,7 +34,7 @@ export function ActionPlan() {
                       ? 'grid h-8 w-8 shrink-0 place-items-center rounded-full bg-healthy-surface text-healthy-fg'
                       : isCurrent
                         ? 'grid h-8 w-8 shrink-0 place-items-center rounded-full bg-beam-400 font-display text-body font-bold text-ink-900'
-                        : 'grid h-8 w-8 shrink-0 place-items-center rounded-full bg-sand-200 font-display text-body font-bold text-ink-400'
+                        : 'grid h-8 w-8 shrink-0 place-items-center rounded-full bg-sand-200 font-display text-body font-bold text-ink-600'
                   }
                 >
                   {step.state === 'done' ? <CheckIcon strokeWidth={3} /> : index + 1}

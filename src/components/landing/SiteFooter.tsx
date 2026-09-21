@@ -34,7 +34,7 @@ export function SiteFooter() {
               </li>
               <li>
                 <a href="#simulador" className="rounded-md text-body-sm text-ink-600 hover:text-ink-900">
-                  Simulador de impacto da dívida
+                  Simulador
                 </a>
               </li>
               <li>
