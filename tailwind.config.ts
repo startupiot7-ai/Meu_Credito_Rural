@@ -38,7 +38,11 @@ const config: Config = {
         risk: status.risk,
         info: status.info,
       },
-      fontFamily,
+      // Spread: Tailwind's types want mutable arrays, the tokens are `as const`.
+      fontFamily: {
+        display: [...fontFamily.display],
+        sans: [...fontFamily.sans],
+      },
       fontSize: fontSize as unknown as Record<string, [string, Record<string, string>]>,
       fontWeight,
       spacing,

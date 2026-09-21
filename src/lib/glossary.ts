@@ -82,7 +82,9 @@ export type GlossaryKey = keyof typeof glossary;
 
 /** Full sentence used in tooltips and by screen readers: "CPR — Cédula de…: …". */
 export function glossaryText(key: GlossaryKey): string {
-  const entry = glossary[key];
+  // Annotated so the literal type from `as const` widens and `expansion`,
+  // which only some entries have, stays readable.
+  const entry: GlossaryEntry = glossary[key];
   const head = entry.expansion ? `${entry.term} — ${entry.expansion}` : entry.term;
   return `${head}: ${entry.definition}`;
 }
