@@ -10,7 +10,8 @@ import {
   grupoTemTamanhoSeguro,
   protegerSegmentosPequenos,
 } from './privacidade.ts';
-import { somarProdutoresPorFaixa } from './carteira.ts';
+import { somarProdutoresPorSituacao, somarQuantidades } from './carteira.ts';
+import { ROTULOS_DO_RESUMO } from '../consentimento/resumo-compartilhado.ts';
 import { carteiraDeDemonstracao } from './dados-simulados.ts';
 
 function segmento(nome, produtoresComDiagnostico) {
@@ -83,35 +84,40 @@ describe('proteção de segmentos pequenos', () => {
 
 describe('dados simulados da cooperativa de demonstração', () => {
   const carteira = carteiraDeDemonstracao;
+  const total = carteira.produtoresComDiagnostico;
 
-  test('as faixas de risco somam o total de produtores com diagnóstico', () => {
-    assert.equal(somarProdutoresPorFaixa(carteira.produtoresPorFaixa), carteira.produtoresComDiagnostico);
+  test('as situações da safra somam o total de produtores com diagnóstico', () => {
+    assert.equal(somarProdutoresPorSituacao(carteira.produtoresPorSituacao), total);
   });
 
-  test('a leitura da MP soma o total de produtores com diagnóstico', () => {
-    const { aparentementeAtendemOsCriterios, precisamDeMaisInformacoes, aparentementeNaoAtendem } =
-      carteira.leituraDaMp;
-    assert.equal(
-      aparentementeAtendemOsCriterios + precisamDeMaisInformacoes + aparentementeNaoAtendem,
-      carteira.produtoresComDiagnostico,
-    );
+  test('as faixas de margem, a exposição climática e os perfis somam o mesmo total', () => {
+    assert.equal(somarQuantidades(carteira.produtoresPorMargem), total);
+    assert.equal(somarQuantidades(carteira.exposicaoClimatica), total);
+    assert.equal(somarQuantidades(carteira.porPerfil), total);
+  });
+
+  test('quem está sem margem é exatamente quem não cobre no esperado', () => {
+    assert.equal(carteira.produtoresPorMargem['sem-margem'], carteira.produtoresPorSituacao['nao-cobre']);
+  });
+
+  test('sinais de dificuldade só vêm de quem já tem custeio', () => {
+    assert.ok(carteira.comSinaisDeDificuldade <= carteira.porPerfil.jaTemCusteio);
   });
 
   for (const recorte of carteira.recortes) {
     test(`o recorte "${recorte.rotulo}" soma os mesmos totais da carteira`, () => {
-      const soma = (campo) => recorte.segmentos.reduce((total, item) => total + item[campo], 0);
-      assert.equal(soma('produtoresComDiagnostico'), carteira.produtoresComDiagnostico);
-      assert.equal(soma('receitaProjetada'), carteira.receitaProjetadaTotal);
-      assert.equal(soma('dividaInformada'), carteira.dividaInformadaTotal);
-      for (const faixa of ['saudavel', 'atencao', 'risco']) {
-        const somaDaFaixa = recorte.segmentos.reduce(
-          (total, item) => total + item.produtoresPorFaixa[faixa],
+      const soma = (campo) => recorte.segmentos.reduce((acumulado, item) => acumulado + item[campo], 0);
+      assert.equal(soma('produtoresComDiagnostico'), total);
+      assert.equal(soma('comCompromissosForaDoBanco'), carteira.comCompromissosForaDoBanco);
+      for (const situacao of ['cobre-com-folga', 'cobre-apertado', 'nao-cobre']) {
+        const somaDaSituacao = recorte.segmentos.reduce(
+          (acumulado, item) => acumulado + item.produtoresPorSituacao[situacao],
           0,
         );
-        assert.equal(somaDaFaixa, carteira.produtoresPorFaixa[faixa], `faixa ${faixa}`);
+        assert.equal(somaDaSituacao, carteira.produtoresPorSituacao[situacao], `situação ${situacao}`);
       }
       for (const item of recorte.segmentos) {
-        assert.equal(somarProdutoresPorFaixa(item.produtoresPorFaixa), item.produtoresComDiagnostico, item.nome);
+        assert.equal(somarProdutoresPorSituacao(item.produtoresPorSituacao), item.produtoresComDiagnostico, item.nome);
       }
     });
   }
@@ -130,9 +136,22 @@ describe('dados simulados da cooperativa de demonstração', () => {
     assert.deepEqual(nomesOcultos(resultado), ['Café e outra cultura', 'Outras culturas']);
   });
 
-  test('a etapa da originação soma quem autorizou esta instituição', () => {
-    const { quantidadePorEtapa, autorizaramEstaInstituicao } = carteira.originacao;
-    const soma = Object.values(quantidadePorEtapa).reduce((total, valor) => total + valor, 0);
-    assert.equal(soma, autorizaramEstaInstituicao);
+  test('cada pedido de conversa traz só as três linhas que o produtor viu', () => {
+    const { pedidos } = carteira.pedidosDeConversa;
+    assert.ok(pedidos.length <= carteira.pedidosDeConversa.autorizaramEstaInstituicao);
+    for (const pedido of pedidos) {
+      assert.deepEqual(
+        pedido.resumo.map((linha) => linha.rotulo),
+        [...ROTULOS_DO_RESUMO],
+        pedido.referencia,
+      );
+      assert.doesNotMatch(pedido.resumo.map((linha) => linha.valor).join(' '), /R\$/);
+    }
+  });
+
+  test('não existe etapa de venda nos pedidos de conversa', () => {
+    for (const pedido of carteira.pedidosDeConversa.pedidos) {
+      assert.deepEqual(Object.keys(pedido).sort(), ['autorizadoEm', 'referencia', 'resumo', 'situacao']);
+    }
   });
 });

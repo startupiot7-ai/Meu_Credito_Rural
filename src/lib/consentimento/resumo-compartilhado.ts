@@ -16,18 +16,25 @@ import type { ResultadoDoDiagnostico } from '../diagnostico/tipos.ts';
 
 export type LinhaCompartilhada = { rotulo: string; valor: string };
 
-function descreverMargem(resultado: ResultadoDoDiagnostico): string {
-  const { margem } = resultado;
-  if (!margem.calculavel) return 'Não calculada';
-  const percentual = Math.round(margem.quebraDeProducaoSuportada.fracao * 100);
+export const ROTULOS_DO_RESUMO = ['Situação da safra', 'Margem de segurança', 'O que mais pesou'] as const;
+
+/** "A colheita pode ser até 28% menor antes de faltar dinheiro". */
+export function descreverMargemEmPercentual(percentual: number): string {
   if (percentual === 0) return 'Sem margem: já falta no cenário esperado';
   return `A colheita pode ser até ${percentual}% menor antes de faltar dinheiro`;
 }
 
+function descreverMargem(resultado: ResultadoDoDiagnostico): string {
+  const { margem } = resultado;
+  if (!margem.calculavel) return 'Não calculada';
+  return descreverMargemEmPercentual(Math.round(margem.quebraDeProducaoSuportada.fracao * 100));
+}
+
 export function montarResumoCompartilhado(resultado: ResultadoDoDiagnostico): LinhaCompartilhada[] {
+  const [situacao, margem, fatorPrincipal] = ROTULOS_DO_RESUMO;
   return [
-    { rotulo: 'Situação da safra', valor: resultado.rotuloDaSituacao },
-    { rotulo: 'Margem de segurança', valor: descreverMargem(resultado) },
-    { rotulo: 'O que mais pesou', valor: resultado.fatores[0]?.titulo ?? 'Nada chamou atenção' },
+    { rotulo: situacao, valor: resultado.rotuloDaSituacao },
+    { rotulo: margem, valor: descreverMargem(resultado) },
+    { rotulo: fatorPrincipal, valor: resultado.fatores[0]?.titulo ?? 'Nada chamou atenção' },
   ];
 }

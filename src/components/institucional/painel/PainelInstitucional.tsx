@@ -2,24 +2,26 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { AlertCircleIcon, ChartIcon, CompassIcon, ScaleIcon } from '@/components/ui';
+import { AlertCircleIcon, AlertTriangleIcon, ChartIcon, CompassIcon } from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { formatNumber, formatPercent } from '@/lib/format';
 import { calcularPercentual } from '@/lib/institucional/carteira';
 import { carteiraDeDemonstracao, carteiraSemDiagnosticos } from '@/lib/institucional/dados-simulados';
-import { formatarDataComHora, formatarMoedaAbreviada } from '@/lib/institucional/formatacao';
+import { formatarDataComHora } from '@/lib/institucional/formatacao';
 import { grupoTemTamanhoSeguro } from '@/lib/institucional/privacidade';
 import type { CarteiraDaInstituicao } from '@/lib/institucional/tipos';
+import { descreverHipotese, hipotesesDosCenarios } from '@/lib/diagnostico/cenarios';
 import { BlocoDoPainel } from './BlocoDoPainel';
 import { CabecalhoDoPainel } from './CabecalhoDoPainel';
 import { CartaoDeIndicador } from './CartaoDeIndicador';
-import { DistribuicaoDeRisco } from './DistribuicaoDeRisco';
-import { LeituraDaMp } from './LeituraDaMp';
+import { DistribuicaoPorSituacao } from './DistribuicaoPorSituacao';
+import { ExposicoesDaCarteira } from './ExposicoesDaCarteira';
 import { LimitesDoPainel } from './LimitesDoPainel';
-import { OriginacaoQualificada } from './OriginacaoQualificada';
+import { MargemDaCarteira } from './MargemDaCarteira';
+import { NecessidadeDeRenegociacao } from './NecessidadeDeRenegociacao';
 import { PainelCarregando } from './PainelCarregando';
 import { PainelVazio } from './PainelVazio';
-import { ReceitaComprometida } from './ReceitaComprometida';
+import { PedidosDeConversa } from './PedidosDeConversa';
 import { RecortesDaCarteira } from './RecortesDaCarteira';
 
 /**
@@ -28,6 +30,9 @@ import { RecortesDaCarteira } from './RecortesDaCarteira';
  * possa ser revisado e fotografado.
  */
 export type EstadoDoPainel = 'com-dados' | 'vazio' | 'carregando';
+
+/** A hipótese do cenário pior vem das premissas do motor, a mesma que o produtor vê. */
+const hipoteseDoCenarioPior = descreverHipotese(hipotesesDosCenarios().desfavoravel).toLowerCase();
 
 const carteiraPorEstado: Record<EstadoDoPainel, CarteiraDaInstituicao> = {
   'com-dados': carteiraDeDemonstracao,
@@ -70,25 +75,18 @@ export function PainelInstitucional({ estado }: { estado: EstadoDoPainel }) {
 }
 
 function PainelComDados({ carteira }: { carteira: CarteiraDaInstituicao }) {
-  const percentualComDiagnostico = calcularPercentual(
-    carteira.produtoresComDiagnostico,
-    carteira.produtoresAcompanhados,
-  );
-  const percentualEmRisco = calcularPercentual(
-    carteira.produtoresPorFaixa.risco,
-    carteira.produtoresComDiagnostico,
-  );
-  const percentualQueAtendeMp = calcularPercentual(
-    carteira.leituraDaMp.aparentementeAtendemOsCriterios,
-    carteira.produtoresComDiagnostico,
-  );
+  const total = carteira.produtoresComDiagnostico;
+  const percentual = (parte: number, de: number) => formatPercent(Math.round(calcularPercentual(parte, de)));
+  const naoCobrem = carteira.produtoresPorSituacao['nao-cobre'];
+  const apertados = carteira.produtoresPorSituacao['cobre-apertado'];
 
   return (
     <div className="flex animate-fade-up flex-col gap-6">
       <div>
-        <h1 className="text-title-lg lg:text-display">Saúde financeira da carteira</h1>
+        <h1 className="text-title-lg lg:text-display">Risco da safra na carteira</h1>
         <p className="mt-2 text-body-sm text-ink-600">
-          Atualizado em {formatarDataComHora(carteira.atualizadoEm)} · Números agregados e anonimizados
+          Atualizado em {formatarDataComHora(carteira.atualizadoEm)} · Números agregados e anonimizados de quem
+          autorizou o uso para estatísticas
         </p>
       </div>
 
@@ -101,48 +99,48 @@ function PainelComDados({ carteira }: { carteira: CarteiraDaInstituicao }) {
         />
         <CartaoDeIndicador
           icone={<ChartIcon aria-hidden />}
-          rotulo="Diagnósticos concluídos"
-          valor={formatNumber(carteira.produtoresComDiagnostico)}
-          contexto={`${formatPercent(Math.round(percentualComDiagnostico))} dos acompanhados`}
+          rotulo="Diagnósticos nas estatísticas"
+          valor={formatNumber(total)}
+          contexto={`${percentual(total, carteira.produtoresAcompanhados)} dos acompanhados`}
         />
         <CartaoDeIndicador
           tom="risco"
           icone={<AlertCircleIcon aria-hidden />}
-          rotulo="Em risco elevado"
-          valor={formatNumber(carteira.produtoresPorFaixa.risco)}
-          contexto={`${formatPercent(Math.round(percentualEmRisco))} dos avaliados · ${formatarMoedaAbreviada(
-            carteira.dividaNaFaixaDeRisco,
-          )} em dívidas`}
+          rotulo="Não cobrem no cenário esperado"
+          valor={formatNumber(naoCobrem)}
+          contexto={`${percentual(naoCobrem, total)} dos avaliados: já falta dinheiro se tudo sair como esperam`}
         />
         <CartaoDeIndicador
-          icone={<ScaleIcon aria-hidden />}
-          rotulo="Enquadramento indicativo na MP"
-          valor={formatNumber(carteira.leituraDaMp.aparentementeAtendemOsCriterios)}
-          contexto={`${formatPercent(Math.round(percentualQueAtendeMp))} dos avaliados, com base nas respostas`}
+          icone={<AlertTriangleIcon aria-hidden />}
+          rotulo="Cobrem, mas apertados"
+          valor={formatNumber(apertados)}
+          contexto={`${percentual(apertados, total)} dos avaliados: faltaria dinheiro numa safra pior`}
         />
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <BlocoDoPainel
           identificador="distribuicao"
-          titulo="Distribuição por faixa de risco"
-          descricao="Comprometimento da receita projetada com dívida, entre quem concluiu o diagnóstico."
+          titulo="Situação da safra"
+          descricao="Se a safra paga custos e parcelas como o produtor espera, e num cenário pior."
           className="lg:col-span-7"
         >
-          <DistribuicaoDeRisco produtoresPorFaixa={carteira.produtoresPorFaixa} />
+          <DistribuicaoPorSituacao produtoresPorSituacao={carteira.produtoresPorSituacao} />
           <p className="mt-6 border-t border-sand-200 pt-4 text-caption leading-relaxed text-ink-600">
-            Mesma leitura que o produtor recebe: saudável abaixo de 30% da receita comprometida,
-            atenção entre 30% e 50%, risco elevado a partir de 50%.
+            Mesma leitura que o produtor recebe. &quot;Pior&quot; é uma hipótese de simulação, ainda a validar:{' '}
+            {hipoteseDoCenarioPior}.
           </p>
         </BlocoDoPainel>
-        <ReceitaComprometida carteira={carteira} className="lg:col-span-5" />
+        <MargemDaCarteira carteira={carteira} className="lg:col-span-5" />
       </div>
+
+      <ExposicoesDaCarteira carteira={carteira} />
 
       <RecortesDaCarteira recortes={carteira.recortes} />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <LeituraDaMp carteira={carteira} className="lg:col-span-5" />
-        <OriginacaoQualificada carteira={carteira} className="lg:col-span-7" />
+        <NecessidadeDeRenegociacao carteira={carteira} className="lg:col-span-5" />
+        <PedidosDeConversa carteira={carteira} className="lg:col-span-7" />
       </div>
 
       <LimitesDoPainel />

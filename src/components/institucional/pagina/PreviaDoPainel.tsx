@@ -1,11 +1,10 @@
-import { AlertCircleIcon, ArrowRightIcon, ButtonLink, ChartIcon, ScaleIcon } from '@/components/ui';
+import { AlertCircleIcon, AlertTriangleIcon, ArrowRightIcon, ButtonLink, ChartIcon } from '@/components/ui';
 import { Section } from '@/components/landing/Section';
 import { CartaoDeIndicador } from '@/components/institucional/painel/CartaoDeIndicador';
 import { RecortesDaCarteira } from '@/components/institucional/painel/RecortesDaCarteira';
 import { formatNumber, formatPercent } from '@/lib/format';
 import { calcularPercentual } from '@/lib/institucional/carteira';
 import { carteiraDeDemonstracao } from '@/lib/institucional/dados-simulados';
-import { formatarMoedaAbreviada } from '@/lib/institucional/formatacao';
 
 /**
  * Prévia do painel dentro da página de vendas.
@@ -21,8 +20,8 @@ export function PreviaDoPainel() {
     <Section
       id="o-painel"
       eyebrow="O que a instituição recebe"
-      title="Um painel que mostra, em segundos, onde está o risco da carteira"
-      description="Quantos associados estão em cada faixa, quanto da receita já está comprometido e em quais núcleos o problema se concentra."
+      title="Um painel que mostra, em segundos, onde a safra não sustenta o crédito"
+      description="Quantos associados cobrem a safra com folga, quantos ficam apertados num ano pior e em quais núcleos isso se concentra."
       tone="sand"
     >
       <div className="overflow-hidden rounded-3xl border border-sand-300 bg-sand-50 shadow-lg">
@@ -48,15 +47,15 @@ export function PreviaDoPainel() {
             <CartaoDeIndicador
               tom="risco"
               icone={<AlertCircleIcon aria-hidden />}
-              rotulo="Em risco elevado"
-              valor={formatNumber(carteira.produtoresPorFaixa.risco)}
-              contexto={`${formatarMoedaAbreviada(carteira.dividaNaFaixaDeRisco)} em dívidas nessa faixa`}
+              rotulo="Não cobrem no cenário esperado"
+              valor={formatNumber(carteira.produtoresPorSituacao['nao-cobre'])}
+              contexto="Já falta dinheiro se tudo sair como esperam"
             />
             <CartaoDeIndicador
-              icone={<ScaleIcon aria-hidden />}
-              rotulo="Enquadramento indicativo na MP"
-              valor={formatNumber(carteira.leituraDaMp.aparentementeAtendemOsCriterios)}
-              contexto="Com base nas respostas fornecidas"
+              icone={<AlertTriangleIcon aria-hidden />}
+              rotulo="Cobrem, mas apertados"
+              valor={formatNumber(carteira.produtoresPorSituacao['cobre-apertado'])}
+              contexto="Faltaria dinheiro numa safra pior"
             />
           </div>
           <RecortesDaCarteira recortes={carteira.recortes} />
@@ -65,8 +64,8 @@ export function PreviaDoPainel() {
 
       <div className="mt-6 flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
         <p className="text-body-sm text-ink-600">
-          O painel completo inclui também a receita comprometida, a leitura da MP 1.376/2026 e a
-          originação qualificada.
+          O painel completo inclui também a margem de segurança, as exposições da carteira, a
+          necessidade potencial de renegociação e os pedidos de conversa.
         </p>
         <ButtonLink href="/painel" variant="secondary" iconRight={<ArrowRightIcon />}>
           Abrir o painel de demonstração

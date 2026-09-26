@@ -6,9 +6,10 @@
  * ou referência de produtor corresponde a uma organização ou pessoa real.
  *
  * A história que os números contam: uma cooperativa de café de porte médio,
- * com a maior parte dos associados em situação saudável, uma parcela relevante
- * em atenção e um grupo menor, porém concentrando muita dívida, na faixa
- * vermelha. Os totais batem entre si em todos os recortes (há teste para isso).
+ * com a maior parte dos associados cobrindo a safra com folga, uma parcela
+ * relevante que só cobre se tudo sair como espera, e um grupo menor que já não
+ * cobre no cenário esperado. Os totais batem entre si em todos os recortes
+ * (há teste para isso).
  *
  * Grupos pequenos foram incluídos de propósito, para exercitar a proteção de
  * privacidade do painel:
@@ -16,11 +17,15 @@
  *  - no recorte por cultura, "Outras culturas" (7), que força a ocultação de
  *    mais um grupo para impedir a descoberta por subtração.
  */
+import { descreverMargemEmPercentual, ROTULOS_DO_RESUMO } from '../consentimento/resumo-compartilhado.ts';
+import { rotuloDaSituacao } from '../diagnostico/situacao.ts';
 import type {
   CarteiraDaInstituicao,
   InstituicaoParticipante,
+  PedidoDeConversa,
   RecorteDaCarteira,
-} from './tipos';
+  SituacaoNoPainel,
+} from './tipos.ts';
 
 const recortePorNucleo: RecorteDaCarteira = {
   identificador: 'nucleo',
@@ -29,44 +34,38 @@ const recortePorNucleo: RecorteDaCarteira = {
     {
       nome: 'Núcleo Norte',
       produtoresComDiagnostico: 268,
-      produtoresPorFaixa: { saudavel: 152, atencao: 80, risco: 36 },
-      receitaProjetada: 138_000_000,
-      dividaInformada: 46_900_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 152, 'cobre-apertado': 80, 'nao-cobre': 36 },
+      comCompromissosForaDoBanco: 112,
     },
     {
       nome: 'Núcleo Sul',
       produtoresComDiagnostico: 231,
-      produtoresPorFaixa: { saudavel: 121, atencao: 72, risco: 38 },
-      receitaProjetada: 117_000_000,
-      dividaInformada: 45_600_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 121, 'cobre-apertado': 72, 'nao-cobre': 38 },
+      comCompromissosForaDoBanco: 98,
     },
     {
       nome: 'Núcleo Leste',
       produtoresComDiagnostico: 187,
-      produtoresPorFaixa: { saudavel: 98, atencao: 59, risco: 30 },
-      receitaProjetada: 94_000_000,
-      dividaInformada: 33_800_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 98, 'cobre-apertado': 59, 'nao-cobre': 30 },
+      comCompromissosForaDoBanco: 80,
     },
     {
       nome: 'Núcleo Oeste',
       produtoresComDiagnostico: 112,
-      produtoresPorFaixa: { saudavel: 60, atencao: 36, risco: 16 },
-      receitaProjetada: 56_000_000,
-      dividaInformada: 19_300_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 60, 'cobre-apertado': 36, 'nao-cobre': 16 },
+      comCompromissosForaDoBanco: 45,
     },
     {
       nome: 'Núcleo Serra',
       produtoresComDiagnostico: 6,
-      produtoresPorFaixa: { saudavel: 3, atencao: 2, risco: 1 },
-      receitaProjetada: 3_100_000,
-      dividaInformada: 1_300_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 3, 'cobre-apertado': 2, 'nao-cobre': 1 },
+      comCompromissosForaDoBanco: 3,
     },
     {
       nome: 'Núcleo Vale',
       produtoresComDiagnostico: 8,
-      produtoresPorFaixa: { saudavel: 4, atencao: 2, risco: 2 },
-      receitaProjetada: 3_900_000,
-      dividaInformada: 1_100_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 4, 'cobre-apertado': 2, 'nao-cobre': 2 },
+      comCompromissosForaDoBanco: 4,
     },
   ],
 };
@@ -78,23 +77,20 @@ const recortePorPorte: RecorteDaCarteira = {
     {
       nome: 'Até 500 sacas',
       produtoresComDiagnostico: 431,
-      produtoresPorFaixa: { saudavel: 214, atencao: 142, risco: 75 },
-      receitaProjetada: 118_000_000,
-      dividaInformada: 49_500_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 214, 'cobre-apertado': 142, 'nao-cobre': 75 },
+      comCompromissosForaDoBanco: 190,
     },
     {
       nome: 'De 500 a 2.000 sacas',
       produtoresComDiagnostico: 318,
-      produtoresPorFaixa: { saudavel: 185, atencao: 91, risco: 42 },
-      receitaProjetada: 196_000_000,
-      dividaInformada: 71_000_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 185, 'cobre-apertado': 91, 'nao-cobre': 42 },
+      comCompromissosForaDoBanco: 128,
     },
     {
       nome: 'Acima de 2.000 sacas',
       produtoresComDiagnostico: 63,
-      produtoresPorFaixa: { saudavel: 39, atencao: 18, risco: 6 },
-      receitaProjetada: 98_000_000,
-      dividaInformada: 27_500_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 39, 'cobre-apertado': 18, 'nao-cobre': 6 },
+      comCompromissosForaDoBanco: 24,
     },
   ],
 };
@@ -106,33 +102,53 @@ const recortePorCultura: RecorteDaCarteira = {
     {
       nome: 'Café arábica',
       produtoresComDiagnostico: 668,
-      produtoresPorFaixa: { saudavel: 362, atencao: 206, risco: 100 },
-      receitaProjetada: 348_000_000,
-      dividaInformada: 125_000_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 362, 'cobre-apertado': 206, 'nao-cobre': 100 },
+      comCompromissosForaDoBanco: 281,
     },
     {
       nome: 'Café conilon',
       produtoresComDiagnostico: 116,
-      produtoresPorFaixa: { saudavel: 60, atencao: 36, risco: 20 },
-      receitaProjetada: 55_500_000,
-      dividaInformada: 20_600_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 60, 'cobre-apertado': 36, 'nao-cobre': 20 },
+      comCompromissosForaDoBanco: 50,
     },
     {
       nome: 'Café e outra cultura',
       produtoresComDiagnostico: 21,
-      produtoresPorFaixa: { saudavel: 12, atencao: 6, risco: 3 },
-      receitaProjetada: 6_600_000,
-      dividaInformada: 1_800_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 12, 'cobre-apertado': 6, 'nao-cobre': 3 },
+      comCompromissosForaDoBanco: 8,
     },
     {
       nome: 'Outras culturas',
       produtoresComDiagnostico: 7,
-      produtoresPorFaixa: { saudavel: 4, atencao: 3, risco: 0 },
-      receitaProjetada: 1_900_000,
-      dividaInformada: 600_000,
+      produtoresPorSituacao: { 'cobre-com-folga': 4, 'cobre-apertado': 3, 'nao-cobre': 0 },
+      comCompromissosForaDoBanco: 3,
     },
   ],
 };
+
+/**
+ * Um pedido de conversa fictício, montado com as mesmas frases do resumo que
+ * o produtor vê na tela de consentimento.
+ */
+function pedidoFicticio(
+  referencia: string,
+  situacao: SituacaoNoPainel,
+  margemEmPercentual: number,
+  fatorPrincipal: string,
+  autorizadoEm: string,
+): PedidoDeConversa {
+  const [rotuloDaSituacaoNoResumo, rotuloDaMargem, rotuloDoFator] = ROTULOS_DO_RESUMO;
+  return {
+    referencia,
+    situacao,
+    resumo: [
+      { rotulo: rotuloDaSituacaoNoResumo, valor: rotuloDaSituacao[situacao] },
+      { rotulo: rotuloDaMargem, valor: descreverMargemEmPercentual(margemEmPercentual) },
+      { rotulo: rotuloDoFator, valor: fatorPrincipal },
+    ],
+    autorizadoEm,
+  };
+}
 
 /** A cooperativa de demonstração, com dados de sobra para o painel completo. */
 export const carteiraDeDemonstracao: CarteiraDaInstituicao = {
@@ -140,36 +156,28 @@ export const carteiraDeDemonstracao: CarteiraDaInstituicao = {
   atualizadoEm: '2026-09-25T18:00:00-03:00',
   produtoresAcompanhados: 1_240,
   produtoresComDiagnostico: 812,
-  produtoresPorFaixa: { saudavel: 438, atencao: 251, risco: 123 },
-  receitaProjetadaTotal: 412_000_000,
-  dividaInformadaTotal: 148_000_000,
-  dividaNaFaixaDeRisco: 61_400_000,
-  leituraDaMp: {
-    aparentementeAtendemOsCriterios: 164,
-    precisamDeMaisInformacoes: 97,
-    aparentementeNaoAtendem: 551,
-  },
+  produtoresPorSituacao: { 'cobre-com-folga': 438, 'cobre-apertado': 251, 'nao-cobre': 123 },
+  produtoresPorMargem: { 'sem-margem': 123, 'ate-10': 97, 'de-10-a-20': 154, 'de-20-a-30': 186, 'acima-de-30': 252 },
+  exposicaoClimatica: { protegidos: 301, protecaoParcial: 208, semProtecao: 257, naoSouberamDizer: 46 },
+  comCompromissosForaDoBanco: 342,
+  comPrecoFechado: 276,
+  porPerfil: { jaTemCusteio: 517, planejandoSafra: 295 },
+  comSinaisDeDificuldade: 88,
   recortes: [recortePorNucleo, recortePorPorte, recortePorCultura],
-  originacao: {
+  pedidosDeConversa: {
     autorizaramAlgumaInstituicao: 58,
     autorizaramEstaInstituicao: 34,
     autorizaramSomenteOutrasInstituicoes: 24,
     revogaramNosUltimos90Dias: 5,
-    quantidadePorEtapa: {
-      'aguardando-contato': 14,
-      'em-conversa': 12,
-      'proposta-apresentada': 6,
-      'operacao-concluida': 2,
-    },
     // Referências internas fictícias. Com a integração real, o nome e o contato
     // aparecem aqui — e somente aqui — porque o produtor autorizou esta instituição.
-    produtoresQueAutorizaramEstaInstituicao: [
-      { referencia: 'PRD-0142', faixa: 'risco', percentualDaReceitaComprometido: 62, etapa: 'proposta-apresentada', autorizadoEm: '2026-09-02' },
-      { referencia: 'PRD-0388', faixa: 'risco', percentualDaReceitaComprometido: 57, etapa: 'em-conversa', autorizadoEm: '2026-09-08' },
-      { referencia: 'PRD-0217', faixa: 'atencao', percentualDaReceitaComprometido: 44, etapa: 'em-conversa', autorizadoEm: '2026-09-11' },
-      { referencia: 'PRD-0905', faixa: 'atencao', percentualDaReceitaComprometido: 38, etapa: 'aguardando-contato', autorizadoEm: '2026-09-19' },
-      { referencia: 'PRD-0631', faixa: 'risco', percentualDaReceitaComprometido: 71, etapa: 'aguardando-contato', autorizadoEm: '2026-09-22' },
-      { referencia: 'PRD-0074', faixa: 'saudavel', percentualDaReceitaComprometido: 24, etapa: 'operacao-concluida', autorizadoEm: '2026-08-14' },
+    pedidos: [
+      pedidoFicticio('PRD-0631', 'nao-cobre', 0, 'Já houve dificuldade para pagar', '2026-09-22'),
+      pedidoFicticio('PRD-0905', 'cobre-apertado', 14, 'Grande parte da safra já está prometida', '2026-09-19'),
+      pedidoFicticio('PRD-0217', 'cobre-apertado', 22, 'Você espera colher mais que a sua média', '2026-09-11'),
+      pedidoFicticio('PRD-0388', 'nao-cobre', 0, 'Os pagamentos passam do que a safra deve render', '2026-09-08'),
+      pedidoFicticio('PRD-0142', 'cobre-apertado', 9, 'Uma quebra pequena já acaba com a sobra', '2026-09-02'),
+      pedidoFicticio('PRD-0074', 'cobre-com-folga', 41, 'Nada chamou atenção', '2026-08-14'),
     ],
   },
 };
@@ -182,24 +190,20 @@ export const carteiraSemDiagnosticos: CarteiraDaInstituicao = {
   ...carteiraDeDemonstracao,
   produtoresAcompanhados: 186,
   produtoresComDiagnostico: 0,
-  produtoresPorFaixa: { saudavel: 0, atencao: 0, risco: 0 },
-  receitaProjetadaTotal: 0,
-  dividaInformadaTotal: 0,
-  dividaNaFaixaDeRisco: 0,
-  leituraDaMp: { aparentementeAtendemOsCriterios: 0, precisamDeMaisInformacoes: 0, aparentementeNaoAtendem: 0 },
+  produtoresPorSituacao: { 'cobre-com-folga': 0, 'cobre-apertado': 0, 'nao-cobre': 0 },
+  produtoresPorMargem: { 'sem-margem': 0, 'ate-10': 0, 'de-10-a-20': 0, 'de-20-a-30': 0, 'acima-de-30': 0 },
+  exposicaoClimatica: { protegidos: 0, protecaoParcial: 0, semProtecao: 0, naoSouberamDizer: 0 },
+  comCompromissosForaDoBanco: 0,
+  comPrecoFechado: 0,
+  porPerfil: { jaTemCusteio: 0, planejandoSafra: 0 },
+  comSinaisDeDificuldade: 0,
   recortes: [],
-  originacao: {
+  pedidosDeConversa: {
     autorizaramAlgumaInstituicao: 0,
     autorizaramEstaInstituicao: 0,
     autorizaramSomenteOutrasInstituicoes: 0,
     revogaramNosUltimos90Dias: 0,
-    quantidadePorEtapa: {
-      'aguardando-contato': 0,
-      'em-conversa': 0,
-      'proposta-apresentada': 0,
-      'operacao-concluida': 0,
-    },
-    produtoresQueAutorizaramEstaInstituicao: [],
+    pedidos: [],
   },
 };
 

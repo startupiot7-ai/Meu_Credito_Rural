@@ -1,7 +1,7 @@
 import { ArrowRightIcon, ButtonLink } from '@/components/ui';
 import { formatNumber } from '@/lib/format';
 import { carteiraDeDemonstracao } from '@/lib/institucional/dados-simulados';
-import { DistribuicaoDeRisco } from '@/components/institucional/painel/DistribuicaoDeRisco';
+import { DistribuicaoPorSituacao } from '@/components/institucional/painel/DistribuicaoPorSituacao';
 
 /**
  * Abertura da página institucional.
@@ -22,15 +22,16 @@ export function Abertura() {
         <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
           <div>
             <p className="mb-4 text-caption font-semibold uppercase tracking-[0.12em] text-canopy-600">
-              Para cooperativas e sindicatos rurais
+              Para cooperativas
             </p>
             <h1 id="abertura-titulo" className="text-display leading-[1.1] lg:text-display-lg">
               Você sabe quantos dos seus associados estão a um ano ruim de não conseguir pagar a
               próxima safra?
             </h1>
             <p className="mt-5 max-w-prose text-body-lg leading-relaxed text-ink-600">
-              O Meu Crédito Rural mostra a saúde financeira da sua carteira de associados, de forma
-              agregada e anonimizada, antes que o risco vire inadimplência.
+              O Meu Crédito Rural mostra, de forma agregada e anonimizada, quantos associados têm
+              uma safra que sustenta o crédito e quantos ficam sem margem num ano pior, antes que o
+              risco vire inadimplência.
             </p>
             <div className="mt-8 flex flex-col gap-3 md:flex-row">
               <ButtonLink href="#demonstracao" size="lg" iconRight={<ArrowRightIcon />}>
@@ -44,19 +45,21 @@ export function Abertura() {
 
           <figure className="m-0 rounded-3xl border border-sand-200 bg-sand-50 p-6 shadow-lg">
             <figcaption className="flex items-baseline justify-between gap-4">
-              <span className="text-body-sm font-semibold text-ink-900">Carteira por faixa de risco</span>
+              <span className="text-body-sm font-semibold text-ink-900">Situação da safra na carteira</span>
               <span className="text-caption text-ink-500">Exemplo com dados fictícios</span>
             </figcaption>
             <p className="mt-4 flex items-baseline gap-2">
               <span className="font-display text-display-lg font-bold tabular-nums text-ink-900">
-                {formatNumber(carteira.produtoresPorFaixa.risco)}
+                {formatNumber(
+                  carteira.produtoresPorSituacao['nao-cobre'] + carteira.produtoresPorSituacao['cobre-apertado'],
+                )}
               </span>
               <span className="text-body-sm text-ink-600">
-                de {formatNumber(carteira.produtoresComDiagnostico)} associados avaliados em risco
-                elevado
+                de {formatNumber(carteira.produtoresComDiagnostico)} associados não cobrem a safra ou
+                ficariam sem dinheiro num ano pior
               </span>
             </p>
-            <DistribuicaoDeRisco produtoresPorFaixa={carteira.produtoresPorFaixa} className="mt-6" />
+            <DistribuicaoPorSituacao produtoresPorSituacao={carteira.produtoresPorSituacao} className="mt-6" />
           </figure>
         </div>
       </div>

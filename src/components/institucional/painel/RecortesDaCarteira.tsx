@@ -1,14 +1,13 @@
 'use client';
 
 import { useId, useState } from 'react';
-import { StatusBadge } from '@/components/ui';
 import { cn } from '@/lib/cn';
-import { formatNumber, formatPercent, riskLevelFromRatio } from '@/lib/format';
+import { formatNumber, formatPercent } from '@/lib/format';
 import { calcularPercentual } from '@/lib/institucional/carteira';
 import { TAMANHO_MINIMO_DO_GRUPO, protegerSegmentosPequenos } from '@/lib/institucional/privacidade';
 import type { RecorteDaCarteira } from '@/lib/institucional/tipos';
 import { BlocoDoPainel } from './BlocoDoPainel';
-import { DistribuicaoDeRisco } from './DistribuicaoDeRisco';
+import { DistribuicaoPorSituacao } from './DistribuicaoPorSituacao';
 import { GrupoProtegido } from './GrupoProtegido';
 
 /**
@@ -65,15 +64,15 @@ export function RecortesDaCarteira({ recortes }: { recortes: RecorteDaCarteira[]
       <div className="-mx-5 overflow-x-auto px-5 md:-mx-6 md:px-6">
         <table className="w-full min-w-[38rem] border-collapse text-left">
           <caption className="sr-only">
-            Carteira por {recorte.rotulo.toLowerCase()}, com a distribuição por faixa de risco
+            Carteira por {recorte.rotulo.toLowerCase()}, com a distribuição por situação da safra
           </caption>
           <thead>
             <tr className="border-b border-sand-300 text-caption font-semibold uppercase tracking-[0.06em] text-ink-500">
               <th scope="col" className="py-2.5 pr-4 font-semibold">{recorte.rotulo}</th>
               <th scope="col" className="py-2.5 pr-4 text-right font-semibold">Avaliados</th>
-              <th scope="col" className="w-[28%] py-2.5 pr-4 font-semibold">Distribuição por faixa</th>
-              <th scope="col" className="py-2.5 pr-4 text-right font-semibold">Em risco elevado</th>
-              <th scope="col" className="py-2.5 text-right font-semibold">Comprometimento</th>
+              <th scope="col" className="w-[28%] py-2.5 pr-4 font-semibold">Situação da safra</th>
+              <th scope="col" className="py-2.5 pr-4 text-right font-semibold">Não cobrem</th>
+              <th scope="col" className="py-2.5 text-right font-semibold">Fora do banco</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-sand-200">
@@ -93,11 +92,12 @@ export function RecortesDaCarteira({ recortes }: { recortes: RecorteDaCarteira[]
                 );
               }
 
-              const percentualComprometido = calcularPercentual(
-                segmento.dividaInformada,
-                segmento.receitaProjetada,
+              const naoCobrem = segmento.produtoresPorSituacao['nao-cobre'];
+              const avaliados = segmento.produtoresComDiagnostico;
+              const percentualQueNaoCobre = Math.round(calcularPercentual(naoCobrem, avaliados));
+              const percentualForaDoBanco = Math.round(
+                calcularPercentual(segmento.comCompromissosForaDoBanco, avaliados),
               );
-              const tomDoComprometimento = riskLevelFromRatio(percentualComprometido);
 
               return (
                 <tr key={segmento.nome}>
@@ -108,32 +108,14 @@ export function RecortesDaCarteira({ recortes }: { recortes: RecorteDaCarteira[]
                     {formatNumber(segmento.produtoresComDiagnostico)}
                   </td>
                   <td className="py-3 pr-4">
-                    <DistribuicaoDeRisco
-                      produtoresPorFaixa={segmento.produtoresPorFaixa}
-                      variante="compacta"
-                    />
+                    <DistribuicaoPorSituacao produtoresPorSituacao={segmento.produtoresPorSituacao} variante="compacta" />
                   </td>
                   <td className="py-3 pr-4 text-right text-body-sm tabular-nums text-ink-800">
-                    {formatNumber(segmento.produtoresPorFaixa.risco)}{' '}
-                    <span className="text-ink-500">
-                      (
-                      {formatPercent(
-                        Math.round(
-                          calcularPercentual(
-                            segmento.produtoresPorFaixa.risco,
-                            segmento.produtoresComDiagnostico,
-                          ),
-                        ),
-                      )}
-                      )
-                    </span>
+                    {formatNumber(naoCobrem)}{' '}
+                    <span className="text-ink-500">({formatPercent(percentualQueNaoCobre)})</span>
                   </td>
-                  <td className="py-3 text-right">
-                    <StatusBadge tone={tomDoComprometimento} size="sm">
-                      <span className="tabular-nums">
-                        {formatPercent(Math.round(percentualComprometido))}
-                      </span>
-                    </StatusBadge>
+                  <td className="py-3 text-right text-body-sm tabular-nums text-ink-800">
+                    {formatPercent(percentualForaDoBanco)}
                   </td>
                 </tr>
               );

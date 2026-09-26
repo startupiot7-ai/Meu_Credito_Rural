@@ -11,15 +11,16 @@ import { TAMANHO_MINIMO_DO_GRUPO } from '@/lib/institucional/privacidade';
 const limites = [
   {
     Icone: LockIcon,
-    texto: 'Nenhum produtor aparece por nome, a não ser que ele tenha autorizado esta instituição.',
+    texto:
+      'Nenhum produtor aparece por nome, a não ser que tenha pedido conversa com esta instituição — e mesmo assim só com o resumo que ele viu.',
   },
   {
     Icone: EyeOffIcon,
-    texto: `Segmentos com menos de ${TAMANHO_MINIMO_DO_GRUPO} produtores com diagnóstico são ocultados.`,
+    texto: `Só entra quem autorizou o uso anônimo para estatísticas, e segmentos com menos de ${TAMANHO_MINIMO_DO_GRUPO} produtores são ocultados.`,
   },
   {
     Icone: ScaleIcon,
-    texto: 'A instituição não vê as respostas individuais e não influencia o resultado que o produtor recebe.',
+    texto: 'O painel não dá nota nem decide crédito, e a instituição não influencia o resultado que o produtor recebe.',
   },
   {
     Icone: ShieldIcon,
