@@ -11,6 +11,12 @@ export function reaisAproximados(valor: number): string {
   return `cerca de ${formatCurrency(Math.round(Math.abs(valor) / 1000) * 1000)}`;
 }
 
+/** 267.412 -> "R$ 267.000". Para tabelas, onde "cerca de" em toda linha pesaria. */
+export function reaisArredondados(valor: number): string {
+  const arredondado = Math.round(valor / 1000) * 1000;
+  return formatCurrency(arredondado === 0 ? 0 : arredondado);
+}
+
 /** 0,2 -> "20%". */
 export function percentual(fracao: number): string {
   return formatPercent(Math.round(fracao * 100));
