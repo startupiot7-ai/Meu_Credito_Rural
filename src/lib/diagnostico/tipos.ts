@@ -249,6 +249,27 @@ export type IdDoProximoPasso =
 
 export type ProximoPasso = { id: IdDoProximoPasso; titulo: string; descricao: string };
 
+/**
+ * Um critério da MP 1.376/2026, a ser preenchido depois da validação
+ * jurídica. Enquanto houver critério sem validação, a MP não é avaliada.
+ */
+export type CriterioDaMp = {
+  nome: string;
+  /** O texto da regra, como a validação jurídica definir. */
+  regra: string;
+  /** Que informação do produtor a regra precisa. */
+  dadoNecessario: string;
+  /** Artigo da MP ou norma de onde a regra vem. */
+  fonte: string;
+  validado: boolean;
+};
+
+export type LeituraDaMpNoDiagnostico = {
+  estado: 'nao-avaliada';
+  motivo: string;
+  criteriosPendentes: string[];
+};
+
 /** Uma premissa do motor como ela aparece na tela: sempre como hipótese. */
 export type PremissaExibida = { nome: string; valorEmPalavras: string; aValidar: boolean };
 
@@ -270,4 +291,6 @@ export type ResultadoDoDiagnostico = {
   proximoPasso: ProximoPasso;
   /** Mostrar o bloco de renegociação e da MP (só quando já há dificuldade). */
   mostrarCaminhosDeRenegociacao: boolean;
+  /** Leitura da MP, só quando os caminhos de renegociação aparecem. */
+  mp: LeituraDaMpNoDiagnostico | null;
 };
