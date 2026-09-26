@@ -2,10 +2,13 @@ import type { Metadata } from 'next';
 import { Abertura } from '@/components/institucional/pagina/Abertura';
 import { CabecalhoInstitucional } from '@/components/institucional/pagina/CabecalhoInstitucional';
 import { ComoFuncionaParaInstituicao } from '@/components/institucional/pagina/ComoFuncionaParaInstituicao';
+import { PerguntasFrequentesInstitucionais } from '@/components/institucional/pagina/PerguntasFrequentesInstitucionais';
+import { PlanosECasos } from '@/components/institucional/pagina/PlanosECasos';
 import { PreviaDoPainel } from '@/components/institucional/pagina/PreviaDoPainel';
 import { PrivacidadeELimites } from '@/components/institucional/pagina/PrivacidadeELimites';
 import { ProblemaDaCooperativa } from '@/components/institucional/pagina/ProblemaDaCooperativa';
 import { RodapeInstitucional } from '@/components/institucional/pagina/RodapeInstitucional';
+import { SolicitarDemonstracao } from '@/components/institucional/pagina/SolicitarDemonstracao';
 
 export const metadata: Metadata = {
   title: 'Para cooperativas e sindicatos rurais',
@@ -29,6 +32,9 @@ export default function PaginaParaCooperativas() {
         <ComoFuncionaParaInstituicao />
         <PreviaDoPainel />
         <PrivacidadeELimites />
+        <PlanosECasos />
+        <PerguntasFrequentesInstitucionais />
+        <SolicitarDemonstracao />
       </main>
       <RodapeInstitucional />
     </>
