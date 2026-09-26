@@ -17,8 +17,10 @@ export function CabecalhoDoPainel({ nomeDaInstituicao }: { nomeDaInstituicao: st
           </p>
         </div>
         {/* PROTÓTIPO: retirar este selo quando o painel usar dados reais. */}
+        {/* No celular, a frase inteira cortava o logo: fica a versão curta. */}
         <StatusBadge tone="info" size="sm" className="shrink-0">
-          Dados fictícios de demonstração
+          <span className="md:hidden">Dados fictícios</span>
+          <span className="hidden md:inline">Dados fictícios de demonstração</span>
         </StatusBadge>
       </div>
     </header>
