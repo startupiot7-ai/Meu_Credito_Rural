@@ -37,6 +37,17 @@ function temFator(fatores: FatorEncontrado[], id: IdDoFator): boolean {
   return fatores.some((fator) => fator.id === id);
 }
 
+/**
+ * Pegar custeio para pagar um custo que já existe só troca a forma de pagar.
+ * O que pesa de verdade é o custeio acima do custo: vira parcela sem virar
+ * produção. Só dá para saber quando o custo foi informado.
+ */
+function custeioPassaDoCusto(dados: DadosDaSafra): boolean {
+  const custo = dados.custoTotalDaSafra.valor;
+  const custeio = dados.valorDoCusteio.valor;
+  return custo !== null && custeio !== null && custeio > custo;
+}
+
 function temSeguroOuProagro(dados: DadosDaSafra): boolean {
   return dados.protecao.includes('seguro-rural') || dados.protecao.includes('proagro');
 }
@@ -76,8 +87,9 @@ export function escolherProximoPasso(contexto: ContextoDoProximoPasso): ProximoP
     return {
       id: 'revisar-plano-antes-de-contratar',
       titulo: 'Revise o plano antes de contratar',
-      descricao:
-        'Com os números de hoje, a safra não paga os custos e os compromissos. Confira o custo, a produção esperada e os outros pagamentos antes de assumir esse custeio. Você também pode simular um valor menor.',
+      descricao: custeioPassaDoCusto(dados)
+        ? 'Com os números de hoje, a safra não paga os custos e os compromissos. O custeio que você pensa em pegar passa do custo da safra: a diferença vira dívida sem virar café. Um valor mais perto do custo pesa menos na colheita.'
+        : 'Com os números de hoje, a safra não paga os custos e os compromissos. Antes de assumir esse custeio, confira o custo, a produção esperada e os outros pagamentos.',
     };
   }
 

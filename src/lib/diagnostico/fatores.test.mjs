@@ -148,6 +148,14 @@ describe('próximo passo', () => {
     assert.equal(proximoPasso.id, 'revisar-plano-antes-de-contratar');
   });
 
+  test('custeio acima do custo da safra aparece na orientação', () => {
+    const acima = analisar({ valorDoCusteio: exato(900_000), retiradaDaFamilia: exato(1_000_000) });
+    assert.equal(acima.proximoPasso.id, 'revisar-plano-antes-de-contratar');
+    assert.match(acima.proximoPasso.descricao, /passa do custo da safra/);
+    const abaixo = analisar({ retiradaDaFamilia: exato(1_000_000) });
+    assert.doesNotMatch(abaixo.proximoPasso.descricao, /passa do custo da safra/);
+  });
+
   test('safra apertada com muito café prometido: revisar o comprometido', () => {
     const { situacao, proximoPasso } = analisar({ sacasPrometidas: exato(400), retiradaDaFamilia: exato(200_000) });
     assert.equal(situacao, 'cobre-apertado');
