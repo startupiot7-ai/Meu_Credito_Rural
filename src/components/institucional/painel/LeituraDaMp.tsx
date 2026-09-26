@@ -23,9 +23,9 @@ export function LeituraDaMp({
   const total = carteira.produtoresComDiagnostico;
 
   const linhas = [
-    { rotulo: 'Aparentemente atendem aos critérios', quantidade: aparentementeAtendemOsCriterios, tom: 'canopy' as const },
-    { rotulo: 'Faltam informações para indicar', quantidade: precisamDeMaisInformacoes, tom: 'muted' as const },
-    { rotulo: 'Aparentemente não atendem', quantidade: aparentementeNaoAtendem, tom: 'muted' as const },
+    { rotulo: 'Aparentemente atendem aos critérios', quantidade: aparentementeAtendemOsCriterios },
+    { rotulo: 'Faltam informações para indicar', quantidade: precisamDeMaisInformacoes },
+    { rotulo: 'Aparentemente não atendem', quantidade: aparentementeNaoAtendem },
   ];
 
   return (
@@ -60,7 +60,6 @@ export function LeituraDaMp({
             valueLabel={`${formatNumber(linha.quantidade)} · ${formatPercent(
               Math.round(calcularPercentual(linha.quantidade, total)),
             )}`}
-            tone={linha.tom}
           />
         ))}
       </div>

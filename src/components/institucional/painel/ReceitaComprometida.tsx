@@ -38,7 +38,6 @@ export function ReceitaComprometida({
       <DebtShareChart
         revenue={carteira.receitaProjetadaTotal}
         debt={carteira.dividaInformadaTotal}
-        showExplanation={false}
       />
 
       <div className="mt-6 rounded-xl border border-risk-border bg-risk-surface p-4">
