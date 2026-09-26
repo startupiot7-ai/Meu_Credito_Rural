@@ -16,11 +16,12 @@ export function SiteFooter() {
           <div className="max-w-prose">
             <Logo />
             <p className="mt-4 text-body-sm leading-relaxed text-ink-600">
-              O Meu Crédito Rural é uma camada de orientação sobre crédito rural. Não somos
-              banco, cooperativa ou instituição financeira, não concedemos crédito e não
-              renegociamos dívidas. O diagnóstico é indicativo, elaborado com base nas
-              informações fornecidas por você, e não substitui a análise da instituição
-              financeira nem orientação jurídica ou contábil.
+              O Meu Crédito Rural ajuda o produtor a entender se a safra sustenta o crédito.
+              Não somos banco, cooperativa ou instituição financeira, não concedemos crédito,
+              não recomendamos contratação e não renegociamos dívidas. O diagnóstico é
+              indicativo, elaborado com base nas informações fornecidas por você, e não
+              representa aprovação, recomendação ou garantia de crédito, nem substitui
+              orientação jurídica ou contábil.
             </p>
           </div>
 
@@ -47,7 +48,12 @@ export function SiteFooter() {
               </li>
               <li>
                 <Link href="/diagnostico" className="rounded-md text-body-sm text-ink-600 hover:text-ink-900">
-                  Começar meu diagnóstico
+                  Simular minha safra
+                </Link>
+              </li>
+              <li>
+                <Link href="/cooperativas" className="rounded-md text-body-sm text-ink-600 hover:text-ink-900">
+                  Para cooperativas
                 </Link>
               </li>
               <li>

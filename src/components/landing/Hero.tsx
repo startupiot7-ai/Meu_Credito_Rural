@@ -2,7 +2,10 @@ import { HeroScene } from '@/components/brand/HeroScene';
 import { ButtonLink, ArrowRightIcon } from '@/components/ui';
 
 /**
- * Hero — the five-second test.
+ * Hero — o teste dos cinco segundos.
+ *
+ * Pivotagem: a promessa deixou de ser "sua dívida tem caminhos" e passou a
+ * ser a prevenção — ver se a safra sustenta o crédito ANTES de contratar.
  *
  * Simplification pass: the "Orientação independente sobre crédito rural" badge
  * came out. It was an abstraction sitting above the one sentence that already
@@ -19,13 +22,13 @@ export function Hero() {
               id="hero-titulo"
               className="text-display leading-[1.08] sm:text-display-lg lg:text-display-xl"
             >
-              Sua dívida rural tem caminhos.{' '}
-              <span className="text-canopy-700">Nós ajudamos você a enxergá-los.</span>
+              Antes de assumir o custeio,{' '}
+              <span className="text-canopy-700">veja se a sua safra aguenta.</span>
             </h1>
 
             <p className="mt-5 text-body-lg leading-relaxed text-ink-600">
-              Entenda sua situação, simule o impacto da dívida na produção e descubra quais
-              alternativas podem fazer sentido para o seu caso.
+              Veja a safra em três cenários, descubra quanto ela pode piorar antes de faltar
+              dinheiro e decida com mais segurança, antes que o problema vire dívida.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 md:flex-row">
@@ -36,15 +39,21 @@ export function Hero() {
                 className="md:w-auto"
                 fullWidth
               >
-                Analisar minha situação
+                Simular minha safra
               </ButtonLink>
-              <ButtonLink href="#como-funciona" size="lg" variant="secondary" fullWidth className="md:w-auto">
-                Entender como funciona
+              <ButtonLink
+                href="/diagnostico/exemplo/planejando-safra"
+                size="lg"
+                variant="secondary"
+                fullWidth
+                className="md:w-auto"
+              >
+                Ver com um exemplo
               </ButtonLink>
             </div>
 
             <p className="mt-4 text-body-sm text-ink-500">
-              Diagnóstico inicial simples e orientativo.
+              Gratuito e independente. Leva cerca de 5 minutos, sem CPF.
             </p>
           </div>
 

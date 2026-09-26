@@ -9,8 +9,8 @@ import { ButtonLink } from '@/components/ui';
 /**
  * SiteHeader — deliberately thin.
  *
- * Three anchors and one action. A producer arriving with a debt question does
- * not need a navigation system; they need the page to get out of the way. On
+ * Four anchors and one action. A producer arriving with a question about the
+ * next harvest does not need a navigation system; they need the page to get out of the way. On
  * mobile the links collapse into a single scrollable row rather than a burger
  * menu, so nothing is hidden behind an icon.
  */
@@ -67,7 +67,7 @@ export function SiteHeader() {
          */}
         <ButtonLink href="/diagnostico" size="sm" className="shrink-0">
           <span className="md:hidden">Começar</span>
-          <span className="hidden md:inline">Analisar minha situação</span>
+          <span className="hidden md:inline">Simular minha safra</span>
         </ButtonLink>
       </div>
     </header>

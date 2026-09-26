@@ -23,27 +23,28 @@ const display = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Meu Crédito Rural — Entenda sua dívida rural e veja os caminhos possíveis',
+    default: 'Meu Crédito Rural — Veja se a sua safra aguenta o crédito antes de contratar',
     template: '%s · Meu Crédito Rural',
   },
   description:
-    'Entenda sua situação, simule o impacto da dívida na produção e descubra quais alternativas podem fazer sentido para o seu caso. Diagnóstico inicial simples e orientativo.',
+    'Veja a sua safra em três cenários e descubra quanto ela pode piorar antes de faltar dinheiro, antes de assumir o custeio. Gratuito, independente e sem CPF.',
   applicationName: 'Meu Crédito Rural',
   authors: [{ name: 'Meu Crédito Rural' }],
   keywords: [
     'crédito rural',
-    'dívida rural',
-    'renegociação rural',
+    'crédito de custeio',
+    'planejamento de safra',
+    'risco da safra',
     'produtor de café',
-    'diagnóstico de dívida',
+    'capacidade de pagamento',
   ],
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
     siteName: 'Meu Crédito Rural',
-    title: 'Sua dívida rural tem caminhos. Nós ajudamos você a enxergá-los.',
+    title: 'Antes de assumir o custeio, veja se a sua safra aguenta.',
     description:
-      'Entenda sua situação, simule o impacto da dívida na produção e descubra quais alternativas podem fazer sentido para o seu caso.',
+      'Três cenários da safra e a sua margem de segurança, antes que o problema vire dívida. Gratuito e independente.',
   },
   robots: { index: true, follow: true },
 };

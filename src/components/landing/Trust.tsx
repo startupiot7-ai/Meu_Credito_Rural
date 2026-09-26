@@ -19,19 +19,19 @@ const commitments = [
     line: 'Não emprestamos dinheiro e não cobramos dívidas.',
   },
   {
+    Icon: ShieldIcon,
+    title: 'Não empurramos crédito',
+    line: 'O diagnóstico não recomenda contratar nem indica instituição. Nenhuma instituição influencia o resultado.',
+  },
+  {
     Icon: EyeOffIcon,
     title: 'Não prometemos aprovação',
-    line: 'O diagnóstico é indicativo. Quem analisa e decide é a instituição financeira.',
+    line: 'A análise é indicativa. Quem analisa o crédito é a instituição; quem decide se contrata é você.',
   },
   {
     Icon: LockIcon,
     title: 'Seus dados são seus',
-    line: 'As respostas ficam no seu aparelho. Você apaga quando quiser.',
-  },
-  {
-    Icon: ShieldIcon,
-    title: 'Sem letra miúda',
-    line: 'Todo termo técnico vem explicado na mesma frase.',
+    line: 'Sem CPF. As respostas ficam no seu aparelho e você apaga quando quiser.',
   },
 ];
 

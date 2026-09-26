@@ -10,10 +10,11 @@ import { Section } from './Section';
  * the cards became plain text so nothing competes with them.
  */
 
+// Situações comuns, descritas sem aspas: não são depoimentos de produtores reais.
 const quotes = [
-  '"Eu sei que devo, mas não sei exatamente quanto nem para quando."',
-  '"Me falaram que existe uma alternativa, mas não sei se serve para mim."',
-  '"Quando eu pergunto, a resposta vem numa linguagem que eu não uso."',
+  'O custeio foi contratado contando com uma safra cheia, e veio a seca.',
+  'Parte do café já estava prometida para a revenda antes da colheita.',
+  'A conta só pareceu não fechar quando a parcela venceu.',
 ];
 
 export function Problem() {
@@ -21,7 +22,7 @@ export function Problem() {
     <Section
       id="o-problema"
       eyebrow="O problema"
-      title="A dificuldade raramente é a dívida. É a neblina em volta dela."
+      title="A dívida quase sempre começa antes: na conta que não considerou um ano ruim."
       tone="sand"
     >
       <ul className="flex flex-col gap-6 md:flex-row md:gap-8">

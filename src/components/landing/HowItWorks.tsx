@@ -14,16 +14,16 @@ import { Section } from './Section';
  */
 
 const steps = [
-  { title: 'Conte sua situação', line: 'O que você planta, quanto espera colher, quanto deve.' },
-  { title: 'Entenda seu diagnóstico', line: 'O que encontramos nas suas respostas, em português claro.' },
-  { title: 'Veja o peso da dívida', line: 'Quanto da safra já está comprometido.' },
-  { title: 'Compare alternativas', line: 'O que muda em cada caminho possível.' },
-  { title: 'Saiba qual pode ser o próximo passo', line: 'Uma ação clara. A decisão continua sendo sua.' },
+  { title: 'Conte como é a sua safra', line: 'Produção, preço, custo e o que já está prometido.' },
+  { title: 'Veja três cenários', line: 'Se a safra vier como você espera, pior ou melhor.' },
+  { title: 'Descubra a sua margem de segurança', line: 'Quanto a safra pode piorar antes de faltar dinheiro.' },
+  { title: 'Entenda o que mais pesa', line: 'Os fatores que mais mexem no resultado, em português claro.' },
+  { title: 'Saia com um próximo passo', line: 'Uma ação clara. A decisão continua sendo sua.' },
 ];
 
 export function HowItWorks() {
   return (
-    <Section id="como-funciona" eyebrow="Como funciona" title="Do escuro até o próximo passo">
+    <Section id="como-funciona" eyebrow="Como funciona" title="Da expectativa até uma decisão mais segura">
       <ol className="flex flex-col">
         {steps.map((step, index) => {
           // Progressive illumination: the glow rises with the index, so the

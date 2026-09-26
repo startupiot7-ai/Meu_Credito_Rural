@@ -27,17 +27,17 @@ export function FinalCta() {
           <BeamDivider className="mx-auto mb-10 max-w-xs" />
 
           <h2 id="cta-final-titulo" className="text-title-lg text-sand-50 lg:text-display">
-            Você não precisa entender sozinho toda a complexidade do crédito rural.
+            Veja se a safra aguenta antes que o problema vire dívida.
           </h2>
 
           <div className="mt-8 flex justify-center">
             <ButtonLink href="/diagnostico" size="lg" variant="beam" iconRight={<ArrowRightIcon />}>
-              Começar meu diagnóstico
+              Simular minha safra
             </ButtonLink>
           </div>
 
           <p className="mt-4 text-body-sm text-sand-300">
-            Gratuito e sem compromisso. Diagnóstico indicativo.
+            Gratuito, independente e sem CPF. Diagnóstico indicativo.
           </p>
         </div>
       </div>
