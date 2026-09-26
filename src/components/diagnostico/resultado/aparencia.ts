@@ -7,7 +7,7 @@ import type { SituacaoDaSafra } from '@/lib/diagnostico/tipos';
  * o tom informativo, porque não é um nível de risco. O selo sempre leva ícone
  * e texto, então a cor nunca é a única informação.
  */
-export const tomDaSituacao: Record<SituacaoDaSafra, StatusTone> = {
+export const aparenciaDaSituacao: Record<SituacaoDaSafra, StatusTone> = {
   'cobre-com-folga': 'healthy',
   'cobre-apertado': 'attention',
   'nao-cobre': 'risk',
