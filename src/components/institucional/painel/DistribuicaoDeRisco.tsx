@@ -67,21 +67,20 @@ export function DistribuicaoDeRisco({
     <figure className={cn('m-0 flex flex-col gap-5', className)}>
       {barra}
       <figcaption className="sr-only">Distribuição dos produtores por faixa de risco</figcaption>
-      <dl className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <dl className="flex flex-wrap gap-x-8 gap-y-4">
         {ORDEM_DAS_FAIXAS.map((faixa) => (
           <div key={faixa} className="flex flex-col gap-2">
             <dt>
-              <StatusBadge tone={aparenciaDaFaixa[faixa].tom} size="sm">
+              <StatusBadge tone={aparenciaDaFaixa[faixa].tom} size="sm" className="whitespace-nowrap">
                 {aparenciaDaFaixa[faixa].rotulo}
               </StatusBadge>
             </dt>
-            <dd className="flex items-baseline gap-2">
+            <dd className="flex flex-col">
               <span className="font-display text-title-lg font-bold tabular-nums text-ink-900">
                 {formatNumber(produtoresPorFaixa[faixa])}
               </span>
               <span className="text-body-sm tabular-nums text-ink-600">
-                {formatPercent(calcularPercentual(produtoresPorFaixa[faixa], total))} da carteira
-                avaliada
+                {formatPercent(calcularPercentual(produtoresPorFaixa[faixa], total))} dos avaliados
               </span>
             </dd>
           </div>

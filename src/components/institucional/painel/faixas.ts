@@ -9,7 +9,7 @@ export const aparenciaDaFaixa: Record<
   FaixaDeRisco,
   { rotulo: string; tom: Exclude<StatusTone, 'info'>; corDaBarra: string }
 > = {
-  saudavel: { rotulo: 'Situação saudável', tom: 'healthy', corDaBarra: 'bg-healthy-solid' },
+  saudavel: { rotulo: 'Saudável', tom: 'healthy', corDaBarra: 'bg-healthy-solid' },
   atencao: { rotulo: 'Atenção', tom: 'attention', corDaBarra: 'bg-attention-solid' },
   risco: { rotulo: 'Risco elevado', tom: 'risk', corDaBarra: 'bg-risk-solid' },
 };
