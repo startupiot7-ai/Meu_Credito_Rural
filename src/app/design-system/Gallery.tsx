@@ -12,7 +12,6 @@ import {
   ComparisonBar,
   ConfirmDialog,
   CurrencyInput,
-  DebtShareChart,
   FileUpload,
   PercentInput,
   ProgressBar,
@@ -316,30 +315,19 @@ export function Gallery() {
         title="Gráficos"
         description="Uma medida por gráfico, sempre com rótulo direto. Nunca dois eixos."
       >
-        <div className="grid gap-5 lg:grid-cols-3">
-          <Card>
-            <DebtShareChart revenue={750_000} debt={130_000} />
-          </Card>
-          <Card>
-            <DebtShareChart revenue={750_000} debt={300_000} />
-          </Card>
-          <Card>
-            <DebtShareChart revenue={750_000} debt={520_000} />
-          </Card>
-        </div>
-        <Card className="mt-5">
+        <Card>
           <div className="flex flex-col gap-5">
             <ComparisonBar
-              label="Condição atual"
-              value={120_000}
-              max={120_000}
-              valueLabel="R$ 120.000 por ano"
+              label="A colheita pode ser menor em até"
+              value={28}
+              max={100}
+              valueLabel="28%"
             />
             <ComparisonBar
-              label="Prazo mais longo"
-              value={78_000}
-              max={120_000}
-              valueLabel="R$ 78.000 por ano"
+              label="O preço do dia pode cair até"
+              value={14}
+              max={100}
+              valueLabel="14%"
               highlighted
             />
           </div>

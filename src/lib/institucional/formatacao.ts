@@ -1,17 +1,9 @@
 /**
- * Formatação de valores para o público institucional.
+ * Formatação de datas para o público institucional.
  *
- * O gestor lê carteiras inteiras: "R$ 412 mi" é mais rápido de comparar do que
- * "R$ 412.000.000". Os valores exatos continuam disponíveis onde importam.
+ * O painel não mostra valores em reais: com a pivotagem, ele soma situações
+ * da safra e margens, e não dívidas.
  */
-
-const moedaAbreviada = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL',
-  notation: 'compact',
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 1,
-});
 
 const dataCurta = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short' });
 
@@ -21,10 +13,6 @@ const dataComHora = new Intl.DateTimeFormat('pt-BR', {
   timeZone: 'America/Sao_Paulo',
 });
 
-/** 412000000 -> "R$ 412 mi"; 61400000 -> "R$ 61,4 mi" */
-export function formatarMoedaAbreviada(valor: number): string {
-  return moedaAbreviada.format(valor).replace(/ /g, ' ');
-}
 
 /** "2026-09-02" -> "02/09/2026" */
 export function formatarData(dataIso: string): string {

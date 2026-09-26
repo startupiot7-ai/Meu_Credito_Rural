@@ -16,8 +16,8 @@ export type { CardProps } from './Card';
 export { Checkbox, RadioCard, RadioCardGroup } from './Choice';
 export type { CheckboxProps, RadioCardGroupProps, RadioCardProps } from './Choice';
 
-export { ComparisonBar, DebtShareChart } from './DebtChart';
-export type { ComparisonBarProps, DebtShareChartProps } from './DebtChart';
+export { ComparisonBar } from './ComparisonBar';
+export type { ComparisonBarProps } from './ComparisonBar';
 
 export { Field, controlBase, controlStatus } from './Field';
 export type { FieldProps, FieldStatus } from './Field';

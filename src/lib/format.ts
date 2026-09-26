@@ -93,28 +93,3 @@ export function maskInteger(raw: string): string {
   if (!digits) return '';
   return formatNumber(Number(digits));
 }
-
-/**
- * Share of projected revenue already committed to debt.
- * Returns `null` when revenue is zero or unknown — we never divide by nothing
- * and we never show a percentage we cannot justify.
- */
-export function debtToRevenueRatio(debt: number, revenue: number): number | null {
-  if (!revenue || revenue <= 0) return null;
-  return (debt / revenue) * 100;
-}
-
-export type RiskLevel = 'healthy' | 'attention' | 'risk';
-
-/**
- * Indicative reading of the debt-to-revenue ratio.
- *
- * NOTE: thresholds are illustrative for this front-end prototype. The real
- * analysis engine will replace them and will take culture, cycle and cost
- * structure into account.
- */
-export function riskLevelFromRatio(ratio: number): RiskLevel {
-  if (ratio < 30) return 'healthy';
-  if (ratio < 50) return 'attention';
-  return 'risk';
-}
