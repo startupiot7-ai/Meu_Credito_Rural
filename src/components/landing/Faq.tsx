@@ -19,7 +19,6 @@ export function Faq() {
       id="perguntas-frequentes"
       eyebrow="Perguntas frequentes"
       title="As dúvidas que aparecem antes de começar"
-      description="Se a sua pergunta não estiver aqui, ela provavelmente aparece durante o diagnóstico — com a resposta ao lado."
     >
       <div className="max-w-prose divide-y divide-sand-200 border-y border-sand-200">
         {faq.map((item) => (

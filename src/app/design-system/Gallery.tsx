@@ -92,13 +92,14 @@ export function Gallery() {
     <div className="flex flex-col gap-12">
       <Block
         title="Botões"
-        description="Quatro variantes e três tamanhos. Todos os estados: padrão, hover, foco, pressionado, desabilitado e carregando."
+        description="Cinco variantes e três tamanhos. Todos os estados: padrão, hover, foco, pressionado, desabilitado e carregando."
       >
         <div className="flex flex-col gap-6">
           <Row label="Variantes">
             <Button>Analisar minha situação</Button>
             <Button variant="secondary">Entender como funciona</Button>
             <Button variant="ghost">Editar</Button>
+            <Button variant="beam">Começar meu diagnóstico</Button>
             <Button variant="danger">Apagar respostas</Button>
           </Row>
           <Row label="Tamanhos">
@@ -336,7 +337,6 @@ export function Gallery() {
               value={78_000}
               max={120_000}
               valueLabel="R$ 78.000 por ano"
-              tone="beam"
               highlighted
             />
           </div>

@@ -11,7 +11,7 @@ import { SpinnerIcon } from './Icon';
  * Every size clears the 44px minimum touch target on mobile.
  */
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'beam';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 const base =
@@ -35,6 +35,17 @@ const variants: Record<ButtonVariant, string> = {
   ghost:
     'text-canopy-700 hover:bg-canopy-50 active:bg-canopy-100 ' +
     'disabled:text-ink-400 disabled:hover:bg-transparent',
+  /**
+   * The lighthouse light. For a single call to action on a dark canopy
+   * surface, where the green primary would disappear into the background.
+   *
+   * This is a variant rather than a `className` override on purpose: Tailwind
+   * emits `bg-beam-*` before `bg-canopy-*`, so a passed-in background silently
+   * loses to the variant's and the button comes out green.
+   */
+  beam:
+    'bg-beam-400 text-ink-900 shadow-sm hover:bg-beam-300 active:bg-beam-500 ' +
+    'disabled:bg-sand-300 disabled:text-ink-400 disabled:shadow-none',
   /** Reserved for destructive confirmation, not for "bad news". */
   danger:
     'bg-risk-solid text-sand-50 shadow-sm hover:brightness-95 active:brightness-90 ' +

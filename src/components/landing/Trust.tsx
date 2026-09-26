@@ -1,39 +1,37 @@
-import { Card, EyeOffIcon, LockIcon, ScaleIcon, ShieldIcon } from '@/components/ui';
+import { EyeOffIcon, LockIcon, ScaleIcon, ShieldIcon } from '@/components/ui';
 import { Section } from './Section';
 
 /**
  * Segurança e confiança.
  *
- * Trust here is built by being specific about limits, not by showing badges and
- * padlock icons. Each card states something we will not do. A producer deciding
- * whether to type their debt into a website deserves that in writing, before
- * the form, not in a terms page afterwards.
+ * Simplification pass: four cards with three-line paragraphs became four lines.
+ * The titles were already the commitment; the paragraphs restated them. Every
+ * limit that has to be stated is still stated — not being a bank, not promising
+ * approval, the decision belonging to the institution — just in one breath each.
+ *
+ * Trust here comes from being specific about limits, not from badges.
  */
 
 const commitments = [
   {
     Icon: ScaleIcon,
     title: 'Não somos banco nem cooperativa',
-    description:
-      'Não concedemos crédito, não cobramos dívidas e não temos interesse em qual instituição você escolhe. Nossa função é orientar.',
+    line: 'Não emprestamos dinheiro e não cobramos dívidas.',
   },
   {
     Icon: EyeOffIcon,
     title: 'Não prometemos aprovação',
-    description:
-      'O diagnóstico é indicativo e trabalha com base nas informações fornecidas por você. Quem analisa e decide é sempre a instituição financeira.',
+    line: 'O diagnóstico é indicativo. Quem analisa e decide é a instituição financeira.',
   },
   {
     Icon: LockIcon,
     title: 'Seus dados são seus',
-    description:
-      'As respostas do diagnóstico ficam salvas no seu próprio aparelho enquanto você responde. Você pode apagar tudo quando quiser.',
+    line: 'As respostas ficam no seu aparelho. Você apaga quando quiser.',
   },
   {
     Icon: ShieldIcon,
-    title: 'Linguagem sem letra miúda',
-    description:
-      'Todo termo técnico aparece com a explicação junto. Se algo só puder ser dito em linguagem de contrato, dizemos também em português comum.',
+    title: 'Sem letra miúda',
+    line: 'Todo termo técnico vem explicado na mesma frase.',
   },
 ];
 
@@ -43,21 +41,18 @@ export function Trust() {
       id="seguranca"
       eyebrow="Segurança e confiança"
       title="O que podemos fazer — e o que não podemos"
-      description="Preferimos ser claros sobre os limites antes de você começar. Confiança se constrói assim."
       tone="sand"
     >
-      <ul className="grid gap-4 md:grid-cols-2">
-        {commitments.map(({ Icon, title, description }) => (
-          <li key={title}>
-            <Card className="flex h-full items-start gap-4">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-canopy-50 text-title text-canopy-600">
-                <Icon />
-              </span>
-              <div>
-                <h3 className="text-body-lg font-semibold text-ink-900">{title}</h3>
-                <p className="mt-1.5 text-body-sm leading-relaxed text-ink-600">{description}</p>
-              </div>
-            </Card>
+      <ul className="grid gap-6 md:grid-cols-2 md:gap-x-10">
+        {commitments.map(({ Icon, title, line }) => (
+          <li key={title} className="flex items-start gap-3.5">
+            <span className="mt-0.5 shrink-0 text-title text-canopy-600">
+              <Icon />
+            </span>
+            <div>
+              <h3 className="text-body-lg font-semibold text-ink-900">{title}</h3>
+              <p className="mt-1 text-body text-ink-600">{line}</p>
+            </div>
           </li>
         ))}
       </ul>

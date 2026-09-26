@@ -17,10 +17,8 @@ import {
   SkeletonRegion,
   SkeletonText,
   StateView,
-  StatusLegend,
-  Term,
 } from '@/components/ui';
-import { formatCurrency, formatPercent } from '@/lib/format';
+import { formatCurrency } from '@/lib/format';
 import { analyse } from '@/lib/diagnostic';
 import type { Analysis } from '@/lib/diagnostic';
 import { creditScenarios } from '@/lib/mock-data';
@@ -105,12 +103,10 @@ export default function ResultPage() {
                 Diagnóstico indicativo
               </p>
               <h1 className="mt-3 text-title-lg lg:text-display">
-                Aqui está o que dá para enxergar da sua situação
+                O que dá para enxergar da sua situação
               </h1>
               <p className="mt-4 max-w-prose text-body-lg leading-relaxed text-ink-600">
-                Tudo abaixo vem das informações que você forneceu. Nada aqui é uma nota, uma
-                aprovação ou uma garantia — é o ponto de partida para a conversa com a sua
-                instituição.
+                Tudo abaixo vem do que você informou. Não é uma nota nem uma aprovação.
               </p>
 
               {/* 1. What we found — the reasoning, checkable line by line. */}
@@ -156,12 +152,6 @@ export default function ResultPage() {
                 </h2>
                 <Card className="mt-4">
                   <DebtShareChart revenue={analysis.revenue} debt={answers.debt ?? 0} />
-                  <div className="mt-6 border-t border-sand-200 pt-5">
-                    <p className="text-body-sm text-ink-600">
-                      Como lemos esse número:
-                    </p>
-                    <StatusLegend className="mt-2.5" />
-                  </div>
                 </Card>
               </section>
 
@@ -172,15 +162,6 @@ export default function ResultPage() {
                 </h2>
                 <Card className="mt-4">
                   <p className="text-body leading-relaxed text-ink-800">{analysis.meaning}</p>
-                  {analysis.ratio !== null ? (
-                    <p className="mt-4 text-body-sm leading-relaxed text-ink-600">
-                      O <Term term="comprometimento">comprometimento da receita</Term> de{' '}
-                      {formatPercent(Math.round(analysis.ratio))} quer dizer que, de cada{' '}
-                      {formatCurrency(100)} que a safra deve gerar,{' '}
-                      {formatCurrency(Math.round(analysis.ratio))} já estão reservados para a
-                      dívida — antes de pagar os custos de produção.
-                    </p>
-                  ) : null}
                 </Card>
               </section>
 
@@ -189,9 +170,8 @@ export default function ResultPage() {
                 <h2 id="alternativas" className="text-title">
                   Caminhos que podem ser avaliados
                 </h2>
-                <p className="mt-2 max-w-prose text-body-sm leading-relaxed text-ink-600">
-                  Valores ilustrativos, para mostrar o que muda entre as condições. Não são
-                  propostas e não garantem aprovação.
+                <p className="mt-2 max-w-prose text-body-sm text-ink-600">
+                  Valores de exemplo. Não são propostas e não garantem aprovação.
                 </p>
                 <Card className="mt-4">
                   <div className="flex flex-col gap-5">
@@ -202,10 +182,9 @@ export default function ResultPage() {
                           value={scenario.annualPayment}
                           max={maxPayment}
                           valueLabel={`${formatCurrency(scenario.annualPayment)} por ano`}
-                          tone={scenario.highlighted ? 'beam' : 'canopy'}
                           highlighted={scenario.highlighted}
                         />
-                        <p className="mt-1.5 text-body-sm text-ink-600">{scenario.summary}</p>
+                        <p className="mt-1.5 text-body-sm text-ink-600">{scenario.plain}</p>
                       </div>
                     ))}
                   </div>
@@ -231,11 +210,11 @@ export default function ResultPage() {
                 </Card>
               </section>
 
+              {/* The disclaimer stays in full: this is substance, not expression. */}
               <Alert tone="info" title="Este é um diagnóstico indicativo" className="mt-10">
-                Ele foi montado com base nas informações fornecidas por você e mostra possíveis
-                caminhos a avaliar. Não somos uma instituição financeira: a análise e a decisão
-                sobre qualquer renegociação são sempre da instituição com quem você tem a
-                dívida.
+                Montado com base no que você informou, ele mostra possíveis caminhos a avaliar.
+                Não somos uma instituição financeira: a análise e a decisão sobre qualquer
+                renegociação são sempre da instituição com quem você tem a dívida.
               </Alert>
             </article>
           )}

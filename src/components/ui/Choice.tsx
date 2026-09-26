@@ -105,6 +105,12 @@ export function RadioCard({
 export type RadioCardGroupProps = {
   /** The question itself. Rendered as the group's legend. */
   legend: string;
+  /**
+   * Hides the legend visually but keeps it for screen readers. Used when the
+   * screen's heading already asks the question — showing it twice is the kind
+   * of duplication that makes a form feel heavier than it is.
+   */
+  hideLegend?: boolean;
   hint?: ReactNode;
   error?: string;
   children: ReactNode;
@@ -112,10 +118,23 @@ export type RadioCardGroupProps = {
 };
 
 /** Wraps a set of `RadioCard`s in a real fieldset so the question is announced. */
-export function RadioCardGroup({ legend, hint, error, children, className }: RadioCardGroupProps) {
+export function RadioCardGroup({
+  legend,
+  hideLegend,
+  hint,
+  error,
+  children,
+  className,
+}: RadioCardGroupProps) {
   return (
     <fieldset className={cn('flex flex-col gap-stack-sm border-0 p-0', className)}>
-      <legend className="mb-1 text-body font-medium text-ink-900">{legend}</legend>
+      <legend
+        className={cn(
+          hideLegend ? 'sr-only' : 'mb-1 text-body font-medium text-ink-900',
+        )}
+      >
+        {legend}
+      </legend>
       {hint ? <p className="mb-1 text-body-sm text-ink-600">{hint}</p> : null}
       <div className="flex flex-col gap-2.5">{children}</div>
       {error ? (
