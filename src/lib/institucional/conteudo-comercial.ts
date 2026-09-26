@@ -1,5 +1,5 @@
 /**
- * Textos da página para cooperativas e sindicatos (/cooperativas).
+ * Textos da página para cooperativas (/cooperativas).
  *
  * Ficam separados dos componentes para que a equipe comercial possa revisar
  * a redação num lugar só. Nenhum número, cliente ou resultado aqui é real:
@@ -8,9 +8,9 @@
 
 export const problemasDaCooperativa = [
   {
-    titulo: 'O risco da carteira fica invisível',
+    titulo: 'O risco da safra fica invisível',
     texto:
-      'A dívida de cada associado está espalhada entre bancos, cooperativas de crédito, CPRs e revendas. Nenhum desses lugares enxerga a carteira inteira.',
+      'Os compromissos de cada associado estão espalhados entre bancos, cooperativas de crédito, CPRs, barter e revendas. Nenhum desses lugares enxerga se a safra inteira paga tudo.',
   },
   {
     titulo: 'O produtor não relata a própria dificuldade',
@@ -18,9 +18,9 @@ export const problemasDaCooperativa = [
       'Aperto financeiro é assunto que o associado evita levar à cooperativa. Ele costuma aparecer só quando já não há margem para negociar.',
   },
   {
-    titulo: 'Quando aparece, já é inadimplência ou penhora',
+    titulo: 'Quando aparece, já é inadimplência',
     texto:
-      'Nesse ponto, a perda deixa de ser individual: afeta a recepção da safra, o crédito de insumos e a confiança entre os associados.',
+      'O custeio foi dimensionado para uma safra cheia. Quando a safra vem menor, a perda deixa de ser individual: afeta a recepção, o crédito de insumos e a confiança entre os associados.',
   },
 ];
 
@@ -33,28 +33,30 @@ export const etapasParaAInstituicao = [
   {
     titulo: 'A instituição vê a carteira agregada',
     texto:
-      'Faixas de risco, receita comprometida e enquadramento indicativo na MP 1.376/2026, por núcleo, porte e cultura. Sempre anonimizado.',
+      'Quem cobre a safra com folga, quem fica apertado num ano pior e quem já não cobre, com a margem de segurança e as exposições, por núcleo, porte e cultura. Sempre anonimizado.',
   },
   {
-    titulo: 'A instituição age antes da perda',
+    titulo: 'A instituição orienta antes da perda',
     texto:
-      'Ações direcionadas aos núcleos mais expostos, apoio à renegociação e planejamento de crédito e de recepção com base em risco.',
+      'Conversas com os núcleos mais expostos antes do vencimento, apoio a seguro e a planejamento da safra, e um olhar mais realista sobre o risco da carteira. A decisão de crédito continua com a sua equipe.',
   },
 ];
 
 export const oQueAInstituicaoVe = [
-  'Quantos associados estão em cada faixa de risco',
-  'Quanto da receita projetada da carteira está comprometido com dívida',
-  'Quantos parecem se enquadrar nos mecanismos da MP 1.376/2026, de forma indicativa',
+  'Quantos associados cobrem a safra com folga, apertados ou não cobrem',
+  'A margem de segurança da carteira: quanto a colheita pode cair antes de faltar dinheiro',
+  'Exposição ao clima, compromissos fora do banco e safra sem preço fechado',
   'A carteira recortada por núcleo, porte e cultura, com grupos pequenos ocultos',
-  'Quem pediu, por iniciativa própria, para ser apresentado à sua instituição',
+  'Quem pediu, por iniciativa própria, para a sua instituição conversar com ele',
 ];
 
 export const oQueAInstituicaoNaoVe = [
   'Nome, respostas ou números de qualquer associado que não tenha autorizado',
+  'As respostas de quem autorizou: só o resumo que ele viu antes de autorizar',
   'Qualquer segmento com menos de 10 produtores com diagnóstico',
   'Documentos enviados pelo produtor durante o diagnóstico',
   'Uma forma de alterar ou orientar o resultado que o produtor recebe',
+  'Uma nota de crédito ou uma decisão automática: o painel não aprova nem recusa ninguém',
 ];
 
 /**
@@ -66,26 +68,28 @@ export const planos = [
   {
     identificador: 'licenca-institucional',
     nome: 'Licença institucional anual',
-    publico: 'Para cooperativas e sindicatos rurais',
+    publico: 'Para cooperativas',
     preco: null as string | null, // {{PRICING_PLACEHOLDER}}
     formaDeCobranca: 'Anual, conforme o número de associados acompanhados', // {{PRICING_PLACEHOLDER}}
     itens: [
       'Painel agregado da carteira, atualizado continuamente',
       'Recortes por núcleo, porte e cultura, com proteção de grupos pequenos',
-      'Leitura indicativa de enquadramento na MP 1.376/2026',
+      'Necessidade potencial de renegociação, com a MP 1.376/2026 como bloco específico',
       'Material para divulgar o diagnóstico gratuito aos associados',
     ],
   },
   {
-    identificador: 'originacao-qualificada',
-    nome: 'Originação qualificada',
+    identificador: 'pedidos-de-conversa',
+    nome: 'Pedidos de conversa',
     publico: 'Para instituições de crédito participantes',
     preco: null as string | null, // {{PRICING_PLACEHOLDER}}
-    formaDeCobranca: 'Por produtor apresentado ou por operação concluída', // {{PRICING_PLACEHOLDER}}
+    // A cobrança não pode depender de o produtor contratar crédito: isso daria
+    // à instituição e a nós um interesse contra a independência do diagnóstico.
+    formaDeCobranca: 'A definir, sem depender de o produtor contratar crédito', // {{PRICING_PLACEHOLDER}}
     itens: [
       'Apenas produtores que autorizaram sua instituição, de forma específica',
-      'Resumo do diagnóstico, com o consentimento visível e revogável',
-      'Nenhum custo para o produtor, antes ou depois da apresentação',
+      'Só o resumo que o produtor viu: situação da safra, margem e fator principal',
+      'Nenhum custo para o produtor, antes ou depois da conversa',
     ],
   },
 ];
@@ -106,17 +110,17 @@ export const perguntasFrequentesInstitucionais = [
   {
     pergunta: 'A instituição consegue ver um associado específico?',
     resposta:
-      'Só se aquele associado autorizar, por iniciativa própria, a apresentação à sua instituição especificamente. A autorização é feita na tela dele, nunca vem marcada, e pode ser retirada a qualquer momento. Ao retirar, ele sai da sua lista.',
+      'Só se aquele associado autorizar, por iniciativa própria, que a sua instituição converse com ele. Mesmo assim, você recebe só o resumo que ele viu: situação da safra, margem de segurança e o fator que mais pesou. A autorização nunca vem marcada e pode ser retirada a qualquer momento.',
   },
   {
     pergunta: 'Isso substitui nosso setor de crédito?',
     resposta:
-      'Não. O painel mostra onde está o risco da carteira e ajuda a priorizar. A análise de crédito, a negociação e a decisão continuam com a sua equipe e com as instituições credoras.',
+      'Não. O painel mostra onde está o risco da safra na carteira e ajuda a priorizar conversas. Ele não dá nota nem decide crédito: a análise, a negociação e a decisão continuam com a sua equipe.',
   },
   {
-    pergunta: 'Como funciona a originação qualificada e o consentimento do produtor?',
+    pergunta: 'Como funcionam os consentimentos do produtor?',
     resposta:
-      'Depois do diagnóstico, o produtor pode escolher, instituição por instituição, se quer ser apresentado. Ele vê antes o que será compartilhado. Se disser não, nada muda para ele. A instituição recebe apenas quem a autorizou; os demais aparecem só como número.',
+      'São dois, separados e desligados até ele ligar. O primeiro permite usar as respostas de forma anônima nas estatísticas do painel. O segundo, instituição por instituição, permite que uma instituição converse com ele. Se disser não a qualquer um, nada muda no diagnóstico dele.',
   },
   {
     pergunta: 'A instituição pode influenciar o resultado do diagnóstico?',
@@ -127,6 +131,11 @@ export const perguntasFrequentesInstitucionais = [
     pergunta: 'Como os associados chegam ao diagnóstico?',
     resposta:
       'A instituição divulga o link pelos canais que já usa: técnicos de campo, reuniões de núcleo, grupos de mensagem. O diagnóstico é gratuito e funciona no celular, mesmo com conexão instável.',
+  },
+  {
+    pergunta: 'E a MP 1.376/2026?',
+    resposta:
+      'Ela aparece como um bloco específico, para quem já está com dificuldade, e não como o centro do painel. Enquanto os critérios estiverem em validação jurídica, o painel não mostra quantos associados se enquadram.',
   },
   {
     pergunta: 'Quanto custa a licença?',

@@ -11,13 +11,13 @@ import { RodapeInstitucional } from '@/components/institucional/pagina/RodapeIns
 import { SolicitarDemonstracao } from '@/components/institucional/pagina/SolicitarDemonstracao';
 
 export const metadata: Metadata = {
-  title: 'Para cooperativas e sindicatos rurais',
+  title: 'Para cooperativas',
   description:
-    'Inteligência agregada e anonimizada sobre a saúde financeira dos seus associados, a partir do diagnóstico gratuito do Meu Crédito Rural.',
+    'Entenda, de forma agregada e anonimizada, quanto da safra dos seus associados sustenta o crédito, antes que o risco vire inadimplência.',
 };
 
 /**
- * Página de apresentação para cooperativas e sindicatos rurais.
+ * Página de apresentação para cooperativas.
  *
  * É um público diferente do produtor: gestores que avaliam a licença anual.
  * Esta página não substitui nem altera a página do produtor (`/`).
