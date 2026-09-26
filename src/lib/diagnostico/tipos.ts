@@ -141,7 +141,8 @@ export type NumeroComOrigem = { valor: number | null; origem: OrigemDoNumero };
 
 /** As respostas já convertidas em números, prontas para a conta. */
 export type DadosDaSafra = {
-  perfil: PerfilDoProdutor;
+  /** `null` quando o produtor ainda não escolheu: o diagnóstico não é calculado. */
+  perfil: PerfilDoProdutor | null;
   /** Produção esperada da lavoura inteira, em sacas. */
   producaoEsperadaTotal: NumeroComOrigem;
   /** A parte da produção esperada que é do produtor (sem a parte do dono da terra). */
