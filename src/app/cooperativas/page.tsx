@@ -1,4 +1,9 @@
 import type { Metadata } from 'next';
+import { Abertura } from '@/components/institucional/pagina/Abertura';
+import { CabecalhoInstitucional } from '@/components/institucional/pagina/CabecalhoInstitucional';
+import { ComoFuncionaParaInstituicao } from '@/components/institucional/pagina/ComoFuncionaParaInstituicao';
+import { ProblemaDaCooperativa } from '@/components/institucional/pagina/ProblemaDaCooperativa';
+import { RodapeInstitucional } from '@/components/institucional/pagina/RodapeInstitucional';
 
 export const metadata: Metadata = {
   title: 'Para cooperativas e sindicatos rurais',
@@ -14,8 +19,14 @@ export const metadata: Metadata = {
  */
 export default function PaginaParaCooperativas() {
   return (
-    <main id="conteudo" className="container-page section-y">
-      <h1 className="text-display">Meu Crédito Rural para cooperativas</h1>
-    </main>
+    <>
+      <CabecalhoInstitucional />
+      <main id="conteudo">
+        <Abertura />
+        <ProblemaDaCooperativa />
+        <ComoFuncionaParaInstituicao />
+      </main>
+      <RodapeInstitucional />
+    </>
   );
 }
