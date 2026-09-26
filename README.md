@@ -1,38 +1,36 @@
 # Meu Crédito Rural
 
-An orientation layer between rural producers — coffee growers first — and the
-complexity of Brazilian rural credit. It helps a producer understand their debt
-situation and identify paths that *may* be worth evaluating.
+Ajuda o produtor rural — cafeicultor primeiro — a responder, **antes** de
+assumir um crédito de custeio: *"essa safra consegue sustentar o crédito que
+estou pensando em assumir?"*. E ajuda a cooperativa a entender os riscos da
+carteira antes que eles virem inadimplência.
 
-It is **not** a bank, it does not renegotiate debt, and it never promises an
-approval. The diagnostic is indicative and built from what the producer tells
-us.
+Não é banco, não concede nem recomenda crédito, não renegocia dívidas e nunca
+promete aprovação. O diagnóstico é indicativo, gratuito para o produtor e
+independente das instituições. A renegociação (e a MP 1.376/2026) aparece
+apenas como um caminho para quem já está com dificuldade.
 
-Product journey: **Entender → Diagnosticar → Medir → Comparar → Agir.**
-
-> **Language policy.** Every user-facing string is Brazilian Portuguese
-> (pt-BR) — labels, buttons, errors, empty states, alt text, meta tags.
-> Code, comments, commit messages and this README are English.
+> **Política de idioma.** Tudo o que é criado ou alterado usa português do
+> Brasil: textos da interface, nomes de arquivos, funções, variáveis, tipos,
+> comentários, testes e commits. Partes antigas deste README e do design
+> system ainda estão em inglês.
 
 ---
 
-## Current phase: UX/UI foundation
+## Fase atual: protótipo sem backend
 
-This branch contains the design system and a high-fidelity, working front end.
-There is **no backend, no authentication, no database and no real diagnostic
-engine yet**. Where the flow needs dynamic behaviour it is built as a fully
-interactive prototype over local state and sample data. Every such place is
-marked with a `PROTOTYPE` or `MOCK` comment in the source — search for those
-before wiring anything to a real service.
+Não há servidor, login nem banco de dados. As respostas ficam no navegador
+(`localStorage`) e o resultado é calculado no próprio aparelho.
 
-Specifically simulated today:
-
-| Area | File | What is fake |
+| Parte | Onde está | O que ainda é provisório |
 |---|---|---|
-| Diagnostic analysis | `src/lib/diagnostic.ts` → `analyse()` | Placeholder rules; the **output shape** is the contract the real engine should honour. |
-| Sample scenarios, FAQ, action plan | `src/lib/mock-data.ts` | Illustrative values, not offers or predictions. |
-| Document upload | `src/components/ui/FileUpload.tsx` | Nothing leaves the device; the round trip is a timer. |
-| Answer storage | `src/lib/useSavedAnswers.ts` | `localStorage` only — no account, no sync. |
+| Motor do diagnóstico preventivo | `src/lib/diagnostico/` | As premissas marcadas `{{PREMISSA_A_VALIDAR}}` em `premissas.ts`. |
+| Critérios da MP 1.376/2026 | `src/lib/diagnostico/mp.ts` | Todos: a MP aparece sempre como "não avaliada". |
+| Painel das cooperativas | `src/lib/institucional/dados-simulados.ts` | Todos os números são fictícios. |
+| Consentimentos | `src/lib/consentimento/` | Guardados só no navegador; precisam ir para o servidor. |
+
+O motor, as fórmulas, as premissas e como preencher a MP estão explicados em
+[`docs/diagnostico-preventivo.md`](docs/diagnostico-preventivo.md).
 
 ---
 
@@ -52,7 +50,7 @@ npm run dev          # http://localhost:3000
 | `npm run start` | Serves the production build. |
 | `npm run lint` | ESLint via `next lint`. |
 | `npm run typecheck` | `tsc --noEmit`. |
-| `npm test` | Testes das regras de privacidade, consentimento e formulários (executor do Node). |
+| `npm test` | Testes do motor do diagnóstico, do questionário, da privacidade e dos consentimentos (executor do Node, sem dependência nova). |
 
 The first `npm install` and the first build download the two web fonts through
 `next/font`, which self-hosts them — after that, builds work offline and the
@@ -62,13 +60,15 @@ running app never requests a third-party font.
 
 | Route | What it is |
 |---|---|
-| `/` | The public landing page. |
-| `/diagnostico` | The seven-step diagnostic prototype. |
-| `/diagnostico/resultado` | The results screen, computed in the browser. |
+| `/` | Página inicial, com a simulação rápida da safra. |
+| `/diagnostico` | Questionário adaptativo: 15 telas para quem já tem custeio, 14 para quem planeja a safra. |
+| `/diagnostico/resultado` | Resultado: três cenários, margem de segurança, fatores e um próximo passo. |
+| `/diagnostico/exemplo/ja-tenho-custeio` | Exemplo fictício: safra apertada. Não mexe nas respostas salvas. |
+| `/diagnostico/exemplo/planejando-safra` | Exemplo fictício: safra com folga. |
+| `/diagnostico/consentimento` | Os dois consentimentos opcionais: estatísticas anônimas e conversa com instituições. |
+| `/cooperativas` | Página de apresentação para cooperativas. |
+| `/painel` | Painel agregado da cooperativa, com dados fictícios. |
 | `/design-system` | Living reference: every token and every component state. |
-| `/cooperativas` | Página de apresentação para cooperativas e sindicatos (área institucional). |
-| `/painel` | Painel agregado da instituição licenciada, com dados fictícios. |
-| `/diagnostico/consentimento` | Etapa opcional em que o produtor autoriza a apresentação a instituições. |
 
 A área institucional está documentada em português em
 [`docs/area-institucional.md`](docs/area-institucional.md).
@@ -108,7 +108,7 @@ at ≥ 4.5:1 foreground-on-surface:
 | `info` | `bg-info-surface text-info-fg` | Neutral information. |
 
 **Colour never carries meaning alone.** Every status is rendered with its own
-icon shape *and* a written pt-BR label (`StatusBadge`, `Alert`, `DebtShareChart`).
+icon shape *and* a written pt-BR label (`StatusBadge`, `Alert`, os cartões de cenário do resultado).
 The palette is validated for colour-vision deficiency separation; the amber sits
 below 3:1 against the page, which is why anything using it also carries a direct
 label.
@@ -178,8 +178,7 @@ state applies.
 | `ConfirmDialog` | `Overlay.tsx` | For irreversible actions; cancel is never hidden. |
 | `Skeleton*` | `Skeleton.tsx` | Loading shapes used instead of spinners. |
 | `StateView` | `StateView.tsx` | `empty` / `error` / `offline` / `success`, each with one action. |
-| `DebtShareChart` | `DebtChart.tsx` | Debt as a share of projected revenue — a labelled proportion bar. |
-| `ComparisonBar` | `DebtChart.tsx` | One measure, one axis, always directly labelled. |
+| `ComparisonBar` | `ComparisonBar.tsx` | One measure, one axis, always directly labelled. |
 | Icons | `Icon.tsx` | Hand-rolled inline SVG — no icon package. |
 
 Brand marks live in `src/components/brand`: `Logo` / `LighthouseMark` and
@@ -189,12 +188,14 @@ there is no image request).
 ### Supporting modules
 
 - `src/lib/format.ts` — pt-BR formatting, masks and parsing (`formatCurrency`,
-  `maskPercent`, `parseBrNumber`, `debtToRevenueRatio`…).
+  `maskPercent`, `parseBrNumber`…).
 - `src/lib/glossary.ts` — plain-language definitions (CPR, CET, Pronaf,
   carência, portabilidade…). A technical term is never shown bare; wrap it in
   `<Term>`.
-- `src/lib/diagnostic.ts` — question order, per-step validation and `analyse()`.
-- `src/lib/useSavedAnswers.ts` — `localStorage` persistence and online status.
+- `src/lib/diagnostico/` — o motor do diagnóstico preventivo e o fluxo do
+  questionário (veja [`docs/diagnostico-preventivo.md`](docs/diagnostico-preventivo.md)).
+- `src/lib/useDiagnosticoSalvo.ts` — salvamento no aparelho a cada resposta e
+  aviso de conexão.
 
 ---
 
