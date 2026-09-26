@@ -9,7 +9,14 @@ import {
 } from './consentimento';
 import type { ConsentimentoDeOriginacao } from './consentimento';
 
-const CHAVE_NO_DISPOSITIVO = 'mcr:consentimento-originacao:v1';
+/**
+ * Versão 2: o que é compartilhado passou a ser o resumo do diagnóstico
+ * preventivo (situação, margem e fator principal). Uma autorização dada na
+ * versão 1 valia para outro conteúdo, então ela NÃO é herdada: todas as
+ * instituições voltam a ficar desligadas, e a tela explica o motivo.
+ */
+const CHAVE_DO_CONSENTIMENTO = 'mcr:consentimento-originacao:v2';
+const CHAVE_DO_CONSENTIMENTO_ANTIGO = 'mcr:consentimento-originacao:v1';
 
 /**
  * Guarda as autorizações do produtor neste dispositivo.
@@ -25,10 +32,16 @@ export function useConsentimentoDeOriginacao() {
   const [consentimento, atualizarConsentimento] =
     useState<ConsentimentoDeOriginacao>(consentimentoInicial);
   const [carregado, marcarComoCarregado] = useState(false);
+  /** Havia autorização na versão antiga, que não vale para o conteúdo novo. */
+  const [haviaAutorizacaoAntiga, marcarAutorizacaoAntiga] = useState(false);
 
   useEffect(() => {
     try {
-      const salvo = window.localStorage.getItem(CHAVE_NO_DISPOSITIVO);
+      const antigo = window.localStorage.getItem(CHAVE_DO_CONSENTIMENTO_ANTIGO);
+      const antigoLido = antigo ? (JSON.parse(antigo) as Partial<ConsentimentoDeOriginacao>) : null;
+      marcarAutorizacaoAntiga(Object.keys(antigoLido?.autorizacoesAtivas ?? {}).length > 0);
+
+      const salvo = window.localStorage.getItem(CHAVE_DO_CONSENTIMENTO);
       if (salvo) {
         const lido = JSON.parse(salvo) as Partial<ConsentimentoDeOriginacao>;
         atualizarConsentimento({
@@ -46,7 +59,7 @@ export function useConsentimentoDeOriginacao() {
   const salvar = useCallback((novoConsentimento: ConsentimentoDeOriginacao) => {
     atualizarConsentimento(novoConsentimento);
     try {
-      window.localStorage.setItem(CHAVE_NO_DISPOSITIVO, JSON.stringify(novoConsentimento));
+      window.localStorage.setItem(CHAVE_DO_CONSENTIMENTO, JSON.stringify(novoConsentimento));
     } catch {
       // A escolha vale para esta visita, mesmo que não fique salva.
     }
@@ -69,5 +82,5 @@ export function useConsentimentoDeOriginacao() {
     [consentimento, salvar],
   );
 
-  return { consentimento, carregado, autorizar, revogar, revogarTodas };
+  return { consentimento, carregado, haviaAutorizacaoAntiga, autorizar, revogar, revogarTodas };
 }

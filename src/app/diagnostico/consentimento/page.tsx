@@ -24,7 +24,9 @@ import {
 import { useConsentimentoDeOriginacao } from '@/lib/consentimento/useConsentimentoDeOriginacao';
 import { instituicoesParticipantes } from '@/lib/institucional/dados-simulados';
 import { formatarData } from '@/lib/institucional/formatacao';
-import { useSavedAnswers } from '@/lib/useSavedAnswers';
+import { diagnosticar } from '@/lib/diagnostico/diagnosticar';
+import { primeiraTelaIncompleta } from '@/lib/diagnostico/fluxo';
+import { useDiagnosticoSalvo } from '@/lib/useDiagnosticoSalvo';
 
 /**
  * Etapa opcional depois do resultado do diagnóstico: o produtor decide se quer
@@ -38,10 +40,12 @@ import { useSavedAnswers } from '@/lib/useSavedAnswers';
  * O título da página vem do layout de `/diagnostico`, que já impede indexação.
  */
 export default function PaginaDeConsentimento() {
-  const { answers: respostas, restored: respostasCarregadas } = useSavedAnswers();
-  const { consentimento, carregado, autorizar, revogar, revogarTodas } = useConsentimentoDeOriginacao();
+  const { respostas, restaurado: respostasCarregadas } = useDiagnosticoSalvo();
+  const { consentimento, carregado, haviaAutorizacaoAntiga, autorizar, revogar, revogarTodas } =
+    useConsentimentoDeOriginacao();
 
-  const temDiagnostico = respostasCarregadas && Boolean(respostas.crop);
+  const temDiagnostico = respostasCarregadas && primeiraTelaIncompleta(respostas) === 'revisao';
+  const resultado = temDiagnostico ? diagnosticar(respostas) : null;
   const quantidadeAutorizada = quantidadeDeInstituicoesAutorizadas(consentimento);
 
   return (
@@ -72,7 +76,7 @@ export default function PaginaDeConsentimento() {
               <SkeletonCard className="mt-8" />
               <SkeletonCard className="mt-4" />
             </SkeletonRegion>
-          ) : !temDiagnostico ? (
+          ) : !resultado ? (
             <StateView
               variant="empty"
               title="Primeiro, o seu diagnóstico"
@@ -88,10 +92,17 @@ export default function PaginaDeConsentimento() {
                 Quer que instituições de crédito conheçam o seu caso?
               </h1>
               <p className="mt-4 max-w-prose text-body-lg leading-relaxed text-ink-600">
-                Você pode autorizar que o resumo do seu diagnóstico seja apresentado a instituições
-                participantes, para buscar condições melhores. A escolha é sua, instituição por
-                instituição, e pode ser desfeita quando você quiser.
+                Você pode permitir que um resumo do seu diagnóstico seja apresentado a instituições que
+                possam conversar com você sobre crédito. A escolha é sua, instituição por instituição, e
+                pode ser desfeita quando você quiser. Não autorizar não muda nada no seu diagnóstico.
               </p>
+
+              {haviaAutorizacaoAntiga ? (
+                <Alert tone="info" title="Pedimos a sua autorização de novo" className="mt-6">
+                  O resumo que seria compartilhado mudou. Uma autorização dada antes valia para outro
+                  conteúdo, por isso todas as instituições voltaram a ficar desligadas.
+                </Alert>
+              ) : null}
 
               <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Card>
@@ -117,11 +128,10 @@ export default function PaginaDeConsentimento() {
                   O que seria compartilhado
                 </h2>
                 <p className="mt-2 max-w-prose text-body-sm leading-relaxed text-ink-600">
-                  Exatamente estas informações, com os números que você informou. Documentos que você
-                  enviou não são compartilhados.
+                  Exatamente estas três linhas, tiradas do seu resultado. Nada além disso.
                 </p>
                 <div className="mt-4">
-                  <ResumoQueSeriaCompartilhado respostas={respostas} />
+                  <ResumoQueSeriaCompartilhado resultado={resultado} />
                 </div>
               </section>
 
