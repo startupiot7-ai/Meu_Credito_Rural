@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Abertura } from '@/components/institucional/pagina/Abertura';
 import { CabecalhoInstitucional } from '@/components/institucional/pagina/CabecalhoInstitucional';
 import { ComoFuncionaParaInstituicao } from '@/components/institucional/pagina/ComoFuncionaParaInstituicao';
+import { PreviaDoPainel } from '@/components/institucional/pagina/PreviaDoPainel';
+import { PrivacidadeELimites } from '@/components/institucional/pagina/PrivacidadeELimites';
 import { ProblemaDaCooperativa } from '@/components/institucional/pagina/ProblemaDaCooperativa';
 import { RodapeInstitucional } from '@/components/institucional/pagina/RodapeInstitucional';
 
@@ -25,6 +27,8 @@ export default function PaginaParaCooperativas() {
         <Abertura />
         <ProblemaDaCooperativa />
         <ComoFuncionaParaInstituicao />
+        <PreviaDoPainel />
+        <PrivacidadeELimites />
       </main>
       <RodapeInstitucional />
     </>
