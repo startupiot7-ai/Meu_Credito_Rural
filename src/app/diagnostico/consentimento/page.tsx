@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Logo } from '@/components/brand/Logo';
+import { ConsentimentoEstatistico } from '@/components/consentimento/ConsentimentoEstatistico';
 import { InterruptorDeConsentimento } from '@/components/consentimento/InterruptorDeConsentimento';
 import { ResumoQueSeriaCompartilhado } from '@/components/consentimento/ResumoQueSeriaCompartilhado';
 import {
@@ -123,6 +124,14 @@ export default function PaginaDeConsentimento() {
                 </Card>
               </div>
 
+              {/* Consentimento 1, separado do pedido de conversa com instituições. */}
+              <ConsentimentoEstatistico className="mt-8" />
+
+              <h2 className="mt-12 text-title">Conversa com instituições</h2>
+              <p className="mt-2 max-w-prose text-body-sm leading-relaxed text-ink-600">
+                É uma autorização diferente da de cima. Você pode dar uma, as duas ou nenhuma.
+              </p>
+
               <section aria-labelledby="o-que-seria-compartilhado" className="mt-10">
                 <h2 id="o-que-seria-compartilhado" className="text-title">
                   O que seria compartilhado
@@ -149,8 +158,8 @@ export default function PaginaDeConsentimento() {
                     return (
                       <InterruptorDeConsentimento
                         key={instituicao.identificador}
-                        nomeDaInstituicao={instituicao.nome}
-                        tipoDeInstituicao={instituicao.tipo}
+                        titulo={instituicao.nome}
+                        detalhe={instituicao.tipo}
                         autorizado={autorizada}
                         autorizadoDesde={autorizadaEm ? formatarData(autorizadaEm) : undefined}
                         aoAlterar={(querAutorizar) =>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { ConsentimentoEstatistico } from '@/components/consentimento/ConsentimentoEstatistico';
 import { ConviteParaApresentacao } from '@/components/consentimento/ConviteParaApresentacao';
 import { CabecalhoComVolta } from '@/components/diagnostico/CabecalhoComVolta';
 import { VisaoDoResultado } from '@/components/diagnostico/resultado/VisaoDoResultado';
@@ -44,8 +45,12 @@ export default function PaginaDoResultado() {
                 resultado={resultado}
                 acaoPrincipal={{ rotulo: 'Revisar minhas respostas', destino: '/diagnostico' }}
               />
-              {/* Etapa opcional, depois de tudo o que é do produtor. */}
-              <ConviteParaApresentacao className="mt-6" />
+              {/*
+               * Os dois consentimentos, separados e opcionais, depois de tudo o
+               * que é do produtor. Nenhum deles muda o resultado acima.
+               */}
+              <ConsentimentoEstatistico className="mt-6" />
+              <ConviteParaApresentacao className="mt-4" />
             </>
           )}
         </div>

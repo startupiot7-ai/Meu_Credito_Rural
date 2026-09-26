@@ -1,5 +1,7 @@
 /**
- * Consentimento do produtor para a originação qualificada.
+ * Consentimento do produtor para que instituições conversem com ele
+ * ("pedidos de conversa"). É o consentimento 2, separado do consentimento
+ * de uso anônimo para estatísticas (consentimento-estatistico.ts).
  *
  * REGRA OBRIGATÓRIA (LGPD): o consentimento começa DESLIGADO para todas as
  * instituições. Só uma ação explícita do produtor, instituição por

@@ -4,7 +4,7 @@ import { useId } from 'react';
 import { cn } from '@/lib/cn';
 
 /**
- * Interruptor de autorização para UMA instituição.
+ * Interruptor de UMA autorização: uma instituição, ou o uso anônimo para estatísticas.
  *
  * REGRA OBRIGATÓRIA (LGPD): este controle representa um consentimento
  * explícito. Ele nunca pode aparecer ligado sem que o produtor o tenha ligado.
@@ -16,14 +16,16 @@ import { cn } from '@/lib/cn';
  * cor ou pela posição do botão.
  */
 export function InterruptorDeConsentimento({
-  nomeDaInstituicao,
-  tipoDeInstituicao,
+  titulo,
+  detalhe,
   autorizado,
   autorizadoDesde,
   aoAlterar,
 }: {
-  nomeDaInstituicao: string;
-  tipoDeInstituicao: string;
+  /** O que está sendo autorizado, como o nome da instituição. */
+  titulo: string;
+  /** Uma linha antes do estado, como o tipo da instituição. */
+  detalhe: string;
   autorizado: boolean;
   /** Texto já formatado, como "26/09/2026". */
   autorizadoDesde?: string;
@@ -41,10 +43,10 @@ export function InterruptorDeConsentimento({
     >
       <div className="min-w-0">
         <p id={identificadorDoRotulo} className="text-body font-medium text-ink-900">
-          {nomeDaInstituicao}
+          {titulo}
         </p>
         <p id={identificadorDaDescricao} className="text-body-sm text-ink-600">
-          {tipoDeInstituicao} ·{' '}
+          {detalhe} ·{' '}
           {autorizado ? (
             <span className="font-medium text-canopy-700">
               Autorizado{autorizadoDesde ? ` desde ${autorizadoDesde}` : ''}

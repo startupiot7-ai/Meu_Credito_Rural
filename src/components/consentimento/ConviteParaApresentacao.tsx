@@ -28,8 +28,8 @@ export function ConviteParaApresentacao({ className }: { className?: string }) {
         <>
           <h2 className="text-title-sm">
             {quantidadeAutorizada === 1
-              ? 'Você autorizou 1 instituição a conhecer o seu caso'
-              : `Você autorizou ${quantidadeAutorizada} instituições a conhecer o seu caso`}
+              ? 'Você autorizou 1 instituição a conversar com você'
+              : `Você autorizou ${quantidadeAutorizada} instituições a conversar com você`}
           </h2>
           <p className="mt-2 text-body-sm leading-relaxed text-ink-600">
             Você pode rever ou retirar essa autorização quando quiser. A retirada vale na hora.
@@ -41,11 +41,10 @@ export function ConviteParaApresentacao({ className }: { className?: string }) {
       ) : (
         <>
           <p className="text-caption font-semibold uppercase tracking-[0.12em] text-ink-500">Opcional</p>
-          <h2 className="mt-1 text-title-sm">Apresentar seu caso a instituições de crédito</h2>
+          <h2 className="mt-1 text-title-sm">Conversar com instituições sobre crédito</h2>
           <p className="mt-2 text-body-sm leading-relaxed text-ink-600">
-            Se quiser, você pode autorizar que o resumo deste diagnóstico seja apresentado a
-            instituições participantes, para buscar condições melhores. Não autorizar não muda nada
-            no seu diagnóstico.
+            Se quiser, você pode permitir que instituições que você escolher vejam um resumo deste
+            diagnóstico e conversem com você. Não autorizar não muda nada no seu diagnóstico.
           </p>
           <ButtonLink href="/diagnostico/consentimento" variant="ghost" size="sm" className="mt-3 -ml-3">
             Entender e decidir
