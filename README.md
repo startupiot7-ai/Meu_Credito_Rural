@@ -52,6 +52,7 @@ npm run dev          # http://localhost:3000
 | `npm run start` | Serves the production build. |
 | `npm run lint` | ESLint via `next lint`. |
 | `npm run typecheck` | `tsc --noEmit`. |
+| `npm test` | Testes das regras de privacidade, consentimento e formulários (executor do Node). |
 
 The first `npm install` and the first build download the two web fonts through
 `next/font`, which self-hosts them — after that, builds work offline and the
@@ -65,6 +66,12 @@ running app never requests a third-party font.
 | `/diagnostico` | The seven-step diagnostic prototype. |
 | `/diagnostico/resultado` | The results screen, computed in the browser. |
 | `/design-system` | Living reference: every token and every component state. |
+| `/cooperativas` | Página de apresentação para cooperativas e sindicatos (área institucional). |
+| `/painel` | Painel agregado da instituição licenciada, com dados fictícios. |
+| `/diagnostico/consentimento` | Etapa opcional em que o produtor autoriza a apresentação a instituições. |
+
+A área institucional está documentada em português em
+[`docs/area-institucional.md`](docs/area-institucional.md).
 
 `/design-system` is the fastest way to review the system — open it first.
 

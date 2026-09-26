@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/brand/Logo';
+import { ConviteParaApresentacao } from '@/components/consentimento/ConviteParaApresentacao';
 import {
   Alert,
   AlertTriangleIcon,
@@ -216,6 +217,9 @@ export default function ResultPage() {
                 Não somos uma instituição financeira: a análise e a decisão sobre qualquer
                 renegociação são sempre da instituição com quem você tem a dívida.
               </Alert>
+
+              {/* 6. Etapa opcional, depois de tudo que é do produtor. */}
+              <ConviteParaApresentacao className="mt-6" />
             </article>
           )}
         </div>
