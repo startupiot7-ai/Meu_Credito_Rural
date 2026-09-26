@@ -1,7 +1,10 @@
 import { AlertTriangleIcon, ButtonLink, Card, CheckCircleIcon, StepProgress } from '@/components/ui';
-import { TOTAL_STEPS, stepLabels } from '@/lib/diagnostic';
+import { rotuloDaTela, telasDoFluxo } from '@/lib/diagnostico/fluxo';
 import { sampleFindings } from '@/lib/mock-data';
 import { Section } from './Section';
+
+/** O caminho de quem planeja a safra, usado só para ilustrar a barra de progresso. */
+const telasDeExemplo = telasDoFluxo('planejando-safra');
 
 /**
  * Diagnóstico (preview) — the question, then the answer.
@@ -25,7 +28,7 @@ export function DiagnosticPreview() {
       <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
         {/* The question, exactly as the producer will see it. */}
         <Card className="flex flex-col">
-          <StepProgress current={2} total={TOTAL_STEPS} labels={[...stepLabels]} />
+          <StepProgress current={2} total={telasDeExemplo.length} labels={telasDeExemplo.map((tela) => rotuloDaTela[tela])} />
 
           <div className="mt-6 flex-1">
             <h3 className="text-title-sm">Quantas sacas você espera colher?</h3>

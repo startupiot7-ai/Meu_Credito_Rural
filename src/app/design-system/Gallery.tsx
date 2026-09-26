@@ -32,7 +32,10 @@ import {
   Tooltip,
 } from '@/components/ui';
 import type { UploadedFile } from '@/components/ui';
-import { stepLabels, TOTAL_STEPS } from '@/lib/diagnostic';
+import { rotuloDaTela, telasDoFluxo } from '@/lib/diagnostico/fluxo';
+
+/** O caminho de quem planeja a safra, usado só para ilustrar a barra de progresso. */
+const telasDeExemplo = telasDoFluxo('planejando-safra');
 
 /**
  * Component gallery.
@@ -292,7 +295,7 @@ export function Gallery() {
 
       <Block title="Progresso" description="Pontos no caminho, barras e listas de conferência.">
         <div className="flex flex-col gap-8">
-          <StepProgress current={3} total={TOTAL_STEPS} labels={[...stepLabels]} />
+          <StepProgress current={3} total={telasDeExemplo.length} labels={telasDeExemplo.map((tela) => rotuloDaTela[tela])} />
           <div className="grid gap-5 md:grid-cols-2">
             <ProgressBar value={18} label="Comprometimento" valueLabel="18%" tone="healthy" />
             <ProgressBar value={40} label="Comprometimento" valueLabel="40%" tone="attention" />

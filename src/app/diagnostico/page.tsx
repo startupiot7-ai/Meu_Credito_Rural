@@ -1,115 +1,155 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import type { ReactElement } from 'react';
 import { Logo } from '@/components/brand/Logo';
 import {
   Alert,
-  Button,
   ArrowRightIcon,
+  Button,
   ChevronLeftIcon,
   CloudOffIcon,
   ConfirmDialog,
   SaveIcon,
   StepProgress,
 } from '@/components/ui';
-import type { UploadedFile } from '@/components/ui';
 import {
-  StepCrop,
-  StepDebt,
-  StepDocuments,
-  StepHistory,
-  StepPrice,
-  StepProduction,
-} from '@/components/diagnostic/Steps';
-import type { StepProps } from '@/components/diagnostic/Steps';
-import { StepReview } from '@/components/diagnostic/StepReview';
-import { TOTAL_STEPS, stepLabels, validateStep } from '@/lib/diagnostic';
-import { useOnlineStatus, useSavedAnswers } from '@/lib/useSavedAnswers';
+  TelaDaArea,
+  TelaDaCultura,
+  TelaDaPosseDaTerra,
+  TelaDaProtecao,
+  TelaDoPerfil,
+} from '@/components/diagnostico/telas/TelasDaLavoura';
+import { TelaDaProducao, TelaDoCusto, TelaDoPreco } from '@/components/diagnostico/telas/TelasDaSafra';
+import {
+  TelaDeOutrosPagamentos,
+  TelaDoCafePrometido,
+  TelaDoCusteio,
+} from '@/components/diagnostico/telas/TelasDoCredito';
+import {
+  TelaDaRetiradaDaFamilia,
+  TelaDeRevisao,
+  TelaDoPrecoFechado,
+  TelaDosAcontecimentos,
+} from '@/components/diagnostico/telas/TelasDaVenda';
+import type { PropsDaTela } from '@/components/diagnostico/telas/tipos';
+import {
+  primeiraTelaIncompleta,
+  rotuloDaTela,
+  telaAnterior,
+  telaSeguinte,
+  telasDoFluxo,
+  validarTela,
+} from '@/lib/diagnostico/fluxo';
+import type { IdDaTela } from '@/lib/diagnostico/fluxo';
+import { useConexao, useDiagnosticoSalvo } from '@/lib/useDiagnosticoSalvo';
 
 /**
- * The diagnostic flow.
+ * O questionário do diagnóstico preventivo.
  *
- * PROTOTYPE: everything here is local component state plus `localStorage`.
- * There is no account, no server and no submission — "Ver meu diagnóstico"
- * navigates to a results screen computed in the browser from the same answers.
+ * PROTÓTIPO: tudo fica no aparelho. Não há conta, servidor nem envio: "Ver
+ * meu resultado" abre uma tela calculada no próprio navegador.
  *
- * The three behaviours this screen exists to prove:
- *  1. One question per screen, with a visible position on the path.
- *  2. You can always go back, edit, or leave and come back.
- *  3. A dropped connection costs nothing, and we say so instead of hiding it.
+ * O que esta tela garante:
+ *  1. Uma decisão por tela, com a posição no caminho sempre visível.
+ *  2. Dá para voltar, editar, sair e continuar depois.
+ *  3. Uma queda de conexão não custa nada, e a tela diz isso.
  */
 
-const steps: Array<(props: StepProps) => React.ReactElement> = [
-  StepCrop,
-  StepProduction,
-  StepPrice,
-  StepDebt,
-  StepHistory,
-  StepDocuments,
-];
+const telasDoQuestionario: Record<Exclude<IdDaTela, 'revisao'>, (props: PropsDaTela) => ReactElement> = {
+  perfil: TelaDoPerfil,
+  cultura: TelaDaCultura,
+  area: TelaDaArea,
+  'posse-da-terra': TelaDaPosseDaTerra,
+  protecao: TelaDaProtecao,
+  producao: TelaDaProducao,
+  preco: TelaDoPreco,
+  custo: TelaDoCusto,
+  custeio: TelaDoCusteio,
+  'cafe-prometido': TelaDoCafePrometido,
+  'outros-pagamentos': TelaDeOutrosPagamentos,
+  'preco-fechado': TelaDoPrecoFechado,
+  acontecimentos: TelaDosAcontecimentos,
+  'retirada-da-familia': TelaDaRetiradaDaFamilia,
+};
 
-export default function DiagnosticPage() {
+export default function PaginaDoDiagnostico() {
   const router = useRouter();
-  const { answers, setAnswers, step, setStep, savedAt, restored, hadSavedProgress, clear } =
-    useSavedAnswers();
-  const online = useOnlineStatus();
+  const {
+    respostas,
+    telaAtual,
+    salvoEm,
+    restaurado,
+    voltouDeOndeParou,
+    respostasAproveitadas,
+    atualizarRespostas,
+    irParaTela,
+    recomecar,
+  } = useDiagnosticoSalvo();
+  const conectado = useConexao();
 
-  const [error, setError] = useState<string | null>(null);
-  const [documents, setDocuments] = useState<UploadedFile[]>([]);
-  const [confirmingRestart, setConfirmingRestart] = useState(false);
-  const [savedNotice, setSavedNotice] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const headingRef = useRef<HTMLDivElement>(null);
+  const [erro, mudarErro] = useState<string | null>(null);
+  const [confirmandoRecomeco, mudarConfirmandoRecomeco] = useState(false);
+  const [avisoDeSalvo, mudarAvisoDeSalvo] = useState(false);
+  const [abrindoResultado, mudarAbrindoResultado] = useState(false);
+  const areaDaPergunta = useRef<HTMLDivElement>(null);
 
-  // Moving between steps sends focus to the new question, so keyboard and
-  // screen-reader users are not left at the bottom of the previous screen.
+  // Ao trocar de tela, o foco vai para a pergunta nova, para quem usa teclado
+  // ou leitor de tela não ficar no fim da tela anterior.
   useEffect(() => {
-    headingRef.current?.querySelector<HTMLElement>('h1')?.focus();
-  }, [step]);
+    areaDaPergunta.current?.querySelector<HTMLElement>('h1')?.focus();
+  }, [telaAtual]);
 
-  const update = useCallback(
-    (patch: Parameters<typeof setAnswers>[0]) => {
-      setError(null);
-      setAnswers(patch);
-    },
-    [setAnswers],
-  );
+  const telas = telasDoFluxo(respostas.perfil);
+  // Se o perfil mudou e a tela atual saiu do caminho, volta para a revisão.
+  const tela = telas.includes(telaAtual) ? telaAtual : 'revisao';
+  const posicao = telas.indexOf(tela) + 1;
+  const ehRevisao = tela === 'revisao';
 
-  function goNext() {
-    const message = validateStep(step, answers);
-    if (message) {
-      setError(message);
+  function atualizar(alteracao: Parameters<typeof atualizarRespostas>[0]) {
+    mudarErro(null);
+    atualizarRespostas(alteracao);
+  }
+
+  function avancar() {
+    const mensagem = validarTela(tela, respostas);
+    if (mensagem) {
+      mudarErro(mensagem);
       return;
     }
-    setError(null);
-    setStep(Math.min(step + 1, TOTAL_STEPS));
+    mudarErro(null);
+    irParaTela(telaSeguinte(tela, respostas.perfil));
   }
 
-  function goBack() {
-    setError(null);
-    setStep(Math.max(step - 1, 1));
+  function voltar() {
+    mudarErro(null);
+    irParaTela(telaAnterior(tela, respostas.perfil));
   }
 
-  function saveForLater() {
-    setSavedNotice(true);
-    window.setTimeout(() => setSavedNotice(false), 4000);
+  function avisarQueEstaSalvo() {
+    mudarAvisoDeSalvo(true);
+    window.setTimeout(() => mudarAvisoDeSalvo(false), 4000);
   }
 
-  function submit() {
-    // PROTOTYPE: a short delay so the loading state is visible; the result is
-    // computed from `answers` on the next screen, not fetched.
-    setSubmitting(true);
-    window.setTimeout(() => router.push('/diagnostico/resultado'), 600);
+  function verResultado() {
+    // Uma resposta pode ter ficado incompleta ao editar pela revisão.
+    const incompleta = primeiraTelaIncompleta(respostas);
+    if (incompleta !== 'revisao') {
+      irParaTela(incompleta);
+      mudarErro(validarTela(incompleta, respostas));
+      return;
+    }
+    mudarAbrindoResultado(true);
+    router.push('/diagnostico/resultado');
   }
 
-  const isReview = step === TOTAL_STEPS;
-  const CurrentStep = steps[step - 1];
-
-  const savedTime = savedAt
-    ? new Date(savedAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  const horarioSalvo = salvoEm
+    ? new Date(salvoEm).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
     : null;
+
+  const TelaAtual = ehRevisao ? null : telasDoQuestionario[tela];
 
   return (
     <div className="flex min-h-dvh flex-col bg-sand-50">
@@ -118,12 +158,7 @@ export default function DiagnosticPage() {
           <Link href="/" aria-label="Meu Crédito Rural, página inicial" className="rounded-md">
             <Logo />
           </Link>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setConfirmingRestart(true)}
-            className="shrink-0"
-          >
+          <Button variant="ghost" size="sm" onClick={() => mudarConfirmandoRecomeco(true)} className="shrink-0">
             Recomeçar
           </Button>
         </div>
@@ -131,80 +166,70 @@ export default function DiagnosticPage() {
 
       <main id="conteudo" className="flex-1">
         <div className="container-page max-w-2xl py-6 lg:py-10">
-          <StepProgress current={step} total={TOTAL_STEPS} labels={[...stepLabels]} />
+          <StepProgress current={posicao} total={telas.length} labels={telas.map((id) => rotuloDaTela[id])} />
 
-          {/* Connectivity is a first-class state, not an error. */}
-          {!online ? (
-            <Alert
-              tone="attention"
-              icon={<CloudOffIcon />}
-              title="Sua conexão caiu."
-              className="mt-6"
-            >
-              Suas respostas estão salvas neste dispositivo. Pode continuar respondendo
-              normalmente — quando a conexão voltar, nada terá se perdido.
+          {/* A conexão é um estado normal do campo, não um erro. */}
+          {!conectado ? (
+            <Alert tone="attention" icon={<CloudOffIcon />} title="Sua conexão caiu." className="mt-6">
+              Suas respostas estão salvas neste aparelho. Pode continuar respondendo normalmente.
             </Alert>
           ) : null}
 
-          {/* Shown on return, so picking up again is not a surprise. */}
-          {restored && hadSavedProgress && step > 1 && online ? (
+          {restaurado && respostasAproveitadas > 0 && tela === 'perfil' ? (
+            <Alert tone="info" title="Aproveitamos suas respostas anteriores." className="mt-6">
+              Trouxemos {respostasAproveitadas} {respostasAproveitadas === 1 ? 'resposta' : 'respostas'} do seu
+              diagnóstico anterior. Confira cada uma: o diagnóstico agora olha a safra inteira, não só a dívida.
+            </Alert>
+          ) : null}
+
+          {restaurado && voltouDeOndeParou && tela !== 'perfil' && conectado ? (
             <Alert tone="info" title="Você voltou de onde parou." className="mt-6">
-              Encontramos respostas salvas neste dispositivo
-              {savedTime ? ` às ${savedTime}` : ''}. Se preferir começar do zero, use
-              “Recomeçar”.
+              Encontramos respostas salvas neste aparelho{horarioSalvo ? ` às ${horarioSalvo}` : ''}. Se preferir
+              começar do zero, use “Recomeçar”.
             </Alert>
           ) : null}
 
-          <div ref={headingRef} className="mt-8">
-            {isReview ? (
-              <StepReview answers={answers} onEdit={(target) => setStep(target)} />
+          <div ref={areaDaPergunta} className="mt-8">
+            {!restaurado ? null : TelaAtual ? (
+              // `key` recria a tela ao trocar, para o estado local de uma não vazar para outra.
+              <TelaAtual key={tela} respostas={respostas} atualizar={atualizar} erro={erro} />
             ) : (
-              <CurrentStep
-                answers={answers}
-                update={update}
-                error={error}
-                documents={documents}
-                setDocuments={setDocuments}
-              />
+              <TelaDeRevisao respostas={respostas} aoEditar={(destino) => irParaTela(destino)} />
             )}
           </div>
         </div>
       </main>
 
       {/*
-       * The action bar is pinned to the bottom on mobile: the producer's thumb
-       * is already there, and "Voltar" must be as reachable as "Continuar".
+       * A barra de ações fica presa embaixo no celular: é onde o polegar já
+       * está, e "Voltar" precisa estar tão perto quanto "Continuar".
        */}
       <div className="sticky bottom-0 border-t border-sand-200 bg-sand-50/95 backdrop-blur-sm">
         <div className="container-page max-w-2xl py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-          {savedNotice ? (
-            <p
-              role="status"
-              className="mb-3 flex items-center gap-2 text-body-sm font-medium text-healthy-fg"
-            >
+          {avisoDeSalvo ? (
+            <p role="status" className="mb-3 flex items-center gap-2 text-body-sm font-medium text-healthy-fg">
               <SaveIcon className="text-body-lg" />
-              Suas respostas estão salvas neste dispositivo
-              {savedTime ? ` (${savedTime})` : ''}. Pode fechar e voltar depois.
+              Suas respostas estão salvas neste aparelho{horarioSalvo ? ` (${horarioSalvo})` : ''}. Pode fechar e
+              voltar depois.
             </p>
           ) : null}
 
           <div className="flex items-center gap-3">
             <Button
               variant="secondary"
-              onClick={goBack}
-              disabled={step === 1}
+              onClick={voltar}
+              disabled={tela === 'perfil'}
               iconLeft={<ChevronLeftIcon />}
               className="shrink-0"
             >
               Voltar
             </Button>
-
-            {isReview ? (
-              <Button onClick={submit} loading={submitting} loadingLabel="Preparando" fullWidth>
-                Ver meu diagnóstico
+            {ehRevisao ? (
+              <Button onClick={verResultado} loading={abrindoResultado} loadingLabel="Preparando" fullWidth>
+                Ver meu resultado
               </Button>
             ) : (
-              <Button onClick={goNext} iconRight={<ArrowRightIcon />} fullWidth>
+              <Button onClick={avancar} iconRight={<ArrowRightIcon />} fullWidth>
                 Continuar
               </Button>
             )}
@@ -213,30 +238,29 @@ export default function DiagnosticPage() {
           <div className="mt-3 flex items-center justify-between gap-3">
             <button
               type="button"
-              onClick={saveForLater}
+              onClick={avisarQueEstaSalvo}
               className="inline-flex min-h-touch items-center gap-2 rounded-md text-body-sm font-medium text-canopy-700 transition-colors hover:text-canopy-800"
             >
               <SaveIcon className="text-body-lg" />
               Salvar e continuar depois
             </button>
             <p className="text-caption text-ink-500">
-              Etapa {step} de {TOTAL_STEPS}
+              Etapa {posicao} de {telas.length}
             </p>
           </div>
         </div>
       </div>
 
       <ConfirmDialog
-        open={confirmingRestart}
-        onClose={() => setConfirmingRestart(false)}
+        open={confirmandoRecomeco}
+        onClose={() => mudarConfirmandoRecomeco(false)}
         onConfirm={() => {
-          clear();
-          setDocuments([]);
-          setError(null);
-          setConfirmingRestart(false);
+          recomecar();
+          mudarErro(null);
+          mudarConfirmandoRecomeco(false);
         }}
         title="Recomeçar o diagnóstico?"
-        description="Suas respostas serão apagadas deste dispositivo e você voltará à primeira pergunta. Não dá para desfazer."
+        description="Suas respostas serão apagadas deste aparelho e você voltará à primeira pergunta. Não dá para desfazer."
         confirmLabel="Sim, recomeçar"
         cancelLabel="Continuar de onde parei"
         destructive
