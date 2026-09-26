@@ -56,7 +56,7 @@ export function DistribuicaoDeRisco({
 
   if (variante === 'compacta') {
     return (
-      <div className={cn('min-w-[8rem]', className)}>
+      <div className={cn('min-w-[6rem]', className)}>
         {barra}
         <span className="sr-only">{descricaoEmTexto}</span>
       </div>

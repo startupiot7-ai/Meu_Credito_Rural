@@ -63,17 +63,17 @@ export function RecortesDaCarteira({ recortes }: { recortes: RecorteDaCarteira[]
       </fieldset>
 
       <div className="-mx-5 overflow-x-auto px-5 md:-mx-6 md:px-6">
-        <table className="w-full min-w-[46rem] border-collapse text-left">
+        <table className="w-full min-w-[38rem] border-collapse text-left">
           <caption className="sr-only">
             Carteira por {recorte.rotulo.toLowerCase()}, com a distribuição por faixa de risco
           </caption>
           <thead>
             <tr className="border-b border-sand-300 text-caption font-semibold uppercase tracking-[0.06em] text-ink-500">
               <th scope="col" className="py-2.5 pr-4 font-semibold">{recorte.rotulo}</th>
-              <th scope="col" className="py-2.5 pr-4 text-right font-semibold">Com diagnóstico</th>
-              <th scope="col" className="w-[30%] py-2.5 pr-4 font-semibold">Distribuição por faixa</th>
+              <th scope="col" className="py-2.5 pr-4 text-right font-semibold">Avaliados</th>
+              <th scope="col" className="w-[28%] py-2.5 pr-4 font-semibold">Distribuição por faixa</th>
               <th scope="col" className="py-2.5 pr-4 text-right font-semibold">Em risco elevado</th>
-              <th scope="col" className="py-2.5 text-right font-semibold">Receita comprometida</th>
+              <th scope="col" className="py-2.5 text-right font-semibold">Comprometimento</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-sand-200">
