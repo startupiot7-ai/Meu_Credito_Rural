@@ -80,12 +80,13 @@ export type RetiradaDaFamilia = ValorInformado | { forma: 'prefiro-nao-informar'
 
 /**
  * O custo pode ser informado de três jeitos, porque cada produtor faz a
- * conta de um jeito: por hectare, por saca ou o total da safra.
+ * conta de um jeito: por hectare, por saca ou o total da safra. `valor: null`
+ * quer dizer que ele já escolheu a forma, mas ainda não respondeu o valor.
  */
 export type CustoInformado =
-  | { base: 'por-hectare'; valor: ValorInformado }
-  | { base: 'por-saca'; valor: ValorInformado }
-  | { base: 'total-da-safra'; valor: ValorInformado }
+  | { base: 'por-hectare'; valor: ValorInformado | null }
+  | { base: 'por-saca'; valor: ValorInformado | null }
+  | { base: 'total-da-safra'; valor: ValorInformado | null }
   | { base: 'nao-sei' };
 
 /**
