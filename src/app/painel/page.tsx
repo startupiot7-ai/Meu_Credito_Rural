@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { PainelInstitucional } from '@/components/institucional/painel/PainelInstitucional';
+import type { EstadoDoPainel } from '@/components/institucional/painel/PainelInstitucional';
 
 export const metadata: Metadata = {
   title: 'Painel institucional',
@@ -7,16 +9,22 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+function lerEstadoDoEndereco(valor: string | string[] | undefined): EstadoDoPainel {
+  if (valor === 'vazio' || valor === 'carregando') return valor;
+  return 'com-dados';
+}
+
 /**
  * Painel da instituição licenciada.
  *
  * Mostra apenas números agregados da carteira. Nenhum produtor é identificado,
  * exceto quando ele mesmo autorizou isso para esta instituição específica.
  */
-export default function PaginaDoPainel() {
-  return (
-    <main id="conteudo" className="container-page section-y">
-      <h1 className="text-display">Painel institucional</h1>
-    </main>
-  );
+export default async function PaginaDoPainel({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const parametros = await searchParams;
+  return <PainelInstitucional estado={lerEstadoDoEndereco(parametros.estado)} />;
 }
