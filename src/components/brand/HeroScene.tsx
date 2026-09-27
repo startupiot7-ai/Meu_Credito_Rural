@@ -3,7 +3,7 @@ import { cn } from '@/lib/cn';
 /**
  * HeroScene — the lighthouse at hero size.
  *
- * A purpose-built variant of `LighthouseMark`, not that mark scaled up. It
+ * A purpose-built lighthouse illustration, separate from the brand mark. It
  * keeps the same five-shape language — plinth, tower, lantern room, roof,
  * beam — with the proportions that matter preserved at this size:
  *
