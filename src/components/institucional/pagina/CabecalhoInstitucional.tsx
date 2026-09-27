@@ -18,7 +18,7 @@ export function CabecalhoInstitucional() {
       <div className="container-page flex h-16 items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link href="/cooperativas" aria-label="Meu Crédito Rural para instituições" className="shrink-0 rounded-md">
-            <Logo />
+            <Logo compactOnMobile />
           </Link>
           <span className="hidden whitespace-nowrap rounded-full bg-canopy-50 px-2.5 py-1 text-caption font-semibold text-canopy-700 md:inline">
             Para instituições
@@ -47,8 +47,10 @@ export function CabecalhoInstitucional() {
           >
             Sou produtor
           </Link>
+          {/* No celular, a frase inteira empurrava a página para o lado. */}
           <ButtonLink href="#demonstracao" size="sm">
-            Solicitar demonstração
+            <span className="sm:hidden">Demonstração</span>
+            <span className="hidden sm:inline">Solicitar demonstração</span>
           </ButtonLink>
         </div>
       </div>

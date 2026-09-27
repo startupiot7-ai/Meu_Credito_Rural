@@ -9,7 +9,7 @@ export function CabecalhoDoPainel({ nomeDaInstituicao }: { nomeDaInstituicao: st
       <div className="container-page flex h-16 max-w-screen-xl items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-4">
           <Link href="/cooperativas" aria-label="Meu Crédito Rural para instituições" className="shrink-0 rounded-md">
-            <Logo />
+            <Logo compactOnMobile />
           </Link>
           <span aria-hidden className="hidden h-6 w-px bg-sand-300 md:block" />
           <p className="hidden min-w-0 truncate text-body-sm text-ink-700 md:block">
