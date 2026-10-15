@@ -37,7 +37,7 @@ export const planoDeExemplo: PassoDoPlano[] = [
     id: 'prometido',
     titulo: 'Confira o que já está prometido',
     descricao:
-      'Barter, CPR e compras a prazo na revenda saem da mesma safra que o custeio. Somados, mostram quanto sobra de verdade.',
+      'Barter (troca de insumos por café), CPR (Cédula de Produto Rural: compromisso de entregar café ou pagar na colheita) e compras a prazo na revenda saem da mesma safra que o custeio. Somados, mostram quanto sobra de verdade.',
     esforco: 'uma conversa com a revenda ou a cooperativa',
     estado: 'agora',
   },

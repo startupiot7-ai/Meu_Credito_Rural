@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
-import { AlertCircleIcon, CheckCircleIcon } from './Icon';
+import { FieldError } from './FieldError';
+import { CheckCircleIcon } from './Icon';
 
 /**
  * Field — the shared chrome around every form control: label, helper text,
@@ -74,22 +75,12 @@ export function Field({
         status,
       })}
 
-      {error || success ? (
-        <p
-          id={messageId}
-          // Errors interrupt; confirmations wait their turn.
-          role={error ? 'alert' : 'status'}
-          className={cn(
-            'flex items-start gap-1.5 text-body-sm',
-            error ? 'text-risk-fg' : 'text-healthy-fg',
-          )}
-        >
-          {error ? (
-            <AlertCircleIcon className="mt-0.5 shrink-0 text-[1.05em]" />
-          ) : (
-            <CheckCircleIcon className="mt-0.5 shrink-0 text-[1.05em]" />
-          )}
-          <span>{error ?? success}</span>
+      {error ? (
+        <FieldError id={messageId}>{error}</FieldError>
+      ) : success ? (
+        <p id={messageId} role="status" className="flex items-start gap-1.5 text-body-sm text-healthy-fg">
+          <CheckCircleIcon className="mt-0.5 shrink-0 text-[1.05em]" />
+          <span>{success}</span>
         </p>
       ) : null}
     </div>
@@ -104,7 +95,7 @@ export const controlBase =
   'disabled:cursor-not-allowed disabled:border-sand-300 disabled:bg-sand-100 disabled:text-ink-400';
 
 export const controlStatus: Record<FieldStatus, string> = {
-  default: 'border-sand-300 hover:border-sand-400 focus:border-canopy-500',
+  default: 'border-control-border hover:border-control-border-hover focus:border-canopy-500',
   error: 'border-risk-solid bg-risk-surface/40 hover:border-risk-solid focus:border-risk-solid',
   success: 'border-healthy-border focus:border-healthy-solid',
 };

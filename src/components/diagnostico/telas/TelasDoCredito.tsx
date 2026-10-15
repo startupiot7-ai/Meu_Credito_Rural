@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { Checkbox, CurrencyInput, QuantityInput, RadioCard, RadioCardGroup } from '@/components/ui';
+import { useId, useState } from 'react';
+import { Checkbox, CurrencyInput, FieldError, QuantityInput, RadioCard, RadioCardGroup, Term } from '@/components/ui';
 import { opcoesDeLinhaDeCredito } from '@/lib/diagnostico/opcoes';
 import { faixasDeValorAnual, faixasDeValorDaSafra } from '@/lib/diagnostico/premissas';
 import type { ListaDeFaixas } from '@/lib/diagnostico/premissas';
@@ -90,7 +90,12 @@ export function TelaDoCafePrometido({ respostas, atualizar, erro }: PropsDaTela)
   return (
     <TelaDePergunta
       titulo="Parte desta safra já está prometida?"
-      ajuda="Café prometido para pagar insumos (troca ou barter), CPR ou adiantamento de comprador. Ele precisa ser entregue mesmo se a colheita vier menor."
+      ajuda={
+        <>
+          Café prometido para pagar insumos (troca, o chamado <Term term="barter">barter</Term>), <Term term="cpr" />{' '}
+          ou adiantamento de comprador. Ele precisa ser entregue mesmo se a colheita vier menor.
+        </>
+      }
     >
       <div className="flex flex-col gap-6">
         <RadioCardGroup legend="Parte desta safra já está prometida?" hideLegend error={escolha !== 'sim' ? erro ?? undefined : undefined}>
@@ -151,6 +156,7 @@ const itensDePagamento: {
 
 export function TelaDeOutrosPagamentos({ respostas, atualizar, erro }: PropsDaTela) {
   const pagamentos = respostas.outrosPagamentos;
+  const erroId = `${useId()}-erro`;
 
   function mudarPagamento(campo: keyof OutrosPagamentos, valor: ValorInformado | null) {
     atualizar({ outrosPagamentos: { ...pagamentos, [campo]: valor } });
@@ -161,7 +167,13 @@ export function TelaDeOutrosPagamentos({ respostas, atualizar, erro }: PropsDaTe
       titulo="O que mais você precisa pagar com esta safra?"
       ajuda="Marque o que você tiver. Se não tiver nenhum desses, é só continuar."
     >
-      <div className="flex flex-col gap-6">
+      <div
+        role="group"
+        aria-label="Outros pagamentos desta safra"
+        aria-describedby={erro ? erroId : undefined}
+        data-invalido={erro ? true : undefined}
+        className="flex flex-col gap-6"
+      >
         {itensDePagamento.map((item) => {
           const valor = pagamentos[item.campo];
           const marcado = valor !== null;
@@ -188,11 +200,7 @@ export function TelaDeOutrosPagamentos({ respostas, atualizar, erro }: PropsDaTe
             </div>
           );
         })}
-        {erro ? (
-          <p role="alert" className="text-body-sm text-risk-fg">
-            {erro}
-          </p>
-        ) : null}
+        {erro ? <FieldError id={erroId}>{erro}</FieldError> : null}
       </div>
     </TelaDePergunta>
   );

@@ -35,8 +35,9 @@ export function Section({
     <section
       id={id}
       aria-labelledby={headingId}
+      data-surface={tone === 'canopy' ? 'dark' : undefined}
       className={cn(
-        'section-y scroll-mt-16',
+        'section-y scroll-mt-28 lg:scroll-mt-16',
         tone === 'sand' && 'bg-sand-100',
         tone === 'canopy' && 'bg-canopy-800 text-sand-100',
         className,

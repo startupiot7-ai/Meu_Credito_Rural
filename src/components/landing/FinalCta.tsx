@@ -15,6 +15,7 @@ export function FinalCta() {
   return (
     <section
       aria-labelledby="cta-final-titulo"
+      data-surface="dark"
       className="section-y relative overflow-hidden bg-canopy-800"
     >
       <div

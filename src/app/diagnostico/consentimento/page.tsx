@@ -105,102 +105,107 @@ export default function PaginaDeConsentimento() {
                 </Alert>
               ) : null}
 
-              <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-                <Card>
-                  <h2 className="text-title-sm">Se você autorizar</h2>
-                  <ul className="mt-3 flex flex-col gap-2 text-body-sm leading-relaxed text-ink-700">
-                    <li>Só as instituições que você ligar abaixo recebem o resumo.</li>
-                    <li>Elas podem procurar você para conversar sobre condições.</li>
-                    <li>Você pode retirar a autorização a qualquer momento, nesta mesma página.</li>
-                  </ul>
-                </Card>
-                <Card>
-                  <h2 className="text-title-sm">Se você não autorizar</h2>
-                  <ul className="mt-3 flex flex-col gap-2 text-body-sm leading-relaxed text-ink-700">
-                    <li>Nada muda. Seu diagnóstico continua gratuito e igual.</li>
-                    <li>Nenhuma instituição vê o seu caso individualmente.</li>
-                    <li>Você pode voltar aqui depois, se mudar de ideia.</li>
-                  </ul>
-                </Card>
-              </div>
-
-              {/* Consentimento 1, separado do pedido de conversa com instituições. */}
-              <ConsentimentoEstatistico className="mt-8" />
-
-              <h2 className="mt-12 text-title">Conversa com instituições</h2>
-              <p className="mt-2 max-w-prose text-body-sm leading-relaxed text-ink-600">
-                É uma autorização diferente da de cima. Você pode dar uma, as duas ou nenhuma.
-              </p>
-
-              <section aria-labelledby="o-que-seria-compartilhado" className="mt-10">
-                <h2 id="o-que-seria-compartilhado" className="text-title">
-                  O que seria compartilhado
+              <section aria-labelledby="conversa-com-instituicoes" className="mt-10">
+                <h2 id="conversa-com-instituicoes" className="text-title">
+                  Conversa com instituições
                 </h2>
-                <p className="mt-2 max-w-prose text-body-sm leading-relaxed text-ink-600">
-                  Exatamente estas três linhas, tiradas do seu resultado. Nada além disso.
-                </p>
-                <div className="mt-4">
-                  <ResumoQueSeriaCompartilhado resultado={resultado} />
+                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <Card>
+                    <h3 className="text-title-sm">Se você autorizar</h3>
+                    <ul className="mt-3 flex flex-col gap-2 text-body-sm leading-relaxed text-ink-700">
+                      <li>Só as instituições que você ligar abaixo recebem o resumo.</li>
+                      <li>Elas podem procurar você para conversar sobre condições.</li>
+                      <li>Você pode retirar a autorização a qualquer momento, nesta mesma página.</li>
+                    </ul>
+                  </Card>
+                  <Card>
+                    <h3 className="text-title-sm">Se você não autorizar</h3>
+                    <ul className="mt-3 flex flex-col gap-2 text-body-sm leading-relaxed text-ink-700">
+                      <li>Nada muda. Seu diagnóstico continua gratuito e igual.</li>
+                      <li>Nenhuma instituição vê o seu caso individualmente.</li>
+                      <li>Você pode voltar aqui depois, se mudar de ideia.</li>
+                    </ul>
+                  </Card>
                 </div>
-              </section>
 
-              <section aria-labelledby="escolha-as-instituicoes" className="mt-10">
-                <h2 id="escolha-as-instituicoes" className="text-title">
-                  Escolha as instituições
-                </h2>
-                <p className="mt-2 max-w-prose text-body-sm leading-relaxed text-ink-600">
-                  Todas começam desligadas. Ligue apenas as que você quer que conheçam o seu caso.
-                </p>
-                <div className="mt-4 flex flex-col gap-3">
-                  {instituicoesParticipantes.map((instituicao) => {
-                    const autorizada = instituicaoEstaAutorizada(consentimento, instituicao.identificador);
-                    const autorizadaEm = consentimento.autorizacoesAtivas[instituicao.identificador];
-                    return (
-                      <InterruptorDeConsentimento
-                        key={instituicao.identificador}
-                        titulo={instituicao.nome}
-                        detalhe={instituicao.tipo}
-                        autorizado={autorizada}
-                        autorizadoDesde={autorizadaEm ? formatarData(autorizadaEm) : undefined}
-                        aoAlterar={(querAutorizar) =>
-                          querAutorizar
-                            ? autorizar(instituicao.identificador)
-                            : revogar(instituicao.identificador)
+                <div className="mt-10">
+                  <h3 id="o-que-seria-compartilhado" className="text-title-sm">
+                    O que seria compartilhado
+                  </h3>
+                  <p className="mt-2 max-w-prose text-body-sm leading-relaxed text-ink-600">
+                    Exatamente estas três linhas, tiradas do seu resultado. Nada além disso.
+                  </p>
+                  <div className="mt-4">
+                    <ResumoQueSeriaCompartilhado resultado={resultado} />
+                  </div>
+                </div>
+
+                <div className="mt-10">
+                  <h3 id="escolha-as-instituicoes" className="text-title-sm">
+                    Escolha as instituições
+                  </h3>
+                  <p className="mt-2 max-w-prose text-body-sm leading-relaxed text-ink-600">
+                    Todas começam desligadas. Ligue apenas as que você quer que conheçam o seu caso.
+                  </p>
+                  <div className="mt-4 flex flex-col gap-3">
+                    {instituicoesParticipantes.map((instituicao) => {
+                      const autorizada = instituicaoEstaAutorizada(consentimento, instituicao.identificador);
+                      const autorizadaEm = consentimento.autorizacoesAtivas[instituicao.identificador];
+                      return (
+                        <InterruptorDeConsentimento
+                          key={instituicao.identificador}
+                          titulo={instituicao.nome}
+                          detalhe={instituicao.tipo}
+                          autorizado={autorizada}
+                          autorizadoDesde={autorizadaEm ? formatarData(autorizadaEm) : undefined}
+                          aoAlterar={(querAutorizar) =>
+                            querAutorizar
+                              ? autorizar(instituicao.identificador)
+                              : revogar(instituicao.identificador)
+                          }
+                        />
+                      );
+                    })}
+                  </div>
+                  <p className="mt-3 text-caption text-ink-500">
+                    Nomes fictícios nesta versão de demonstração.
+                  </p>
+
+                  <div aria-live="polite" className="mt-6">
+                    {quantidadeAutorizada > 0 ? (
+                      <Alert
+                        tone="healthy"
+                        icon={<CheckCircleIcon />}
+                        title={
+                          quantidadeAutorizada === 1
+                            ? 'Você autorizou 1 instituição'
+                            : `Você autorizou ${quantidadeAutorizada} instituições`
                         }
-                      />
-                    );
-                  })}
-                </div>
-                <p className="mt-3 text-caption text-ink-500">
-                  Nomes fictícios nesta versão de demonstração.
-                </p>
-
-                <div aria-live="polite" className="mt-6">
-                  {quantidadeAutorizada > 0 ? (
-                    <Alert
-                      tone="healthy"
-                      icon={<CheckCircleIcon />}
-                      title={
-                        quantidadeAutorizada === 1
-                          ? 'Você autorizou 1 instituição'
-                          : `Você autorizou ${quantidadeAutorizada} instituições`
-                      }
-                      action={
-                        <Button variant="secondary" size="sm" onClick={revogarTodas}>
-                          Retirar todas as autorizações
-                        </Button>
-                      }
-                    >
-                      A retirada vale na hora. Para mudar depois, volte a esta página pelo link no
-                      resultado do seu diagnóstico.
-                    </Alert>
-                  ) : (
-                    <p className="text-body-sm text-ink-600">
-                      Nenhuma instituição autorizada. Seu diagnóstico continua só com você.
-                    </p>
-                  )}
+                        action={
+                          <Button variant="secondary" size="sm" onClick={revogarTodas}>
+                            Retirar todas as autorizações
+                          </Button>
+                        }
+                      >
+                        A retirada vale na hora. Para mudar depois, volte a esta página pelo link no
+                        resultado do seu diagnóstico.
+                      </Alert>
+                    ) : (
+                      <p className="text-body-sm text-ink-600">
+                        Nenhuma instituição autorizada. Seu diagnóstico continua só com você.
+                      </p>
+                    )}
+                  </div>
                 </div>
               </section>
+
+              {/* Autorização das estatísticas anônimas, separada da conversa com instituições. */}
+              <div className="mt-12">
+                <p className="max-w-prose text-body-sm leading-relaxed text-ink-600">
+                  É uma autorização diferente da de cima. Você pode dar uma, as duas ou nenhuma.
+                </p>
+                <ConsentimentoEstatistico className="mt-3" />
+              </div>
 
               <Alert
                 tone="info"

@@ -71,6 +71,18 @@ export const glossary = {
     definition:
       'O valor que a sua produção deve gerar na safra, antes de descontar custos: produção esperada multiplicada pelo preço estimado.',
   },
+  barter: {
+    term: 'barter',
+    expansion: 'troca de insumos por café',
+    definition:
+      'Você recebe adubo, defensivo ou outro insumo agora e paga com sacas de café na colheita, em vez de pagar em dinheiro.',
+  },
+  trading: {
+    term: 'trading',
+    expansion: 'empresa compradora de café',
+    definition:
+      'Empresa que compra café de produtores e cooperativas para revender no Brasil ou no exterior. Pode fechar o preço com você antes da colheita.',
+  },
   garantia: {
     term: 'garantia',
     definition:

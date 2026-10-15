@@ -20,6 +20,7 @@ import { GrupoProtegido } from './GrupoProtegido';
  */
 export function RecortesDaCarteira({ recortes }: { recortes: RecorteDaCarteira[] }) {
   const nomeDoGrupoDeOpcoes = useId();
+  const idDaNotaForaDoBanco = useId();
   const [recorteEscolhido, escolherRecorte] = useState(recortes[0]?.identificador);
   const recorte = recortes.find((item) => item.identificador === recorteEscolhido) ?? recortes[0];
 
@@ -51,7 +52,7 @@ export function RecortesDaCarteira({ recortes }: { recortes: RecorteDaCarteira[]
                   'block cursor-pointer rounded-lg px-4 py-2 text-body-sm font-medium text-ink-600',
                   'transition-colors duration-base ease-standard hover:text-ink-900',
                   'peer-checked:bg-sand-50 peer-checked:text-canopy-700 peer-checked:shadow-xs',
-                  'peer-focus-visible:ring-2 peer-focus-visible:ring-beam-500',
+                  'peer-focus-visible:ring-2 peer-focus-visible:ring-focus-ring',
                 )}
               >
                 {opcao.rotulo}
@@ -72,7 +73,13 @@ export function RecortesDaCarteira({ recortes }: { recortes: RecorteDaCarteira[]
               <th scope="col" className="py-2.5 pr-4 text-right font-semibold">Avaliados</th>
               <th scope="col" className="w-[28%] py-2.5 pr-4 font-semibold">Situação da safra</th>
               <th scope="col" className="py-2.5 pr-4 text-right font-semibold">Não cobrem</th>
-              <th scope="col" className="py-2.5 text-right font-semibold">Fora do banco</th>
+              <th
+                scope="col"
+                aria-describedby={idDaNotaForaDoBanco}
+                className="py-2.5 text-right font-semibold"
+              >
+                Compromissos fora do banco
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-sand-200">
@@ -115,7 +122,8 @@ export function RecortesDaCarteira({ recortes }: { recortes: RecorteDaCarteira[]
                     <span className="text-ink-500">({formatPercent(percentualQueNaoCobre)})</span>
                   </td>
                   <td className="py-3 text-right text-body-sm tabular-nums text-ink-800">
-                    {formatPercent(percentualForaDoBanco)}
+                    {formatNumber(segmento.comCompromissosForaDoBanco)}{' '}
+                    <span className="text-ink-500">({formatPercent(percentualForaDoBanco)})</span>
                   </td>
                 </tr>
               );
@@ -123,6 +131,10 @@ export function RecortesDaCarteira({ recortes }: { recortes: RecorteDaCarteira[]
           </tbody>
         </table>
       </div>
+      <p id={idDaNotaForaDoBanco} className="mt-3 text-caption text-ink-600">
+        Compromissos fora do banco: número e % dos avaliados com café prometido (barter, CPR) ou compras a prazo na
+        revenda.
+      </p>
     </BlocoDoPainel>
   );
 }

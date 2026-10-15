@@ -110,6 +110,8 @@ export function CampoDeQuantidade({
         checked={naoSabe}
         onChange={(marcado) => aoMudar(marcado ? { forma: 'nao-sei' } : null)}
         label="Não sei"
+        description="Tudo bem. A conta segue e mostramos o que isso muda."
+        card
       />
     </div>
   );

@@ -1,6 +1,7 @@
 'use client';
 
-import { ButtonLink, Checkbox, RadioCard, RadioCardGroup } from '@/components/ui';
+import { useId } from 'react';
+import { ButtonLink, Checkbox, FieldError, RadioCard, RadioCardGroup } from '@/components/ui';
 import {
   alternarEscolha,
   opcoesDeCultura,
@@ -42,12 +43,23 @@ export function TelaDoPerfil({ respostas, atualizar, erro }: PropsDaTela) {
         <p className="mt-1 text-body-sm text-ink-600">
           Os exemplos usam respostas fictícias e não mexem nas suas.
         </p>
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-          <ButtonLink href="/diagnostico/exemplo/ja-tenho-custeio" variant="secondary" size="sm">
-            Ver com um exemplo: já tenho custeio
+        {/* O Button não quebra linha por padrão; aqui o texto pode quebrar para nunca passar da borda do cartão. */}
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+          <ButtonLink
+            href="/diagnostico/exemplo/ja-tenho-custeio"
+            variant="secondary"
+            size="sm"
+            className="min-w-0 !whitespace-normal py-2 text-center"
+          >
+            Ver exemplo: já tenho custeio
           </ButtonLink>
-          <ButtonLink href="/diagnostico/exemplo/planejando-safra" variant="secondary" size="sm">
-            Ver com um exemplo: planejando a safra
+          <ButtonLink
+            href="/diagnostico/exemplo/planejando-safra"
+            variant="secondary"
+            size="sm"
+            className="min-w-0 !whitespace-normal py-2 text-center"
+          >
+            Ver exemplo: planejando a safra
           </ButtonLink>
         </div>
       </div>
@@ -123,12 +135,14 @@ export function TelaDaProtecao({ respostas, atualizar, erro }: PropsDaTela) {
     (opcao) => opcao.valor !== 'pretendo-contratar-seguro' || respostas.perfil === 'planejando-safra',
   );
 
+  const erroId = `${useId()}-erro`;
+
   return (
     <TelaDePergunta
       titulo="O que protege sua lavoura contra o clima?"
       ajuda="Marque tudo o que você tiver."
     >
-      <fieldset className="flex flex-col gap-1 border-0 p-0">
+      <fieldset className="flex flex-col gap-1 border-0 p-0" aria-describedby={erro ? erroId : undefined} data-invalido={erro ? true : undefined}>
         <legend className="sr-only">O que protege sua lavoura contra o clima?</legend>
         {opcoes.map((opcao) => (
           <Checkbox
@@ -142,9 +156,9 @@ export function TelaDaProtecao({ respostas, atualizar, erro }: PropsDaTela) {
           />
         ))}
         {erro ? (
-          <p role="alert" className="mt-1 text-body-sm text-risk-fg">
+          <FieldError id={erroId} className="mt-1">
             {erro}
-          </p>
+          </FieldError>
         ) : null}
       </fieldset>
     </TelaDePergunta>

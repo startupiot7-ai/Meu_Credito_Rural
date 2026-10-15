@@ -3,6 +3,7 @@
 import { useId } from 'react';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
+import { FieldError } from './FieldError';
 import { CheckIcon } from './Icon';
 
 /**
@@ -62,10 +63,10 @@ export function RadioCard({
           'transition-[border-color,background-color,box-shadow] duration-base ease-standard',
           'hover:border-canopy-300 hover:bg-canopy-50/50',
           'peer-checked:border-canopy-600 peer-checked:bg-canopy-50 peer-checked:shadow-xs',
-          'peer-focus-visible:ring-2 peer-focus-visible:ring-beam-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-sand-50',
+          'peer-focus-visible:ring-2 peer-focus-visible:ring-focus-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-sand-50',
           'peer-disabled:cursor-not-allowed peer-disabled:border-sand-200 peer-disabled:bg-sand-100',
           'peer-disabled:hover:border-sand-200 peer-disabled:hover:bg-sand-100',
-          checked ? 'border-canopy-600' : 'border-sand-300',
+          checked ? 'border-canopy-600' : 'border-control-border',
         )}
       >
         {/*
@@ -77,7 +78,7 @@ export function RadioCard({
           className={cn(
             'mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border-2',
             'transition-colors duration-base ease-standard',
-            checked ? 'border-canopy-600 bg-canopy-600' : 'border-sand-400 bg-sand-50',
+            checked ? 'border-canopy-600 bg-canopy-600' : 'border-control-border bg-sand-50',
           )}
         >
           <span
@@ -115,6 +116,8 @@ export type RadioCardGroupProps = {
   error?: string;
   children: ReactNode;
   className?: string;
+  /** Id estável do grupo; o erro recebe `${id}-erro` e fica ligado por aria-describedby. */
+  id?: string;
 };
 
 /** Wraps a set of `RadioCard`s in a real fieldset so the question is announced. */
@@ -125,9 +128,19 @@ export function RadioCardGroup({
   error,
   children,
   className,
+  id,
 }: RadioCardGroupProps) {
+  const generatedId = useId();
+  const groupId = id ?? generatedId;
+  const errorId = error ? `${groupId}-erro` : undefined;
+
   return (
-    <fieldset className={cn('flex flex-col gap-stack-sm border-0 p-0', className)}>
+    <fieldset
+      id={groupId}
+      aria-describedby={errorId}
+      data-invalido={error ? true : undefined}
+      className={cn('flex flex-col gap-stack-sm border-0 p-0', className)}
+    >
       <legend
         className={cn(
           hideLegend ? 'sr-only' : 'mb-1 text-body font-medium text-ink-900',
@@ -138,9 +151,9 @@ export function RadioCardGroup({
       {hint ? <p className="mb-1 text-body-sm text-ink-600">{hint}</p> : null}
       <div className="flex flex-col gap-2.5">{children}</div>
       {error ? (
-        <p role="alert" className="mt-1 text-body-sm text-risk-fg">
+        <FieldError id={errorId} className="mt-1">
           {error}
-        </p>
+        </FieldError>
       ) : null}
     </fieldset>
   );
@@ -154,6 +167,12 @@ export type CheckboxProps = {
   disabled?: boolean;
   error?: string;
   className?: string;
+  /**
+   * Mesma moldura grande do `RadioCard` (borda, 44 px, texto de corpo). Usada
+   * para opções como "Não sei", que precisam ter uma forma só em todo o
+   * questionário. Continua sendo uma caixa que se marca e se desmarca.
+   */
+  card?: boolean;
 };
 
 export function Checkbox({
@@ -164,6 +183,7 @@ export function Checkbox({
   disabled,
   error,
   className,
+  card,
 }: CheckboxProps) {
   const id = useId();
   const messageId = error ? `${id}-message` : undefined;
@@ -184,10 +204,17 @@ export function Checkbox({
         <label
           htmlFor={id}
           className={cn(
-            'flex min-h-touch cursor-pointer items-start gap-3 rounded-md py-2',
+            card
+              ? 'flex min-h-touch w-full cursor-pointer items-start gap-3 rounded-xl border-2 bg-sand-50 p-4 ' +
+                  'transition-[border-color,background-color] duration-base ease-standard ' +
+                  'hover:border-canopy-300 hover:bg-canopy-50/50 ' +
+                  'peer-checked:border-canopy-600 peer-checked:bg-canopy-50 ' +
+                  'peer-disabled:border-sand-200 peer-disabled:bg-sand-100 peer-disabled:hover:bg-sand-100 ' +
+                  (checked ? 'border-canopy-600' : error ? 'border-risk-solid' : 'border-control-border')
+              : 'flex min-h-touch cursor-pointer items-start gap-3 rounded-md py-2',
             // The ring lives on the label because Tailwind's `peer-*` variants
             // only reach siblings of the input, not their descendants.
-            'peer-focus-visible:ring-2 peer-focus-visible:ring-beam-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-sand-50',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-focus-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-sand-50',
             'peer-disabled:cursor-not-allowed',
           )}
         >
@@ -196,8 +223,9 @@ export function Checkbox({
             className={cn(
               'mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-sm border-2 text-sand-50',
               'transition-colors duration-base ease-standard',
-              checked ? 'border-canopy-600 bg-canopy-600' : 'border-sand-400 bg-sand-50',
-              error && !checked && 'border-risk-solid',
+              checked && 'border-canopy-600 bg-canopy-600',
+              !checked && !error && !disabled && 'border-control-border bg-sand-50',
+              !checked && error && !disabled && 'border-risk-solid bg-sand-50',
               disabled && 'border-sand-300 bg-sand-100',
             )}
           >
@@ -212,22 +240,24 @@ export function Checkbox({
           <span className="flex flex-col gap-0.5">
             <span
               className={cn(
-                'text-body-sm text-ink-800',
+                card ? 'text-body font-medium text-ink-900' : 'text-body-sm text-ink-800',
                 disabled && 'text-ink-400',
               )}
             >
               {label}
             </span>
             {description ? (
-              <span className="text-caption text-ink-500">{description}</span>
+              <span className={card ? 'text-body-sm text-ink-600' : 'text-caption text-ink-500'}>
+                {description}
+              </span>
             ) : null}
           </span>
         </label>
       </div>
       {error ? (
-        <p id={messageId} role="alert" className="pl-8 text-body-sm text-risk-fg">
+        <FieldError id={messageId} className={card ? undefined : 'pl-8'}>
           {error}
-        </p>
+        </FieldError>
       ) : null}
     </div>
   );

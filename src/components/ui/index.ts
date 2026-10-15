@@ -19,6 +19,8 @@ export type { CheckboxProps, RadioCardGroupProps, RadioCardProps } from './Choic
 export { ComparisonBar } from './ComparisonBar';
 export type { ComparisonBarProps } from './ComparisonBar';
 
+export { FieldError } from './FieldError';
+
 export { Field, controlBase, controlStatus } from './Field';
 export type { FieldProps, FieldStatus } from './Field';
 
@@ -46,6 +48,9 @@ export type { StateViewProps } from './StateView';
 
 export { StatusBadge, StatusLegend } from './StatusBadge';
 export type { StatusBadgeProps, StatusTone } from './StatusBadge';
+
+export { TextLink } from './TextLink';
+export type { TextLinkProps } from './TextLink';
 
 export { Term, Tooltip } from './Tooltip';
 export type { TermProps, TooltipProps } from './Tooltip';

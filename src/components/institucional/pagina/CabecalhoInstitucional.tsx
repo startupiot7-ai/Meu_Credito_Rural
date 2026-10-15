@@ -15,7 +15,7 @@ const secoesDaPagina = [
 export function CabecalhoInstitucional() {
   return (
     <header className="sticky top-0 z-40 border-b border-sand-200 bg-sand-50/95 backdrop-blur-sm">
-      <div className="container-page flex h-16 items-center justify-between gap-4">
+      <div className="container-page flex h-16 items-center justify-between gap-2 sm:gap-4">
         <div className="flex items-center gap-3">
           <Link href="/cooperativas" aria-label="Meu Crédito Rural para instituições" className="shrink-0 rounded-md">
             <Logo compactOnMobile />
@@ -40,10 +40,11 @@ export function CabecalhoInstitucional() {
           </ul>
         </nav>
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+          {/* Visível em todas as larguras; no celular o recuo menor deixa o cabeçalho caber em 320px. */}
           <Link
             href="/"
-            className="hidden whitespace-nowrap rounded-md px-3 py-2 text-body-sm text-ink-600 hover:text-ink-900 xl:block"
+            className="inline-flex min-h-touch items-center whitespace-nowrap rounded-md px-2 text-body-sm text-ink-600 hover:text-ink-900 sm:px-3"
           >
             Sou produtor
           </Link>

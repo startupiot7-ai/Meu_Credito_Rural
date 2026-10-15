@@ -94,8 +94,24 @@ warm beige as the page, coffee brown for support, amber as the light.
 | `canopy` | `bg-canopy-600`, `text-canopy-700`… | Primary. Deep agricultural green. |
 | `sand` | `bg-sand-50`, `border-sand-200`… | Surfaces. Warm beige — the page is `sand-50`, never white. |
 | `coffee` | `text-coffee-600`… | Secondary. Roasted-coffee brown, earth accents. |
-| `beam` | `bg-beam-400`, `ring-beam-500`… | Accent. The lighthouse light, and the focus ring. |
+| `beam` | `bg-beam-400`, `bg-beam-300`… | Accent. The lighthouse light. |
 | `ink` | `text-ink-900`, `text-ink-600`… | Text. Warm dark neutrals; pure black is never used. |
+
+Semantic tokens for controls and focus (WCAG 1.4.11, ≥ 3:1 against the surface).
+They exist so the ramps above can stay light enough for fills and dividers:
+
+| Token | Class | Value | Contrast |
+|---|---|---|---|
+| `control.border` | `border-control-border` | `sand-600` | 3.46:1 on `sand-50`, 3.58:1 on white |
+| `control.border-hover` | `hover:border-control-border-hover` | `ink-500` | ≥ 4.8:1 on `sand-50` |
+| `focus.ring` | `ring-focus-ring` | `beam-600` | 3.74:1 on `sand-50` |
+| `focus.ring-on-dark` | `ring-focus-ring-on-dark` | `beam-300` | 7.63:1 on `canopy-800` |
+
+Inputs, radios, checkboxes and switches use `control-border`; the global
+`:focus-visible` ring uses `focus-ring`. Dark surfaces (`canopy-800`) must carry
+`data-surface="dark"` so the ring switches to `focus-ring-on-dark`
+(`Section tone="canopy"` already does it). A light card inside a dark surface
+(e.g. the demo form) carries `data-surface="light"` to restore the light ring.
 
 Status colours ship as a **surface / border / foreground trio**, each verified
 at ≥ 4.5:1 foreground-on-surface:

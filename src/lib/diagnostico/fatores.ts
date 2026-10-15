@@ -86,7 +86,7 @@ const safraMuitoPrometida: Verificacao = ({ dados }) => {
     titulo: 'Grande parte da safra já está prometida',
     explicacao: `${primeiraMaiuscula(sacas(prometidas))} (${percentual(
       parteDaSafraPrometida,
-    )} do seu café) vão para pagar insumos, CPR ou troca e precisam ser entregues mesmo numa quebra. Com ${percentual(
+    )} do seu café) vão para pagar insumos, CPR (compromisso de entregar café na colheita) ou troca e precisam ser entregues mesmo numa quebra. Com ${percentual(
       queda,
     )} menos café, as sacas que sobram para vender caem ${percentual(quedaDasSacasLivres)}.`,
   };

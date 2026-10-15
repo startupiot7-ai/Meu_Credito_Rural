@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { BeamDivider } from '@/components/brand/HeroScene';
 import { Button, Select, StateView, TextInput } from '@/components/ui';
@@ -9,6 +9,7 @@ import {
   solicitacaoEstaValida,
   validarSolicitacaoDeDemonstracao,
 } from '@/lib/institucional/validar-solicitacao-de-demonstracao';
+import { focarPrimeiroInvalido, preferenciaDeMovimentoReduzido } from '@/lib/foco-no-erro';
 import type {
   ErrosDaSolicitacao,
   SolicitacaoDeDemonstracao,
@@ -32,6 +33,15 @@ export function SolicitarDemonstracao() {
   const [solicitacao, atualizarSolicitacao] = useState<SolicitacaoDeDemonstracao>(solicitacaoEmBranco);
   const [erros, atualizarErros] = useState<ErrosDaSolicitacao>({});
   const [foiEnviada, marcarComoEnviada] = useState(false);
+  // Conta os envios que falharam; cada um pede o foco no primeiro campo inválido.
+  const [enviosComErro, atualizarEnviosComErro] = useState(0);
+  const formulario = useRef<HTMLFormElement>(null);
+
+  // Depois do render que mostra os erros, já com `aria-invalid` nos campos.
+  useEffect(() => {
+    if (enviosComErro === 0) return;
+    focarPrimeiroInvalido(formulario.current, preferenciaDeMovimentoReduzido());
+  }, [enviosComErro]);
 
   function alterarCampo(campo: keyof SolicitacaoDeDemonstracao, valor: string) {
     atualizarSolicitacao({ ...solicitacao, [campo]: valor });
@@ -44,12 +54,14 @@ export function SolicitarDemonstracao() {
     const novosErros = validarSolicitacaoDeDemonstracao(solicitacao);
     atualizarErros(novosErros);
     if (solicitacaoEstaValida(novosErros)) marcarComoEnviada(true);
+    else atualizarEnviosComErro((n) => n + 1);
   }
 
   return (
     <section
       id="demonstracao"
       aria-labelledby="demonstracao-titulo"
+      data-surface="dark"
       className="section-y relative scroll-mt-16 overflow-hidden bg-canopy-800"
     >
       <div
@@ -71,7 +83,7 @@ export function SolicitarDemonstracao() {
           </p>
         </div>
 
-        <div className="rounded-3xl bg-sand-50 p-6 shadow-lg md:p-8">
+        <div data-surface="light" className="rounded-3xl bg-sand-50 p-6 shadow-lg md:p-8">
           {foiEnviada ? (
             <StateView
               variant="success"
@@ -80,7 +92,7 @@ export function SolicitarDemonstracao() {
               className="border-0 px-0 py-6"
             />
           ) : (
-            <form noValidate onSubmit={enviarSolicitacao} className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <form ref={formulario} noValidate onSubmit={enviarSolicitacao} className="grid grid-cols-1 gap-5 md:grid-cols-2">
               <TextInput
                 label="Nome"
                 autoComplete="name"

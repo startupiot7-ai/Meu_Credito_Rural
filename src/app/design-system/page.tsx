@@ -7,6 +7,8 @@ import {
   borderRadius,
   canopy,
   coffee,
+  control,
+  focus,
   fontSize,
   ink,
   sand,
@@ -95,6 +97,48 @@ export default function DesignSystemPage() {
                   </ul>
                 </div>
               ))}
+
+              <div>
+                <h3 className="text-body font-medium text-ink-900">
+                  Controles e foco — tokens semânticos
+                </h3>
+                <p className="mt-1 max-w-prose text-body-sm text-ink-600">
+                  Bordas de campos e o anel de foco precisam de pelo menos 3:1 contra o fundo. Por
+                  isso têm tokens próprios, em vez de usar as rampas sand e beam, que seguem como
+                  fundos e divisórias.
+                </p>
+                <ul className="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {[
+                    ['control-border', control.border, 'sand-600 · 3,46:1 sobre sand-50', false],
+                    ['control-border-hover', control['border-hover'], 'ink-500 · borda em hover', false],
+                    ['focus-ring', focus.ring, 'beam-600 · 3,74:1 sobre sand-50', false],
+                    ['focus-ring-on-dark', focus['ring-on-dark'], 'beam-300 · 7,63:1 sobre canopy-800', true],
+                  ].map(([name, value, nota, escuro]) => (
+                    <li
+                      key={String(name)}
+                      className="rounded-lg border border-ink-900/10 p-3"
+                      style={{ backgroundColor: escuro ? canopy[800] : sand[50] }}
+                    >
+                      <span
+                        className="block h-8 w-full rounded-md border-2"
+                        style={{ borderColor: String(value), backgroundColor: 'transparent' }}
+                      />
+                      <span
+                        className="mt-2 block text-body-sm font-semibold"
+                        style={{ color: escuro ? sand[50] : ink[900] }}
+                      >
+                        {name}
+                      </span>
+                      <span
+                        className="block text-caption"
+                        style={{ color: escuro ? sand[200] : ink[600] }}
+                      >
+                        {String(value)} · {nota}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               <div>
                 <h3 className="text-body font-medium text-ink-900">

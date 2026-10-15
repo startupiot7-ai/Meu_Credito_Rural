@@ -47,7 +47,7 @@ export const RawInput = forwardRef<HTMLInputElement, BaseInputProps>(function Ra
       className={cn(
         'flex items-stretch overflow-hidden rounded-lg border bg-sand-50',
         'transition-[border-color] duration-base ease-standard',
-        'focus-within:ring-2 focus-within:ring-beam-500 focus-within:ring-offset-2 focus-within:ring-offset-sand-50',
+        'focus-within:ring-2 focus-within:ring-focus-ring focus-within:ring-offset-2 focus-within:ring-offset-sand-50',
         controlStatus[status],
         className,
       )}

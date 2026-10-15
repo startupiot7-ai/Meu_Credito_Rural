@@ -232,7 +232,7 @@ function interpretarSacasPrometidas(valor: ValorInformado | null, aproximacoes: 
   const sacas = converterValor(valor, 'as sacas prometidas', aproximacoes);
   if (sacas.valor === null) {
     aproximacoes.push(
-      'Não sabemos quantas sacas estão prometidas para insumos ou CPR. Se houver, a sobra real é menor.',
+      'Não sabemos quantas sacas estão prometidas para insumos ou CPR (compromisso de entregar café na colheita). Se houver, a sobra real é menor.',
     );
   }
   return sacas;

@@ -38,7 +38,7 @@ export function InterruptorDeConsentimento({
     <div
       className={cn(
         'flex items-center justify-between gap-4 rounded-xl border-2 p-4 transition-colors duration-base ease-standard',
-        autorizado ? 'border-canopy-600 bg-canopy-50' : 'border-sand-300 bg-sand-50',
+        autorizado ? 'border-canopy-600 bg-canopy-50' : 'border-control-border bg-sand-50',
       )}
     >
       <div className="min-w-0">
@@ -68,7 +68,7 @@ export function InterruptorDeConsentimento({
           'relative inline-flex h-8 w-14 shrink-0 items-center rounded-full border-2 transition-colors duration-base ease-standard',
           // Área de toque de 44px mesmo com o desenho menor.
           'before:absolute before:-inset-2 before:content-[""]',
-          autorizado ? 'border-canopy-600 bg-canopy-600' : 'border-sand-400 bg-sand-200',
+          autorizado ? 'border-canopy-600 bg-canopy-600' : 'border-control-border bg-sand-200',
         )}
       >
         <span

@@ -40,8 +40,18 @@
    * `:focus-visible` only, so pointer users never see a ring they did not ask for.
    */
   :focus-visible {
-    @apply outline-none ring-2 ring-beam-500 ring-offset-2 ring-offset-sand-50;
+    @apply outline-none ring-2 ring-focus-ring ring-offset-2 ring-offset-sand-50;
     border-radius: 0.375rem;
+  }
+
+  /* Dark surfaces (canopy-800): amber ring that keeps >= 3:1 there. */
+  [data-surface='dark'] :focus-visible {
+    @apply ring-focus-ring-on-dark ring-offset-canopy-800;
+  }
+
+  /* Light card inside a dark surface (e.g. the demo form): back to the light ring. */
+  [data-surface='light'] :focus-visible {
+    @apply ring-focus-ring ring-offset-sand-50;
   }
 
   /* Native controls inherit the warm palette rather than the OS blue. */

@@ -36,6 +36,45 @@ export const consentimentoInicial: ConsentimentoDeOriginacao = {
   historico: [],
 };
 
+const ehObjetoSimples = (valor: unknown): valor is Record<string, unknown> =>
+  typeof valor === 'object' && valor !== null && !Array.isArray(valor);
+
+/**
+ * Reconstrói o consentimento a partir de um valor lido do armazenamento, que
+ * pode estar corrompido ou adulterado. Na dúvida, não há autorização: só
+ * entram autorizações com data em texto e registros de histórico completos.
+ */
+export function consentimentoDeValorSalvo(valor: unknown): ConsentimentoDeOriginacao {
+  if (!ehObjetoSimples(valor)) return { autorizacoesAtivas: {}, historico: [] };
+
+  const autorizacoesAtivas: Record<string, string> = {};
+  if (ehObjetoSimples(valor.autorizacoesAtivas)) {
+    for (const [instituicao, momento] of Object.entries(valor.autorizacoesAtivas)) {
+      if (typeof momento === 'string' && momento !== '') autorizacoesAtivas[instituicao] = momento;
+    }
+  }
+
+  const historico: RegistroDeConsentimento[] = [];
+  if (Array.isArray(valor.historico)) {
+    for (const registro of valor.historico) {
+      if (
+        ehObjetoSimples(registro) &&
+        typeof registro.identificadorDaInstituicao === 'string' &&
+        (registro.acao === 'autorizou' || registro.acao === 'revogou') &&
+        typeof registro.em === 'string'
+      ) {
+        historico.push({
+          identificadorDaInstituicao: registro.identificadorDaInstituicao,
+          acao: registro.acao,
+          em: registro.em,
+        });
+      }
+    }
+  }
+
+  return { autorizacoesAtivas, historico };
+}
+
 export function instituicaoEstaAutorizada(
   consentimento: ConsentimentoDeOriginacao,
   identificadorDaInstituicao: string,

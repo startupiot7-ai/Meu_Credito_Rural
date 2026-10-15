@@ -13,7 +13,7 @@ import { CenariosDaSafra } from './CenariosDaSafra';
  * score. Não há número sozinho nem nota. A ordem da tela é a do raciocínio:
  *
  *   frase-síntese          o que isso significa, numa linha
- *   O que encontramos      os três cenários e a margem de segurança
+ *   O que encontramos      a margem de segurança e os três cenários
  *   O que mais pesou       até três fatores
  *   O que fazer agora      UM próximo passo
  *   aviso                  indicativo, não é aprovação nem recomendação
@@ -43,11 +43,14 @@ export function VisaoDoResultado({
 
       {cenarios ? (
         <Secao id="encontramos" titulo="O que encontramos">
-          <CenariosDaSafra cenarios={cenarios} />
-          <h3 className="mt-8 text-title-sm">Sua margem de segurança</h3>
+          <h3 className="text-title-sm">Sua margem de segurança</h3>
           <p className="mt-1 text-body-sm text-ink-600">Quanto a safra pode piorar antes de faltar dinheiro.</p>
           <div className="mt-4">
             <BlocoDaMargem margem={resultado.margem} desfavoravel={cenarios.desfavoravel} />
+          </div>
+          <h3 className="mt-8 text-title-sm">Os três cenários da safra</h3>
+          <div className="mt-4">
+            <CenariosDaSafra cenarios={cenarios} />
           </div>
         </Secao>
       ) : (

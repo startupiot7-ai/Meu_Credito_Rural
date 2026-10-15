@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
   autorizarInstituicao,
+  consentimentoDeValorSalvo,
   consentimentoInicial,
   revogarInstituicao,
   revogarTodasAsInstituicoes,
@@ -38,16 +39,12 @@ export function useConsentimentoDeOriginacao() {
   useEffect(() => {
     try {
       const antigo = window.localStorage.getItem(CHAVE_DO_CONSENTIMENTO_ANTIGO);
-      const antigoLido = antigo ? (JSON.parse(antigo) as Partial<ConsentimentoDeOriginacao>) : null;
+      const antigoLido = antigo ? consentimentoDeValorSalvo(JSON.parse(antigo)) : null;
       marcarAutorizacaoAntiga(Object.keys(antigoLido?.autorizacoesAtivas ?? {}).length > 0);
 
       const salvo = window.localStorage.getItem(CHAVE_DO_CONSENTIMENTO);
       if (salvo) {
-        const lido = JSON.parse(salvo) as Partial<ConsentimentoDeOriginacao>;
-        atualizarConsentimento({
-          autorizacoesAtivas: lido.autorizacoesAtivas ?? {},
-          historico: lido.historico ?? [],
-        });
+        atualizarConsentimento(consentimentoDeValorSalvo(JSON.parse(salvo)));
       }
     } catch {
       // Sem armazenamento: segue com nenhuma autorização.

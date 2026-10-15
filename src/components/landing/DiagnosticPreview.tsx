@@ -1,4 +1,4 @@
-import { AlertCircleIcon, ButtonLink, Card, CheckCircleIcon, StepProgress } from '@/components/ui';
+import { AlertCircleIcon, Card, CheckCircleIcon, StepProgress, TextLink } from '@/components/ui';
 import { diagnosticar } from '@/lib/diagnostico/diagnosticar';
 import { exemploJaTenhoCusteioApertado } from '@/lib/diagnostico/exemplos';
 import { rotuloDaTela, telasDoFluxo } from '@/lib/diagnostico/fluxo';
@@ -87,13 +87,9 @@ export function DiagnosticPreview() {
         ) : null}
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 md:flex-row">
-        <ButtonLink href="/diagnostico" size="lg">
-          Simular minha safra
-        </ButtonLink>
-        <ButtonLink href="/diagnostico/exemplo/ja-tenho-custeio" size="lg" variant="secondary">
-          Ver este exemplo completo
-        </ButtonLink>
+      <div className="mt-6 flex flex-col gap-x-8 gap-y-1 md:flex-row md:items-center">
+        <TextLink href="/diagnostico/exemplo/ja-tenho-custeio">Ver este exemplo completo</TextLink>
+        <TextLink href="/diagnostico">Simular a minha safra</TextLink>
       </div>
     </Section>
   );

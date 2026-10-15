@@ -109,7 +109,7 @@ export function escolherProximoPasso(contexto: ContextoDoProximoPasso): ProximoP
         id: 'entender-formas-de-garantir-preco',
         titulo: 'Entenda as formas de garantir o preço de parte da safra',
         descricao:
-          'Boa parte da sua sobra depende do preço do dia. Venda antecipada e contratos com cooperativa ou trading fixam o preço de uma parte, mas também têm regras e riscos: pergunte antes de fechar.',
+          'Boa parte da sua sobra depende do preço do dia. Venda antecipada e contratos com cooperativa ou empresa compradora de café (trading) fixam o preço de uma parte, mas também têm regras e riscos: pergunte antes de fechar.',
       };
     }
     if (temFator(fatores, 'sem-protecao-climatica')) {

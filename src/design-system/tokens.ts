@@ -86,6 +86,32 @@ export const ink = {
 } as const;
 
 /**
+ * Semantic tokens for interactive controls. They point at the ramps above but
+ * answer a different question: "what makes a control findable?" (WCAG 1.4.11,
+ * non-text contrast >= 3:1 against the surface it sits on). Never lower the ramps
+ * for this: `sand-300/400` and `beam-500` stay as fills, dividers and highlights.
+ *
+ * Contrast (sand-50 / white / sand-100):
+ *  - `control.border`        sand-600  3.46 / 3.58 / 3.21
+ *  - `control.border-hover`  ink-500   4.8 or better on sand-50
+ *  - `focus.ring`            beam-600  3.74 / 3.86 / 3.46
+ *  - `focus.ring-on-dark`    beam-300  7.63 on canopy-800
+ */
+export const control = {
+  /** Border of inputs, radio/checkbox marks, the off switch track. */
+  border: sand[600],
+  /** Border on hover: darker still, so the hover is visible. */
+  'border-hover': ink[500],
+} as const;
+
+export const focus = {
+  /** Focus ring on light surfaces. */
+  ring: beam[600],
+  /** Focus ring on dark surfaces (`data-surface="dark"`, e.g. canopy-800). */
+  'ring-on-dark': beam[300],
+} as const;
+
+/**
  * Status — "luz verde / amarela / vermelha".
  * Each entry is a surface + border + foreground trio verified for >= 4.5:1
  * foreground-on-surface contrast.
@@ -226,6 +252,8 @@ export const tokens = {
   beam,
   sand,
   ink,
+  control,
+  focus,
   status,
   fontFamily,
   fontSize,

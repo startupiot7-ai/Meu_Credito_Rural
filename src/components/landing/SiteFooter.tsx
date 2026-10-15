@@ -56,14 +56,6 @@ export function SiteFooter() {
                   Para cooperativas
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/design-system"
-                  className="rounded-md text-body-sm text-ink-600 hover:text-ink-900"
-                >
-                  Design system
-                </Link>
-              </li>
             </ul>
           </nav>
         </div>

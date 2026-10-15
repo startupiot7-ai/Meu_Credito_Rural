@@ -1,6 +1,7 @@
 'use client';
 
-import { Button, Card, Checkbox, RadioCard, RadioCardGroup } from '@/components/ui';
+import { useId } from 'react';
+import { Button, Card, Checkbox, FieldError, RadioCard, RadioCardGroup } from '@/components/ui';
 import {
   acontecimentosExclusivos,
   alternarEscolha,
@@ -18,7 +19,7 @@ export function TelaDoPrecoFechado({ respostas, atualizar, erro }: PropsDaTela) 
   return (
     <TelaDePergunta
       titulo="Quanto desta safra já tem preço fechado?"
-      ajuda="Venda antecipada ou contrato com cooperativa ou trading. Não conte o café prometido para insumos."
+      ajuda="Venda antecipada ou contrato com cooperativa ou empresa compradora de café (trading). Não conte o café prometido para insumos."
     >
       <RadioCardGroup legend="Quanto desta safra já tem preço fechado?" hideLegend error={erro ?? undefined}>
         {opcoesDeParteComPrecoFechado.map((opcao) => (
@@ -38,9 +39,11 @@ export function TelaDoPrecoFechado({ respostas, atualizar, erro }: PropsDaTela) 
 }
 
 export function TelaDosAcontecimentos({ respostas, atualizar, erro }: PropsDaTela) {
+  const erroId = `${useId()}-erro`;
+
   return (
     <TelaDePergunta titulo="O que já aconteceu nesta safra?" ajuda="Marque tudo o que aconteceu.">
-      <fieldset className="flex flex-col gap-1 border-0 p-0">
+      <fieldset className="flex flex-col gap-1 border-0 p-0" aria-describedby={erro ? erroId : undefined} data-invalido={erro ? true : undefined}>
         <legend className="sr-only">O que já aconteceu nesta safra?</legend>
         {opcoesDeAcontecimentos.map((opcao) => (
           <Checkbox
@@ -59,9 +62,9 @@ export function TelaDosAcontecimentos({ respostas, atualizar, erro }: PropsDaTel
           />
         ))}
         {erro ? (
-          <p role="alert" className="mt-1 text-body-sm text-risk-fg">
+          <FieldError id={erroId} className="mt-1">
             {erro}
-          </p>
+          </FieldError>
         ) : null}
       </fieldset>
     </TelaDePergunta>

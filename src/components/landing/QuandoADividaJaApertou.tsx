@@ -1,4 +1,4 @@
-import { ButtonLink, Card } from '@/components/ui';
+import { Card, TextLink } from '@/components/ui';
 import { Section } from './Section';
 
 /**
@@ -27,10 +27,8 @@ export function QuandoADividaJaApertou() {
           Medidas como a MP 1.376/2026 podem se aplicar a casos específicos. Os critérios dela ainda estão sendo
           confirmados, então o diagnóstico não diz se ela vale para você: quem confirma é a instituição.
         </p>
-        <div className="mt-6">
-          <ButtonLink href="/diagnostico" variant="secondary">
-            Já tenho custeio: ver minha situação
-          </ButtonLink>
+        <div className="mt-4">
+          <TextLink href="/diagnostico">Já tenho custeio: ver minha situação</TextLink>
         </div>
       </Card>
     </Section>

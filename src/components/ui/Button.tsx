@@ -95,6 +95,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     children,
     disabled,
     type = 'button',
+    onClick,
     ...props
   },
   ref,
@@ -107,10 +108,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       // of the tab order mid-action; `aria-disabled` conveys the blocked state.
       aria-disabled={loading || undefined}
       aria-busy={loading || undefined}
+      {...props}
       disabled={disabled}
       className={classes(variant, size, fullWidth, className)}
-      onClick={loading ? (event) => event.preventDefault() : props.onClick}
-      {...props}
+      onClick={loading ? (event) => event.preventDefault() : onClick}
     >
       {loading ? (
         <>

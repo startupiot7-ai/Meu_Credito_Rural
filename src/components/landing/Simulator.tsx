@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { ButtonLink, Card, CurrencyInput, QuantityInput, StatusBadge } from '@/components/ui';
+import { Card, TextLink, CurrencyInput, QuantityInput, StatusBadge } from '@/components/ui';
 import { aparenciaDaSituacao } from '@/components/diagnostico/resultado/aparencia';
 import { valoresIniciaisDaSimulacao } from '@/lib/conteudo-da-pagina-inicial';
 import { descreverHipotese, hipotesesDosCenarios } from '@/lib/diagnostico/cenarios';
@@ -92,10 +92,8 @@ export function Simulator() {
         </div>
       </div>
 
-      <div className="mt-8">
-        <ButtonLink href="/diagnostico" size="lg">
-          Fazer o diagnóstico completo
-        </ButtonLink>
+      <div className="mt-6">
+        <TextLink href="/diagnostico">Fazer o diagnóstico completo</TextLink>
       </div>
     </Section>
   );
