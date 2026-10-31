@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Priorização Impacto × Esforço — Meu Crédito Rural</title>
+  <style>
+    :root { --green:#185c43; --sand:#f7f1e5; --ink:#25231f; --line:#d8cfbf; --muted:#675f54; --amber:#e1a927; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--sand); color:var(--ink); font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; }
+    main { max-width:1180px; margin:auto; padding:40px 24px 72px; }
+    h1,h2,h3 { color:var(--green); line-height:1.15; }
+    h1 { font-size:2rem; margin:0 0 8px; } h2 { margin-top:42px; } h3 { margin-top:28px; }
+    .meta,.nota { color:var(--muted); } .nota { border-left:4px solid var(--amber); padding:10px 14px; background:#fffaf0; }
+    table { width:100%; border-collapse:collapse; margin:16px 0 24px; background:#fffdf8; }
+    th,td { border:1px solid var(--line); padding:10px; text-align:left; vertical-align:top; }
+    th { background:#e8efe9; color:#123f30; }
+    td.nota-num { text-align:center; font-weight:700; white-space:nowrap; }
+    ul,ol { padding-left:24px; } li { margin:7px 0; }
+    code,pre { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+    pre { overflow:auto; padding:18px; color:#f8f4ea; background:#173b30; border-radius:10px; line-height:1.35; }
+    .tag { display:inline-block; padding:2px 8px; border-radius:99px; background:#e8efe9; color:var(--green); font-weight:700; font-size:.85rem; }
+    @media print { body{background:white} main{max-width:none;padding:16px} table{font-size:11px} pre{font-size:10px} }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Priorização Impacto × Esforço</h1>
+  <p class="meta">Meu Crédito Rural · Hackathon Avança Café 2026 / UFLA · análise em 26/09/2026</p>
+  <p class="nota"><strong>Critério.</strong> Impacto combina valor percebido pela cooperativa pagante, valor para o produtor e força no pitch. Esforço combina horas de desenvolvimento, dependência de dados externos e risco jurídico/LGPD. Notas de 1 (baixo) a 5 (alto). Quadrantes: impacto alto = 4–5; esforço baixo = 1–2.</p>
+
+  <h2>1. Inventário de ideias, features e frentes</h2>
+  <table>
+    <thead><tr><th>#</th><th>Nome curto</th><th>Descrição encontrada no repositório ou no contexto</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Educação e tradução</td><td>Landing, glossário e explicações em linguagem simples organizam crédito rural e seus limites sem prometer aprovação.</td></tr>
+      <tr><td>2</td><td>Calculadora preventiva</td><td>Calcula receita bruta projetada e percentual da receita comprometida com a dívida a partir de sacas, preço e dívida.</td></tr>
+      <tr><td>3</td><td>Diagnóstico guiado</td><td>Fluxo gratuito de sete etapas, uma pergunta por vez, com cultura, produção, preço, dívida, perdas, documentos e revisão.</td></tr>
+      <tr><td>4</td><td>Motor diagnóstico real</td><td>Substitui as regras placeholder do protótipo por critérios validados; mantém achados rastreáveis, sem “score misterioso”.</td></tr>
+      <tr><td>5</td><td>Resultado explicável</td><td>Mostra faixa saudável/atenção/risco, achados confirmados, lacunas, significado e um próximo passo verificável.</td></tr>
+      <tr><td>6</td><td>Comparador de alternativas</td><td>Compara condição atual, prazo mais longo e carência por parcela anual, prazo e receita comprometida; hoje é ilustrativo.</td></tr>
+      <tr><td>7</td><td>Plano de ação</td><td>Orienta reunir documentos, confirmar saldo, comparar condições e conversar com a instituição, com uma prioridade por vez.</td></tr>
+      <tr><td>8</td><td>Documentos da dívida</td><td>Upload opcional de contrato/extrato para refinar a análise; no protótipo nada é enviado e o processamento é simulado.</td></tr>
+      <tr><td>9</td><td>Uso em conexão ruim</td><td>Respostas salvas no dispositivo, retomada do ponto anterior e funcionamento tolerante à queda de conexão.</td></tr>
+      <tr><td>10</td><td>Posicionamento de prevenção</td><td>Hipótese de vender visão antecipada do risco, antes da inadimplência e da necessidade de renegociação emergencial.</td></tr>
+      <tr><td>11</td><td>Distribuição pela cooperativa</td><td>A cooperativa divulga o diagnóstico gratuito por técnicos, núcleos, reuniões e grupos de mensagem.</td></tr>
+      <tr><td>12</td><td>Licença institucional</td><td>Receita principal anual, conforme associados acompanhados, para acesso a inteligência agregada da carteira; preço ainda não definido.</td></tr>
+      <tr><td>13</td><td>Painel agregado</td><td>Exibe cobertura de diagnósticos, distribuição de risco, dívida e receita comprometida da carteira; hoje usa dados fictícios.</td></tr>
+      <tr><td>14</td><td>Recortes protegidos</td><td>Segmenta painel por núcleo, porte e cultura, ocultando grupos com menos de dez e protegendo contra inferência por subtração.</td></tr>
+      <tr><td>15</td><td>Leitura da MP 1.376/2026</td><td>Mostra enquadramento indicativo agregado nos mecanismos da MP, sem afirmar elegibilidade.</td></tr>
+      <tr><td>16</td><td>Originação consentida</td><td>Receita secundária por produtor apresentado/operação, somente após autorização específica, informada e revogável.</td></tr>
+      <tr><td>17</td><td>Infraestrutura institucional</td><td>Backend, base de diagnósticos, autenticação por instituição, isolamento de carteira e registro auditável de consentimento.</td></tr>
+      <tr><td>18</td><td>Funil comercial B2B</td><td>Página para cooperativas, pedido de demonstração, planos sob consulta, materiais de divulgação e futuros casos autorizados.</td></tr>
+      <tr><td>19</td><td>Venda para sindicatos</td><td>O repositório também apresenta a licença a sindicatos rurais, embora o foco comercial definido com orientadores seja cooperativas de crédito.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. Matriz Impacto × Esforço</h2>
+  <table>
+    <thead><tr><th>Quadrante</th><th>Item</th><th>Impacto</th><th>Justificativa do impacto</th><th>Esforço</th><th>Justificativa do esforço</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag">Quick Win</span></td><td>Educação e tradução</td><td class="nota-num">4</td><td>Aumenta confiança e compreensão do produtor e sustenta a independência valorizada pela cooperativa e pela banca.</td><td class="nota-num">1</td><td>Já está implementada; exige principalmente revisão de conteúdo com especialistas.</td></tr>
+      <tr><td><span class="tag">Quick Win</span></td><td>Calculadora preventiva</td><td class="nota-num">5</td><td>Demonstra valor em segundos, materializa prevenção e gera o indicador-base para produtor, painel e pitch.</td><td class="nota-num">2</td><td>A versão simples já funciona localmente; validação das premissas é o principal trabalho restante.</td></tr>
+      <tr><td><span class="tag">Quick Win</span></td><td>Diagnóstico guiado</td><td class="nota-num">5</td><td>É a porta de entrada gratuita, gera valor individual e cria a base de adesão necessária ao modelo B2B2C.</td><td class="nota-num">2</td><td>Fluxo de alta fidelidade já existe; falta limitar o pitch ao caráter prototípico das regras.</td></tr>
+      <tr><td><span class="tag">Grande Aposta</span></td><td>Motor diagnóstico real</td><td class="nota-num">5</td><td>Sem critérios confiáveis, o valor do diagnóstico e dos dados agregados não se sustenta em produção.</td><td class="nota-num">5</td><td>Requer validação técnica/jurídica, regras atualizadas, testes e governança além do único dev.</td></tr>
+      <tr><td><span class="tag">Quick Win</span></td><td>Resultado explicável</td><td class="nota-num">5</td><td>Entrega clareza ao produtor e evidência defensável à cooperativa sem depender de um score opaco.</td><td class="nota-num">2</td><td>A interface e o contrato de saída já existem; no hackathon pode operar com cenário claramente demonstrativo.</td></tr>
+      <tr><td><span class="tag">Preenchimento</span></td><td>Comparador de alternativas</td><td class="nota-num">3</td><td>É útil ao produtor e visual no pitch, mas aproxima a promessa de renegociação, fora do núcleo preventivo.</td><td class="nota-num">2</td><td>A UI já existe com cenários mock; torná-los reais, porém, migraria o item para esforço alto.</td></tr>
+      <tr><td><span class="tag">Quick Win</span></td><td>Plano de ação</td><td class="nota-num">4</td><td>Converte diagnóstico em comportamento e reduz o risco de a ferramenta terminar apenas em informação.</td><td class="nota-num">1</td><td>Já está desenhado e depende sobretudo de validar a ordem e a linguagem das ações.</td></tr>
+      <tr><td><span class="tag">Evitar</span></td><td>Documentos da dívida</td><td class="nota-num">3</td><td>Pode aumentar precisão, mas não é necessário para o diagnóstico inicial e cria fricção de adesão.</td><td class="nota-num">5</td><td>Upload real envolve armazenamento seguro, extração, dados sensíveis, retenção, suporte e LGPD.</td></tr>
+      <tr><td><span class="tag">Preenchimento</span></td><td>Uso em conexão ruim</td><td class="nota-num">3</td><td>Ajuda a adoção rural e a experiência, porém tem menor peso direto na decisão de compra da cooperativa.</td><td class="nota-num">1</td><td>Persistência local e estados de conexão já estão implementados no protótipo.</td></tr>
+      <tr><td><span class="tag">Quick Win</span></td><td>Posicionamento de prevenção</td><td class="nota-num">5</td><td>Alinha o valor do produtor ao interesse econômico da cooperativa: detectar exposição antes de virar perda.</td><td class="nota-num">1</td><td>É teste de mensagem e proposta de valor; não exige uma nova feature para o hackathon.</td></tr>
+      <tr><td><span class="tag">Quick Win</span></td><td>Distribuição pela cooperativa</td><td class="nota-num">5</td><td>Resolve aquisição B2C e mostra por que a cooperativa é canal e pagadora, fortalecendo o B2B2C.</td><td class="nota-num">2</td><td>Pode ser pilotada manualmente com link e material; depende mais de parceria que de código.</td></tr>
+      <tr><td><span class="tag">Quick Win</span></td><td>Licença institucional</td><td class="nota-num">5</td><td>É a receita principal e liga diretamente o diagnóstico gratuito ao comprador definido.</td><td class="nota-num">2</td><td>A oferta e a página existem; ainda exige validar comprador, unidade de cobrança e disposição a pagar.</td></tr>
+      <tr><td><span class="tag">Grande Aposta</span></td><td>Painel agregado</td><td class="nota-num">5</td><td>É o entregável tangível da licença e dá à cooperativa visão de carteira que hoje está fragmentada.</td><td class="nota-num">4</td><td>UI pronta, mas produto real depende de volume, backend, qualidade dos dados e atualização contínua.</td></tr>
+      <tr><td><span class="tag">Grande Aposta</span></td><td>Recortes protegidos</td><td class="nota-num">4</td><td>Permitem ação por núcleo/porte/cultura e demonstram privacidade por desenho, relevante para confiança e LGPD.</td><td class="nota-num">4</td><td>Regra básica está testada, mas granularidade e risco de reidentificação exigem revisão jurídica e dados suficientes.</td></tr>
+      <tr><td><span class="tag">Evitar</span></td><td>Leitura da MP 1.376/2026</td><td class="nota-num">3</td><td>Cria atualidade e urgência, mas é menos coerente com prevenção e pode desviar a conversa para elegibilidade emergencial.</td><td class="nota-num">4</td><td>Depende de interpretação normativa, atualização contínua e cuidado para não aparentar um parecer jurídico.</td></tr>
+      <tr><td><span class="tag">Grande Aposta</span></td><td>Originação consentida</td><td class="nota-num">4</td><td>Cria receita secundária e caminho de resolução para quem deseja contato, sem cobrar do produtor.</td><td class="nota-num">5</td><td>Exige consentimento auditável, contato, revogação efetiva, parceiros, segurança e controles LGPD.</td></tr>
+      <tr><td><span class="tag">Grande Aposta</span></td><td>Infraestrutura institucional</td><td class="nota-num">5</td><td>É requisito para vender e operar a licença com dados reais e separação segura entre cooperativas.</td><td class="nota-num">5</td><td>Backend, autenticação, isolamento, auditoria, segurança e operação são incompatíveis com improviso de hackathon.</td></tr>
+      <tr><td><span class="tag">Quick Win</span></td><td>Funil comercial B2B</td><td class="nota-num">4</td><td>Transforma interesse da banca e do Sicoob em entrevistas, demonstrações e sinais reais de compra.</td><td class="nota-num">2</td><td>Página e formulário já existem; conectar um canal simples e executar entrevistas requer pouco desenvolvimento.</td></tr>
+      <tr><td><span class="tag">Evitar</span></td><td>Venda para sindicatos</td><td class="nota-num">2</td><td>Dilui foco, linguagem e validação enquanto o comprador prioritário já foi definido como cooperativa de crédito.</td><td class="nota-num">3</td><td>Exigiria outra tese de valor, comprador, preço e ciclo comercial, ainda que reutilize parte do produto.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tabela Markdown para copiar</h3>
+  <pre>| Quadrante | Item | Impacto | Esforço |
+|---|---|:---:|:---:|
+| Quick Wins | Educação e tradução | 4 | 1 |
+| Quick Wins | Calculadora preventiva | 5 | 2 |
+| Quick Wins | Diagnóstico guiado | 5 | 2 |
+| Grandes Apostas | Motor diagnóstico real | 5 | 5 |
+| Quick Wins | Resultado explicável | 5 | 2 |
+| Preenchimentos | Comparador de alternativas | 3 | 2 |
+| Quick Wins | Plano de ação | 4 | 1 |
+| Evitar | Documentos da dívida | 3 | 5 |
+| Preenchimentos | Uso em conexão ruim | 3 | 1 |
+| Quick Wins | Posicionamento de prevenção | 5 | 1 |
+| Quick Wins | Distribuição pela cooperativa | 5 | 2 |
+| Quick Wins | Licença institucional | 5 | 2 |
+| Grandes Apostas | Painel agregado | 5 | 4 |
+| Grandes Apostas | Recortes protegidos | 4 | 4 |
+| Evitar | Leitura da MP 1.376/2026 | 3 | 4 |
+| Grandes Apostas | Originação consentida | 4 | 5 |
+| Grandes Apostas | Infraestrutura institucional | 5 | 5 |
+| Quick Wins | Funil comercial B2B | 4 | 2 |
+| Evitar | Venda para sindicatos | 2 | 3 |</pre>
+
+  <h2>3. Quadrantes em texto ASCII</h2>
+  <pre>                              IMPACTO
+                    BAIXO (1–3)              ALTO (4–5)
+              ┌──────────────────────┬──────────────────────────────┐
+ ESFORÇO      │ PREENCHIMENTOS       │ QUICK WINS                   │
+ BAIXO (1–2)  │ • Comparador         │ • Educação e tradução        │
+              │ • Conexão ruim       │ • Calculadora preventiva     │
+              │                      │ • Diagnóstico guiado         │
+              │                      │ • Resultado explicável       │
+              │                      │ • Plano de ação              │
+              │                      │ • Posicionamento preventivo  │
+              │                      │ • Distribuição cooperativa   │
+              │                      │ • Licença institucional      │
+              │                      │ • Funil comercial B2B        │
+              ├──────────────────────┼──────────────────────────────┤
+ ESFORÇO      │ EVITAR               │ GRANDES APOSTAS              │
+ ALTO (3–5)   │ • Upload documentos  │ • Motor diagnóstico real     │
+              │ • Leitura da MP      │ • Painel agregado            │
+              │ • Venda sindicatos  │ • Recortes protegidos        │
+              │                      │ • Originação consentida      │
+              │                      │ • Infraestrutura institucional│
+              └──────────────────────┴──────────────────────────────┘</pre>
+
+  <h2>4. Sequência de execução</h2>
+  <h3>(a) MVP até o fim do hackathon</h3>
+  <ol>
+    <li><strong>Demonstrar a jornada ponta a ponta já existente:</strong> calculadora → diagnóstico guiado → resultado explicável → um próximo passo.</li>
+    <li><strong>Reenquadrar o pitch como teste de prevenção:</strong> “visão antes da inadimplência”, deixando explícito que regras, cenários, painel e dados são protótipos.</li>
+    <li><strong>Demonstrar o B2B2C:</strong> distribuição pela cooperativa, painel agregado fictício com proteção de grupos e licença anual como receita principal.</li>
+    <li><strong>Usar originação apenas como segunda camada:</strong> mostrar o fluxo de consentimento e a receita potencial, sem prometer operação real.</li>
+    <li><strong>Validar, não construir infraestrutura:</strong> ligar o pedido de demonstração a um canal simples e levar as três perguntas finais às pessoas do Sicoob.</li>
+  </ol>
+  <p><strong>Fora do MVP:</strong> upload real, motor jurídico/financeiro definitivo, integração com base de cooperados, login institucional e originação operacional.</p>
+
+  <h3>(b) Primeiros 90 dias pós-hackathon</h3>
+  <ol>
+    <li>Fechar um piloto com uma cooperativa e um grupo limitado de cooperados, com métricas de convite, início, conclusão e utilidade percebida.</li>
+    <li>Validar e versionar as regras mínimas do diagnóstico com especialistas, separando prevenção geral de leitura normativa específica.</li>
+    <li>Construir backend mínimo com pseudonimização, registro de base legal/consentimento, retenção definida e acesso institucional isolado.</li>
+    <li>Entregar painel piloto apenas com agregados essenciais: adesão, faixas de risco e receita comprometida; liberar recortes somente com volume seguro.</li>
+    <li>Testar proposta e preço da licença anual; medir se a cooperativa paga por visão preventiva antes de investir em originação.</li>
+  </ol>
+
+  <h3>(c) Visão de 12 meses</h3>
+  <ol>
+    <li>Licença institucional em produção para cooperativas, com onboarding, governança, autenticação e atualização auditável.</li>
+    <li>Motor diagnóstico validado e monitorado, mantendo explicabilidade e linguagem indicativa.</li>
+    <li>Painel com recortes seguros por núcleo, porte e cultura, condicionado a volume e revisão de risco de reidentificação.</li>
+    <li>Originação qualificada operando apenas após comprovar demanda, economia unitária e consentimento/revogação ponta a ponta.</li>
+    <li>Avaliar integrações e upload de documentos somente se os pilotos provarem que a falta desses dados impede decisões relevantes.</li>
+  </ol>
+
+  <h2>5. Avaliação da hipótese de prevenção</h2>
+  <p><strong>Conclusão:</strong> a hipótese é forte o bastante para ser a mensagem principal a testar, mas ainda não está validada. Ela não pede uma feature nova no hackathon; reorganiza o valor das features existentes.</p>
+  <ul>
+    <li><strong>Muda quadrantes:</strong> a calculadora passa de demonstração útil a <em>Quick Win</em> central; o plano de ação ganha impacto por induzir ação antecipada; o painel agregado fica ainda mais valioso como <em>Grande Aposta</em>. Em sentido contrário, a leitura da MP cai para <em>Evitar</em> no curto prazo e o comparador de renegociação vira <em>Preenchimento</em>, pois ambos puxam a narrativa para remediação.</li>
+    <li><strong>Reforça a receita via cooperativa:</strong> prevenção reduz perdas, melhora priorização de assistência e planejamento de carteira; também justifica que a cooperativa financie uma ferramenta gratuita ao produtor. A licença ganha lógica mais recorrente que uma cobrança dependente de casos já críticos.</li>
+    <li><strong>Possível conflito:</strong> se a cooperativa interpretar o diagnóstico como estimulador de portabilidade ou exposição de fragilidades, pode resistir. A independência do resultado e o uso agregado precisam ser tratados como fonte de confiança, não como ameaça comercial.</li>
+    <li><strong>Risco de pouca urgência:</strong> “evitar um problema futuro” costuma ser menos urgente que “resolver uma dívida agora”; a mensagem deve provar custo da inação sem alarmismo.</li>
+    <li><strong>Risco de dados frágeis:</strong> produtor pode não saber saldo, custo, vencimentos ou receita futura; estimativas podem gerar falsa precisão e reduzir confiança.</li>
+    <li><strong>Risco de adesão e viés:</strong> quem mais precisa pode não responder; o painel refletirá respondentes, não necessariamente toda a carteira.</li>
+    <li><strong>Risco LGPD e relacional:</strong> mesmo agregados podem ser inferidos em núcleos pequenos, e o produtor pode autocensurar respostas se acreditar que a cooperativa verá seu caso.</li>
+    <li><strong>Risco operacional:</strong> detectar risco sem capacidade da cooperativa de agir cria um painel informativo, mas pouco acionável.</li>
+  </ul>
+
+  <h2>6. Três decisões para agora e perguntas de validação</h2>
+  <table>
+    <thead><tr><th>Decisão agora</th><th>Pergunta para o formulário com pessoas do Sicoob</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Confirmar prevenção como proposta principal</strong>, mantendo MP/renegociação como contexto secundário.</td><td>“Em que momento uma visão agregada do comprometimento da receita dos cooperados seria mais útil para sua cooperativa: antes de sinais de atraso, quando surgem pedidos de renegociação ou depois da inadimplência? Conte uma decisão concreta que essa visão mudaria.”</td></tr>
+      <tr><td><strong>2. Definir o painel mínimo que sustenta a licença</strong>: adesão, faixas de risco e receita comprometida antes de recortes e MP.</td><td>“Se o painel inicial mostrasse apenas adesão ao diagnóstico, distribuição por faixas de risco e percentual da receita comprometida, isso justificaria um piloto? Qual informação ausente impediria sua equipe de agir?”</td></tr>
+      <tr><td><strong>3. Escolher onde parar no uso de dados</strong>: agregados anônimos como núcleo; originação individual só com consentimento como etapa posterior.</td><td>“Sua cooperativa teria interesse em receber casos individuais apenas quando o cooperado autorizar explicitamente? Quais controles de consentimento, revogação e acesso seriam indispensáveis para aprovar esse fluxo?”</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Assunções declaradas</h2>
+  <ul>
+    <li>Não há no repositório um arquivo separado de pitch ou modelo de negócio; a fonte B2B2C é a documentação da área institucional, seus textos comerciais e o contexto fornecido.</li>
+    <li>As notas avaliam a passagem do protótipo atual para evidência convincente no hackathon, não a conclusão integral de um produto regulado.</li>
+    <li>“Painel agregado” e “recortes protegidos” foram separados porque o painel básico pode existir sem segmentação fina e esta aumenta risco de reidentificação.</li>
+    <li>A MP 1.376/2026 foi tratada somente como feature documentada no repositório; não houve validação jurídica externa de seus critérios.</li>
+    <li>Não foi assumido acesso atual a dados reais do Sicoob nem autorização para integrar base de cooperados.</li>
+  </ul>
+</main>
+</body>
+</html>
